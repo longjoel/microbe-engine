@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing.Text;
 using System.Linq;
+using System.Reflection;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Microbe.Engine
 {
@@ -18,19 +22,22 @@ namespace Microbe.Engine
 
     }
 
-    public class RGB {
+    public class RGB
+    {
         public byte r;
         public byte g;
         public byte b;
 
         public Color ToColor() { return Color.FromArgb(255, r, g, b); }
     }
-    public class TilePalette {
+    public class TilePalette
+    {
         public RGB c1;
         public RGB c2;
         public RGB c3;
 
-        public TilePalette() {
+        public TilePalette()
+        {
             c1 = new RGB { r = 0, b = 0, g = 0 };
             c2 = new RGB { r = 128, b = 128, g = 128 };
             c3 = new RGB { r = 255, b = 255, g = 255 };
@@ -39,6 +46,11 @@ namespace Microbe.Engine
 
     public class MicrobeGraphics
     {
+        private Font _textFont;
+        private char[] _textBuffer;
+        private Bitmap _textBufferCache;
+        private Color _textColor;
+
         private TilePalette[] _tileColors;
 
         private Bitmap[] _tileDataCache;
@@ -89,14 +101,7 @@ namespace Microbe.Engine
             }
         }
 
-        public void SetPalette(int index, TilePalette p) {
-            _tileColors[index] = p;
-            CopyTileToCache(index);
-            CopyVramToCache();
-            CopyFrameBufferToCache();
-        }
 
-        public TilePalette GetPalette(int index) { return _tileColors[index]; }
 
         private void CopyVramToCache()
         {
@@ -143,8 +148,10 @@ namespace Microbe.Engine
 
                 foreach (var sprite in _sprites.Where(sprite => !sprite.background && sprite.visible))
                 {
-                    g.DrawImage(_tileDataCache[sprite.tileIndex], sprite.x , sprite.y );
+                    g.DrawImage(_tileDataCache[sprite.tileIndex], sprite.x, sprite.y);
                 }
+
+                g.DrawImage(_textBufferCache, 0, 0);
             }
         }
 
@@ -174,12 +181,51 @@ namespace Microbe.Engine
             }
         }
 
+        private void CopyTextBufferToCache()
+        {
+
+            using (var gfx = Graphics.FromImage(_textBufferCache))
+            {
+                using (var myBrush = new SolidBrush(Color.FromArgb(255, _textColor.R, _textColor.G, _textColor.B)))
+                {
+                    gfx.TextRenderingHint = TextRenderingHint.SingleBitPerPixel;
+                    for (int y = 0; y < 18; y++)
+                    {
+
+                        for (int x = 0; x < 20; x++)
+                        {
+
+                            gfx.DrawString(_textBuffer[y * 20 + x].ToString(), _textFont, myBrush, new Point(x * 8 , y * 8));
+                        }
+                    }
+                }
+            }
+        }
+
+        public void SetTextColor(RGB rgb)
+        {
+            _textColor = Color.FromArgb(255, rgb.r, rgb.g, rgb.b);
+            CopyTextBufferToCache();
+            CopyFrameBufferToCache();
+
+        }
+
         public MicrobeGraphics()
         {
             _tileDataCache = new Bitmap[256];
             _tileData = new List<byte[]>();
-
             _tileColors = new TilePalette[256];
+
+            _textBuffer = new char[20 * 18];
+            _textBufferCache = new Bitmap(160, 144);
+            _textColor = Color.White;
+
+            var pfc = new PrivateFontCollection();
+            pfc.AddFontFile("font.ttf");
+
+            var fam = pfc.Families[0];
+
+            _textFont = new Font(fam, 8, GraphicsUnit.Pixel);
 
 
             _vram = new byte[32 * 32];
@@ -203,9 +249,42 @@ namespace Microbe.Engine
             }
 
             CopyVramToCache();
+            CopyTextBufferToCache();
             CopyFrameBufferToCache();
 
         }
+
+        public void SetPalette(int index, TilePalette p)
+        {
+            _tileColors[index] = p;
+            CopyTileToCache(index);
+            CopyVramToCache();
+            CopyFrameBufferToCache();
+        }
+
+        public void SetChar(int x, int y, char c)
+        {
+            _textBuffer[y * 20 + x] = c;
+            CopyTextBufferToCache();
+            CopyFrameBufferToCache();
+
+        }
+
+        public void SetString(int x, int y, string txt) {
+
+            for (int tx = 0; tx < txt.Length; tx++) {
+
+                var ftx = tx + x;
+                if (ftx < 20) {
+                    SetChar(tx, y, txt.ToCharArray()[tx]);
+                }
+
+            }
+        }
+
+
+
+        public TilePalette GetPalette(int index) { return _tileColors[index]; }
 
         public void SetTileData(int tileIndex, byte[] data)
         {

@@ -24,6 +24,8 @@ setTile(1, [
 
 var p1 = getPalette(1);
 
+setString(0, 0, "microbe-engine");
+
 setPalette(1, {...p1,
     c2: {
         r: 255, g: 0, b: 128
@@ -47,6 +49,7 @@ setMain((t) => {
     spr0 = getSprite(0);
 
     if (gpState.up) {
+        setTextColor({ r: 0, g: 128, b: 0 });
         spr0.y--;
 
     }

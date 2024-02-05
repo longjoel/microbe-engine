@@ -16,6 +16,9 @@ namespace Microbe.Engine
             engine.SetValue("getSprite", graphics.GetSprite);
             engine.SetValue("getPalette", graphics.GetPalette);
             engine.SetValue("setPalette", graphics.SetPalette);
+            engine.SetValue("setChar", graphics.SetChar);
+            engine.SetValue("setTextColor", graphics.SetTextColor);
+            engine.SetValue("setString", graphics.SetString);
         }
 
         public static void RegisterEventsToMainWindow(this Jint.Engine engine, MicrobeFormMain mainForm)
