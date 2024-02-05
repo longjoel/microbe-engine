@@ -1,6 +1,8 @@
 using Esprima.Ast;
 using Jint;
 using System.Diagnostics;
+using XInputium;
+using XInputium.XInput;
 
 namespace Microbe.Engine
 {
@@ -53,11 +55,14 @@ namespace Microbe.Engine
         private MicrobeGraphics _graphics;
         private Action<double>? _main;
 
+        XGamepad? _gamePad;
+
         public MicrobeFormMain(Jint.Engine engine, MicrobeGraphics microbeGraphics)
         {
 
             _engine = engine;
             _graphics = microbeGraphics;
+            _gamePad = new XGamepad();
 
             this.DoubleBuffered = true;
 
@@ -68,6 +73,77 @@ namespace Microbe.Engine
             _main = null;
             GamepadState = new GamePadState();
 
+            if (_gamePad != null)
+            {
+
+                _gamePad.ButtonPressed += (s, e) =>
+                {
+                    switch (e.Button.Button)
+                    {
+                        case XButtons.DPadUp:
+                            GamepadState.up = true;
+                            break;
+                        case XButtons.DPadDown:
+                            GamepadState.down = true;
+                            break;
+                        case XButtons.DPadLeft:
+                            GamepadState.left = true;
+                            break;
+                        case XButtons.DPadRight:
+                            GamepadState.right = true;
+                            break;
+                        case XButtons.A:
+                            GamepadState.a = true;
+                            break;
+                        case XButtons.B:
+                            GamepadState.b = true;
+                            break;
+                        case XButtons.Start:
+                            GamepadState.start = true;
+                            break;
+                        case XButtons.Back:
+                            GamepadState.select = true;
+                            break;
+
+                        default:
+                            break;
+                    }
+                };
+
+                _gamePad.ButtonReleased += (s, e) =>
+                {
+                    switch (e.Button.Button)
+                    {
+                        case XButtons.DPadUp:
+                            GamepadState.up = false;
+                            break;
+                        case XButtons.DPadDown:
+                            GamepadState.down = false;
+                            break;
+                        case XButtons.DPadLeft:
+                            GamepadState.left = false;
+                            break;
+                        case XButtons.DPadRight:
+                            GamepadState.right = false;
+                            break;
+                        case XButtons.A:
+                            GamepadState.a = false;
+                            break;
+                        case XButtons.B:
+                            GamepadState.b = false;
+                            break;
+                        case XButtons.Start:
+                            GamepadState.start = false;
+                            break;
+                        case XButtons.Back:
+                            GamepadState.select = false;
+                            break;
+
+                        default:
+                            break;
+                    }
+                };
+            }
 
         }
 
@@ -149,6 +225,8 @@ namespace Microbe.Engine
 
         private void _onTick(object? sender, EventArgs e)
         {
+            _gamePad?.Update();
+
             this?._main?.Invoke(1/60);
 
             Invalidate();

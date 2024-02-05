@@ -46,7 +46,6 @@ namespace Microbe.Engine
 
     public class MicrobeGraphics
     {
-        private Font _textFont;
         private char[] _textBuffer;
         private Bitmap _textBufferCache;
         private Color _textColor;
@@ -130,26 +129,32 @@ namespace Microbe.Engine
                 g.Clear(Color.Transparent);
                 FixSpriteAlignment();
 
-                foreach (var sprite in _sprites.Where(sprite => sprite.background && sprite.visible))
-                {
 
-                    g.DrawImage(_tileDataCache[sprite.tileIndex], sprite.x, sprite.y);
-                }
+
                 for (int y = -1; y <= 1; y++)
                 {
                     for (int x = -1; x <= 1; x++)
                     {
+                        foreach (var sprite in _sprites.Where(sprite => sprite.background && sprite.visible))
+                        {
+
+                            g.DrawImage(_tileDataCache[sprite.tileIndex], sprite.x + (x * 159), sprite.y + (y * 143));
+                        }
+
+
                         g.DrawImage(_vramCache,
                             x * _vramCache.Width + _scrollX,
                             y * _vramCache.Height + _scrollY);
 
+                        foreach (var sprite in _sprites.Where(sprite => !sprite.background && sprite.visible))
+                        {
+                            g.DrawImage(_tileDataCache[sprite.tileIndex], sprite.x + (x * 159), sprite.y + (y * 143));
+                        }
+
                     }
                 }
 
-                foreach (var sprite in _sprites.Where(sprite => !sprite.background && sprite.visible))
-                {
-                    g.DrawImage(_tileDataCache[sprite.tileIndex], sprite.x, sprite.y);
-                }
+
 
                 g.DrawImage(_textBufferCache, 0, 0);
             }
@@ -184,20 +189,33 @@ namespace Microbe.Engine
         private void CopyTextBufferToCache()
         {
 
+
             using (var gfx = Graphics.FromImage(_textBufferCache))
             {
                 using (var myBrush = new SolidBrush(Color.FromArgb(255, _textColor.R, _textColor.G, _textColor.B)))
                 {
-                    gfx.TextRenderingHint = TextRenderingHint.SingleBitPerPixel;
-                    for (int y = 0; y < 18; y++)
+                    using (var pfc = new PrivateFontCollection())
                     {
+                        pfc.AddFontFile("font.ttf");
 
-                        for (int x = 0; x < 20; x++)
+                        var fam = pfc.Families[0];
+
+                        using (var textFont = new Font(fam, 8, GraphicsUnit.Pixel))
                         {
 
-                            gfx.DrawString(_textBuffer[y * 20 + x].ToString(), _textFont, myBrush, new Point(x * 8 , y * 8));
-                        }
+                            gfx.TextRenderingHint = TextRenderingHint.SingleBitPerPixel;
+                            for (int y = 0; y < 18; y++)
+                            {
+
+                                for (int x = 0; x < 20; x++)
+                                {
+
+                                    gfx.DrawString(_textBuffer[y * 20 + x].ToString(), textFont, myBrush, new Point(x * 8, y * 8));
+                                }
+                            }
+                        };
                     }
+
                 }
             }
         }
@@ -219,14 +237,6 @@ namespace Microbe.Engine
             _textBuffer = new char[20 * 18];
             _textBufferCache = new Bitmap(160, 144);
             _textColor = Color.White;
-
-            var pfc = new PrivateFontCollection();
-            pfc.AddFontFile("font.ttf");
-
-            var fam = pfc.Families[0];
-
-            _textFont = new Font(fam, 8, GraphicsUnit.Pixel);
-
 
             _vram = new byte[32 * 32];
             _vramCache = new Bitmap(32 * 8, 32 * 8);
@@ -270,12 +280,15 @@ namespace Microbe.Engine
 
         }
 
-        public void SetString(int x, int y, string txt) {
+        public void SetString(int x, int y, string txt)
+        {
 
-            for (int tx = 0; tx < txt.Length; tx++) {
+            for (int tx = 0; tx < txt.Length; tx++)
+            {
 
                 var ftx = tx + x;
-                if (ftx < 20) {
+                if (ftx < 20)
+                {
                     SetChar(tx, y, txt.ToCharArray()[tx]);
                 }
 
