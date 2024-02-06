@@ -31,6 +31,7 @@ namespace Microbe.Engine
             });
 
             engine.SetValue("getGamepadState", () => { return mainForm.GamepadState; });
+            engine.SetValue("sync", mainForm.Sync);
         }
 
     }
@@ -220,7 +221,15 @@ namespace Microbe.Engine
         protected override void OnLoad(EventArgs e)
         {
             _tickTimer.Start();
-            _engine.Evaluate(File.ReadAllText("default.js"));
+            var cmdArgs = Environment.GetCommandLineArgs();
+            var fName = "default.js";
+
+            if (cmdArgs.Length > 1) {
+                fName = cmdArgs[1];
+            }
+
+            _engine.Evaluate(File.ReadAllText( fName));
+
         }
 
         private void _onTick(object? sender, EventArgs e)
@@ -242,6 +251,12 @@ namespace Microbe.Engine
         public void RegisterMain(Action<double> main)
         {
             _main = main;
+            
+        }
+
+        public void Sync() {
+            Application.DoEvents();
+            Invalidate();
         }
     }
 
