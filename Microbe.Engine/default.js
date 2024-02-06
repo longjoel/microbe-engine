@@ -67,7 +67,7 @@ setSample(0, 120, [
 
 ]);
 
-playMusic(0);
+playEffect(0);
 
 setMain((t) => {
 

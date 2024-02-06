@@ -38,7 +38,9 @@ namespace Microbe.Engine
 
             engine.SetValue("setSample", audio.SetSample);
             engine.SetValue("playMusic", audio.PlayMusic);
-        
+            engine.SetValue("playEffect", audio.PlayEffect);
+            engine.SetValue("stopMusic", audio.StopMusic);
+
         }
 
     }

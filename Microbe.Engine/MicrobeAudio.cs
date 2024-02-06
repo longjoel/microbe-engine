@@ -69,6 +69,7 @@ namespace Microbe.Engine
         {
             if (_bgMusicPlayer != null)
             {
+                _bgMusicPlayer.Stop();
                 _bgMusicPlayer.Dispose();
             }
             using (var stream = new MemoryStream(_samples[sampleId]))
@@ -76,6 +77,24 @@ namespace Microbe.Engine
                 _bgMusicPlayer = new SoundPlayer(stream);
                 _bgMusicPlayer.PlayLooping();
 
+            }
+        }
+
+        public void StopMusic() {
+            if (_bgMusicPlayer != null)
+            {
+                _bgMusicPlayer.Stop();
+                _bgMusicPlayer.Dispose();
+            }
+        }
+
+        public void PlayEffect(int sampleId) {
+            using (var stream = new MemoryStream(_samples[sampleId]))
+            {
+                using (var player = new SoundPlayer(stream))
+                {
+                    player.Play();
+                }
             }
         }
 
