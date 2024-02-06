@@ -137,8 +137,7 @@ namespace Microbe.Engine
                     {
                         foreach (var sprite in _sprites.Where(sprite => sprite.background && sprite.visible))
                         {
-
-                            g.DrawImage(_tileDataCache[sprite.tileIndex], sprite.x + (x * 159), sprite.y + (y * 143));
+                            g.DrawImage(_tileDataCache[sprite.tileIndex], new Rectangle(sprite.x + (x * 160), sprite.y + (y * 144), 8, 8));
                         }
 
 
@@ -148,7 +147,7 @@ namespace Microbe.Engine
 
                         foreach (var sprite in _sprites.Where(sprite => !sprite.background && sprite.visible))
                         {
-                            g.DrawImage(_tileDataCache[sprite.tileIndex], sprite.x + (x * 159), sprite.y + (y * 143));
+                            g.DrawImage(_tileDataCache[sprite.tileIndex], new Rectangle( sprite.x + (x * 160), sprite.y + (y * 144),8,8));
                         }
 
                     }
