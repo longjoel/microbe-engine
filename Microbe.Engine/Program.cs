@@ -34,6 +34,13 @@ namespace Microbe.Engine
             engine.SetValue("sync", mainForm.Sync);
         }
 
+        public static void RegisterMicrobeAudio(this Jint.Engine engine, MicrobeAudio audio) {
+
+            engine.SetValue("setSample", audio.SetSample);
+            engine.SetValue("playMusic", audio.PlayMusic);
+        
+        }
+
     }
 
     public class GamePadState {
@@ -275,10 +282,12 @@ namespace Microbe.Engine
             var engine = new Jint.Engine();
 
             var graphics = new MicrobeGraphics();
+            var microbeAudio = new MicrobeAudio();
             var frmMain = new MicrobeFormMain(engine, graphics);
 
             engine.RegisterMicrobeGraphicsScriptObjects(graphics);
             engine.RegisterEventsToMainWindow(frmMain);
+            engine.RegisterMicrobeAudio(microbeAudio);
 
             Application.Run(frmMain);
         }

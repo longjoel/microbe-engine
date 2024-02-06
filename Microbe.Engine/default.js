@@ -55,6 +55,20 @@ spr0.y = 18;
 spr0.tileIndex = 1;
 setSprite(0, spr0);
 
+setSample(0, 120, [
+    { sn: "C4", sv: .5 },
+    { sn: "D4", sv: .5 },
+    { sn: "G2", sv: .5 },
+    { sn: "G2", sv: 0 },
+    { sn: "G2", sv: .5 , tn:"G3", tv:.5},
+    { sn: "G2", sv: 0 },
+    { sn: "G2", sv: 0 },
+    { sn: "G2", sv: 0 },
+
+]);
+
+playMusic(0);
+
 setMain((t) => {
 
    

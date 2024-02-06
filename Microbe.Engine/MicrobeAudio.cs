@@ -5,13 +5,81 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Media;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace Microbe.Engine
 {
+    public class MusicSegment
+    {
+        public string sn = "C4";       // sine note
+        public double sv;       // sine volume
+        public string tn = "C4";       // triangle note
+        public double tv;       // triangle volume
+        public string sqn = "C4";      // square wave note
+        public double sqv;      // square wave volume
+        public double nv;       // noise volume
+    }
     public class MicrobeAudio
     {
-        public static byte[] GenerateSineWave(int frequency, int durationMS, double volume)
+
+        private byte[][] _samples;
+
+        private Dictionary<string, double> _notes;
+        private SoundPlayer? _bgMusicPlayer;
+
+
+
+        public MicrobeAudio()
+        {
+            _notes = new Dictionary<string, double>();
+            _samples = new byte[256][];
+            var noteFrequency = File.ReadAllLines("note-frequency.csv");
+            for (int i = 1; i < noteFrequency.Length; i++)
+            {
+                var row = noteFrequency[i];
+                var parts = row.Split(',');
+                _notes[parts[0].Trim()] = double.Parse(parts[1]);
+            }
+        }
+
+        public void SetSample(int index, int intervalMS, MusicSegment[] musicSegments)
+        {
+
+            var sampleData = new List<byte>();
+
+            for (int i = 0; i < musicSegments.Length; i++)
+            {
+                sampleData.AddRange(
+                        MixSamples(
+                            GenerateSineWave((int)_notes[musicSegments[i].sn], intervalMS, musicSegments[i].sv),
+                            MixSamples(
+                                GenerateSquareWave((int)_notes[musicSegments[i].sqn], intervalMS, musicSegments[i].sqv),
+                                MixSamples(
+                                    GenerateTriangleWave((int)_notes[musicSegments[i].tn], intervalMS, musicSegments[i].tv),
+                                    GenerateWhiteNoise(intervalMS, musicSegments[i].nv)))));
+            }
+
+            var wav = MakeWave(sampleData.ToArray());
+
+            _samples[index] = wav;
+        }
+
+        public void PlayMusic(int sampleId)
+        {
+            if (_bgMusicPlayer != null)
+            {
+                _bgMusicPlayer.Dispose();
+            }
+            using (var stream = new MemoryStream(_samples[sampleId]))
+            {
+                _bgMusicPlayer = new SoundPlayer(stream);
+                _bgMusicPlayer.PlayLooping();
+
+            }
+        }
+
+        static byte[] GenerateSineWave(int frequency, int durationMS, double volume)
         {
             if (volume < 0.0 || volume > 1.0)
             {
@@ -23,14 +91,14 @@ namespace Microbe.Engine
             double samplesPerWaveLength = sampleRate / frequency;
             double ampStep = (2.0 / samplesPerWaveLength); // The "height" of the waveform
 
-            int totalSamples = (sampleRate * durationMS)/1000;
+            int totalSamples = (sampleRate * durationMS) / 1000;
             byte[] waveData = new byte[totalSamples];
 
             for (int i = 0; i < totalSamples; i++)
             {
                 double t = (double)i / sampleRate; // Time in seconds
                 double sineValue = Math.Sin(2.0 * Math.PI * frequency * t); // Sine wave value at time t
-                waveData[i] = Convert.ToByte(((sineValue + 1) * 127.5) * volume*.75); // Convert amplitude range from [-1, 1] to [0, 255] and apply volume
+                waveData[i] = Convert.ToByte(((sineValue + 1) * 127.5) * volume * .75); // Convert amplitude range from [-1, 1] to [0, 255] and apply volume
             }
             return waveData;
         }
@@ -43,9 +111,9 @@ namespace Microbe.Engine
             }
 
             int sampleRate = 48000; // 48 kHz
-          
 
-            int totalSamples = (sampleRate * durationMS)/1000;
+
+            int totalSamples = (sampleRate * durationMS) / 1000;
             byte[] waveData = new byte[totalSamples];
 
             Random rnd = new Random();
@@ -53,13 +121,13 @@ namespace Microbe.Engine
             for (int i = 0; i < totalSamples; i++)
             {
                 double noiseValue = rnd.NextDouble() * 2.0 - 1.0; // Random value between -1 and 1
-                waveData[i] = Convert.ToByte(((noiseValue + 1) * 127.5) * volume*.75); // Convert amplitude range from [-1, 1] to [0, 255] and apply volume
+                waveData[i] = Convert.ToByte(((noiseValue + 1) * 127.5) * volume * .75); // Convert amplitude range from [-1, 1] to [0, 255] and apply volume
             }
 
             return waveData;
         }
 
-        public static byte[] GenerateTriangleWave(int frequency, int durationMS, double volume)
+        static byte[] GenerateTriangleWave(int frequency, int durationMS, double volume)
         {
             if (volume < 0.0 || volume > 1.0)
             {
@@ -72,12 +140,12 @@ namespace Microbe.Engine
             double ampStep = (2.0 / samplesPerWaveLength); // The "height" of the waveform
             double amplitude = -1; // Start at the minimum
 
-            int totalSamples = (sampleRate * durationMS)/1000;
+            int totalSamples = (sampleRate * durationMS) / 1000;
             byte[] waveData = new byte[totalSamples];
 
             for (int i = 0; i < totalSamples; i++)
             {
-                waveData[i] = Convert.ToByte(((amplitude + 1) * 127.5) * volume*.75); // Convert amplitude range from [-1, 1] to [0, 255] and apply volume
+                waveData[i] = Convert.ToByte(((amplitude + 1) * 127.5) * volume * .75); // Convert amplitude range from [-1, 1] to [0, 255] and apply volume
 
                 // Increase or decrease amplitude
                 if (i % samplesPerWaveLength < samplesPerWaveLength / 2)
@@ -91,10 +159,10 @@ namespace Microbe.Engine
             }
             return waveData;
         }
-        public static byte[] GenerateSquareWave(int frequency, int durationMS, double volume)
+        static byte[] GenerateSquareWave(int frequency, int durationMS, double volume)
         {
             int sampleRate = 48000; // 48 kHz
-          
+
 
             double samplesPerWaveLength = sampleRate / frequency;
             double ampStep = (2.0 / samplesPerWaveLength); // The "height" of the waveform
@@ -105,7 +173,7 @@ namespace Microbe.Engine
 
             for (int i = 0; i < totalSamples; i++)
             {
-                waveData[i] = Convert.ToByte((amplitude + 1) * 127.5 * volume*.75); // Convert amplitude range from [-1, 1] to [0, 255]
+                waveData[i] = Convert.ToByte((amplitude + 1) * 127.5 * volume * .75); // Convert amplitude range from [-1, 1] to [0, 255]
 
                 // Flip amplitude at every half wavelength
                 if (i % (samplesPerWaveLength / 2) == 0)
@@ -115,8 +183,6 @@ namespace Microbe.Engine
             }
 
             return waveData;
-
-            
         }
 
         public static byte[] MixSamples(byte[] sample1, byte[] sample2)
@@ -126,7 +192,7 @@ namespace Microbe.Engine
 
             byte[] mixedSamples = new byte[maxLength];
 
-            for (int i = 0; i < minLength; i+=2)
+            for (int i = 0; i < minLength; i += 2)
             {
                 // Convert samples to 16-bit (from byte to short)
                 short sample1Short = BitConverter.ToInt16(sample1, i);
@@ -137,7 +203,7 @@ namespace Microbe.Engine
 
                 // Convert mixed sample back to 8-bit and store in output array
                 byte[] mixedSampleBytes = BitConverter.GetBytes(mixedSample);
-               
+
                 mixedSamples[i] = mixedSampleBytes[0];
                 mixedSamples[i + 1] = mixedSampleBytes[1];
             }
@@ -153,7 +219,8 @@ namespace Microbe.Engine
         }
 
 
-        public static byte[] MakeWave(byte[] waveData) {
+        public static byte[] MakeWave(byte[] waveData)
+        {
 
             int sampleRate = 48000; // 48 kHz
             int bitDepth = 8; // 8 bits
@@ -187,14 +254,6 @@ namespace Microbe.Engine
 
         }
 
-        public static void PlaySound(byte[] waveData)
-        {
-            using (var stream = new MemoryStream(MakeWave(waveData)))
-            {
-                var player = new SoundPlayer(stream);
-                player.PlayLooping();
-                //player.Stop();
-            }
-        }
+
     }
 }
