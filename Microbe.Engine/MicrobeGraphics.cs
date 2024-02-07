@@ -4,6 +4,7 @@ using System.Drawing.Text;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -185,9 +186,22 @@ namespace Microbe.Engine
             }
         }
 
+        private void AddFont(PrivateFontCollection pfc, byte[] fontBytes)
+        {
+            var handle = GCHandle.Alloc(fontBytes, GCHandleType.Pinned);
+            IntPtr pointer = handle.AddrOfPinnedObject();
+            try
+            {
+                pfc.AddMemoryFont(pointer, fontBytes.Length);
+            }
+            finally
+            {
+                handle.Free();
+            }
+        }
+
         private void CopyTextBufferToCache()
         {
-
 
             using (var gfx = Graphics.FromImage(_textBufferCache))
             {
@@ -195,8 +209,9 @@ namespace Microbe.Engine
                 {
                     using (var pfc = new PrivateFontCollection())
                     {
-                        pfc.AddFontFile("font.ttf");
-
+                        
+                        AddFont(pfc, Properties.Resources.font);
+                        
                         var fam = pfc.Families[0];
 
                         using (var textFont = new Font(fam, 8, GraphicsUnit.Pixel))

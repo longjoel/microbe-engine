@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Media;
+using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -34,8 +35,8 @@ namespace Microbe.Engine
         {
             _notes = new Dictionary<string, double>();
             _samples = new byte[256][];
-            var noteFrequency = File.ReadAllLines("note-frequency.csv");
-            for (int i = 1; i < noteFrequency.Length; i++)
+            var noteFrequency = Properties.Resources.note_frequency.Split(Environment.NewLine).Where(x=>x.Length>0).ToList();
+            for (int i = 1; i < noteFrequency.Count; i++)
             {
                 var row = noteFrequency[i];
                 var parts = row.Split(',');
