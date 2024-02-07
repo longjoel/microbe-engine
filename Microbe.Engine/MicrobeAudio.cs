@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace Microbe.Engine
 {
-    public class MusicSegment
+    public class SampleSegment
     {
         public string sn = "C4";       // sine note
         public double sv;       // sine volume
@@ -44,7 +44,7 @@ namespace Microbe.Engine
             }
         }
 
-        public void SetSample(int index, int intervalMS, MusicSegment[] musicSegments)
+        public void SetSample(int index, int intervalMS, SampleSegment[] musicSegments)
         {
 
             var sampleData = new List<byte>();

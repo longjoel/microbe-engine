@@ -1,0 +1,16 @@
+{
+  "name": "microbe-demo-1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx tsc",
+    "start": "\"..\\Microbe.Engine\\bin\\Debug\\net8.0-windows\\Microbe.Engine.exe\" ./bin/game.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "tsc": "^2.0.4"
+  }
+}
