@@ -303,7 +303,7 @@ namespace Microbe.Engine
                 var ftx = tx + x;
                 if (ftx < 20)
                 {
-                    SetChar(tx, y, txt.ToCharArray()[tx]);
+                    SetChar(ftx, y, txt.ToCharArray()[tx]);
                 }
 
             }
