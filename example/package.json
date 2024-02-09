@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@rollup/plugin-json": "^6.1.0"
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "^11.1.6",
