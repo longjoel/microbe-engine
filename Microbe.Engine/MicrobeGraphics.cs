@@ -53,6 +53,8 @@ namespace Microbe.Engine
 
         private TilePalette[] _tileColors;
 
+        private byte[] _tileToPaletteMap;
+
         private Bitmap[] _tileDataCache;
         private Bitmap _vramCache;
 
@@ -65,6 +67,8 @@ namespace Microbe.Engine
 
         byte _scrollX;
         byte _scrollY;
+
+        private bool _isDirty;
 
 
 
@@ -92,9 +96,9 @@ namespace Microbe.Engine
                     _tileDataCache[i].SetPixel(x, y, _tileData[i][y * 8 + x] switch
                     {
                         0 => Color.Transparent,
-                        1 => _tileColors[i].c1.ToColor(),
-                        2 => _tileColors[i].c2.ToColor(),
-                        3 => _tileColors[i].c3.ToColor(),
+                        1 => _tileColors[_tileToPaletteMap[i]].c1.ToColor(),
+                        2 => _tileColors[_tileToPaletteMap[i]].c2.ToColor(),
+                        3 => _tileColors[_tileToPaletteMap[i]].c3.ToColor(),
                         _ => Color.Red
                     });
                 }
@@ -129,8 +133,6 @@ namespace Microbe.Engine
             {
                 g.Clear(Color.Transparent);
                 FixSpriteAlignment();
-
-
 
                 for (int y = -1; y <= 1; y++)
                 {
@@ -234,19 +236,14 @@ namespace Microbe.Engine
             }
         }
 
-        public void SetTextColor(RGB rgb)
-        {
-            _textColor = Color.FromArgb(255, rgb.r, rgb.g, rgb.b);
-            CopyTextBufferToCache();
-            CopyFrameBufferToCache();
-
-        }
+     
 
         public MicrobeGraphics()
         {
             _tileDataCache = new Bitmap[256];
             _tileData = new List<byte[]>();
             _tileColors = new TilePalette[256];
+            _tileToPaletteMap = new byte[256];
 
             _textBuffer = new char[20 * 18];
             _textBufferCache = new Bitmap(160, 144);
@@ -256,6 +253,8 @@ namespace Microbe.Engine
             _vramCache = new Bitmap(32 * 8, 32 * 8);
 
             _framebufferCache = new Bitmap(160, 144);
+
+            _isDirty = true;
 
             _sprites = new Sprite[256];
             for (int i = 0; i < 256; i++)
@@ -269,28 +268,38 @@ namespace Microbe.Engine
                 _tileData.Add(new byte[64]);
                 _tileDataCache[i] = new Bitmap(8, 8);
                 _tileColors[i] = new TilePalette();
+                _tileToPaletteMap[i] = (byte)i;
                 CopyTileToCache(i);
             }
 
-            CopyVramToCache();
-            CopyTextBufferToCache();
-            CopyFrameBufferToCache();
 
+        }
+        public void SetTextColor(RGB rgb)
+        {
+            _textColor = Color.FromArgb(255, rgb.r, rgb.g, rgb.b);
+            _isDirty = true;
+
+        }
+
+        public void SetTilePalette(int tileIndex, int paletteIndex) {
+            _tileToPaletteMap[tileIndex] = (byte)paletteIndex;
+            CopyTileToCache(tileIndex);
+            _isDirty = true;
         }
 
         public void SetPalette(int index, TilePalette p)
         {
             _tileColors[index] = p;
             CopyTileToCache(index);
-            CopyVramToCache();
-            CopyFrameBufferToCache();
+
+            _isDirty = true;
         }
 
         public void SetChar(int x, int y, char c)
         {
             _textBuffer[y * 20 + x] = c;
-            CopyTextBufferToCache();
-            CopyFrameBufferToCache();
+
+            _isDirty = true;
 
         }
 
@@ -318,28 +327,28 @@ namespace Microbe.Engine
             _tileData[tileIndex] = data;
             CopyTileToCache(tileIndex);
 
-            CopyVramToCache();
-            CopyFrameBufferToCache();
+            _isDirty = true;
         }
         public void SetVramData(int x, int y, byte tileIndex)
         {
             _vram[y * 32 + x] = tileIndex;
-            CopyVramToCache();
-            CopyFrameBufferToCache();
+
+            _isDirty = true;
         }
 
         public void ScrollTo(byte x, byte y)
         {
             _scrollX = x;
             _scrollY = y;
-            CopyFrameBufferToCache();
+
+            _isDirty = true;
         }
 
         public void SetSprite(int spriteId, Sprite sprite)
         {
             _sprites[spriteId] = sprite;
-            FixSpriteAlignment();
-            CopyFrameBufferToCache();
+
+            _isDirty = true;
         }
 
         public Sprite GetSprite(int spriteId)
@@ -350,6 +359,17 @@ namespace Microbe.Engine
         public void PaintToWindow(PaintEventArgs e)
         {
             e.Graphics.Clear(Color.Black);
+
+            if (_isDirty) {
+                _isDirty = false;
+
+                FixSpriteAlignment();
+                CopyTextBufferToCache();
+                CopyVramToCache();
+                CopyFrameBufferToCache();
+
+            }
+
 
 
             e.Graphics.DrawImage(_framebufferCache,
