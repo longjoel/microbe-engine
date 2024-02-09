@@ -207,6 +207,7 @@ namespace Microbe.Engine
 
             using (var gfx = Graphics.FromImage(_textBufferCache))
             {
+                gfx.Clear(Color.Transparent);
                 using (var myBrush = new SolidBrush(Color.FromArgb(255, _textColor.R, _textColor.G, _textColor.B)))
                 {
                     using (var pfc = new PrivateFontCollection())
