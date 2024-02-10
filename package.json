@@ -1,0 +1,16 @@
+{
+  "name": "microbe-engine",
+  "version": "1.0.0",
+  "description": "`microbe-engine` is a minimalistic approach to building gameboy and gameboy color style games using Javascript / typescript. This is a code first engine, meaning graphics, actions, sounds, sound effects can be expressed as code.",
+  "main": "N/A",
+  "directories": {
+    "example": "example"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:win-x64":"dotnet build && dotnet publish -c Release -r win-x64 --output ./bin Microbe.sln",
+    "start":"cd example && npm run build && npm run start"
+  },
+  "author": "Joel Longanecker",
+  "license": "BSD-3-Clause"
+}

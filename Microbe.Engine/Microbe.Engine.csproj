@@ -6,6 +6,10 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>microbe-engine</AssemblyName>
+    <StartupObject>Microbe.Engine.Program</StartupObject>
+        <StripSymbols>false</StripSymbols>
+
   </PropertyGroup>
 
   <ItemGroup>
