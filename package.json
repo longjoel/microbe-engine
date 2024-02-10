@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:win-x64":"dotnet build && dotnet publish -c Release -r win-x64 --output ./bin Microbe.sln",
+    "build":"msbuild",
     "start":"cd example && npm install && npm run build && npm run start"
   },
   "author": "Joel Longanecker",

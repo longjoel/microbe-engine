@@ -219,7 +219,7 @@ namespace Microbe.Engine
                     using (var pfc = new PrivateFontCollection())
                     {
                         
-                        AddFont(pfc, EngineDNF.Properties.Resources.font);
+                        AddFont(pfc, Properties.Resources.font);
                         
                         var fam = pfc.Families[0];
 

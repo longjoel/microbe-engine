@@ -29,8 +29,8 @@ namespace Microbe.Engine
         {
             _notes = new Dictionary<string, double>();
             _samples = new byte[256][];
-            var noteFrequency = EngineDNF.Properties.Resources.note_frequency.Split(new string[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries).Where(x=>x.Length>0).ToList();
-            for (int i = 1; i < noteFrequency.Count; i++)
+            var noteFrequency = Properties.Resources.note_frequency.Split(new string[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries).Where(x=>x.Length>0).ToList();
+            for (int i = 1; i < noteFrequency.Count(); i++)
             {
                 var row = noteFrequency[i];
                 var parts = row.Split(',');

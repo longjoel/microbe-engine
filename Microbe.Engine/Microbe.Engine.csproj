@@ -111,7 +111,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="font.ttf" />
-    <None Include="Microbe.Engine_TemporaryKey.pfx" />
     <None Include="note-frequency.csv" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

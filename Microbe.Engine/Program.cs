@@ -213,7 +213,7 @@ namespace Microbe.Engine
                 fName = cmdArgs[1];
             }
 
-            _engine.Evaluate(fName=="default.js" ? EngineDNF.Properties.Resources._default : File.ReadAllText( fName));
+            _engine.Evaluate(fName=="default.js" ? Properties.Resources._default : File.ReadAllText( fName));
 
         }
 
