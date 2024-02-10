@@ -8,47 +8,11 @@ using System.Windows.Forms;
 
 namespace Microbe.Engine
 {
-    
-    public static class Extensions
+
+
+
+    public class CombinedState
     {
-        public static void RegisterMicrobeGraphicsScriptObjects(this Jint.Engine engine, MicrobeGraphics graphics)
-        {
-            engine.SetValue("setTile", new Action<int,double[]>((a,b)=> graphics.SetTileData(a,b.Select(x=>(byte)x).ToArray())));
-            engine.SetValue("setVram", new Action<int,int,int>((a,b,c)=>graphics.SetVramData(a,b,(byte)c)));
-            engine.SetValue("setScroll",new Action<int,int>( (int x, int y)=>graphics.ScrollTo((byte)(x%256), (byte)(y%255))));
-            engine.SetValue("setSprite", new Action<int,Sprite>((a,b)=>graphics.SetSprite(a,b)));
-            engine.SetValue("getSprite", new Func<int,Sprite>((a)=> { return graphics.GetSprite(a); }));
-            engine.SetValue("getPalette", new Func<int, TilePalette>((a)=> graphics.GetPalette(a)));
-            engine.SetValue("setPalette", new Action<int, TilePalette>((a,b)=>graphics.SetPalette(a,b)));
-            engine.SetValue("setChar", new Action<int,int,char>((a,b,c)=>graphics.SetChar(a,b,c)));
-            engine.SetValue("setTextColor", new Action<RGB>(rgb=>graphics.SetTextColor(rgb)));
-            engine.SetValue("setString", new Action<int,int,string>((a,b,c)=>graphics.SetString(a,b,c)));
-            engine.SetValue("setTilePalette", new Action<int, int>((a,b)=>graphics.SetTilePalette(a,b)));
-        }
-
-        public static void RegisterEventsToMainWindow(this Jint.Engine engine, MicrobeFormMain mainForm)
-        {
-            engine.SetValue("setMain", new Action<Action<double>>((Action<double> main) =>
-            {
-                mainForm.RegisterMain(main);
-            }));
-
-            engine.SetValue("getGamepadState", new Func<GamePadState>( () => { return mainForm.GamepadState; }));
-            //engine.SetValue("sync", mainForm.Sync);
-        }
-
-        public static void RegisterMicrobeAudio(this Jint.Engine engine, MicrobeAudio audio) {
-
-            engine.SetValue("setSample", new Action<int,int,SampleSegment[]> ((a,b,c)=>audio.SetSample(a,b,c)));
-            engine.SetValue("playMusic", new Action<int>(a=> audio.PlayMusic(a)));
-            engine.SetValue("playEffect", new Action<int>(a=>audio.PlayEffect(a)));
-            engine.SetValue("stopMusic", new Action(()=>audio.StopMusic()));
-
-        }
-
-    }
-
-    public class GamePadState {
         public bool up;
         public bool down;
         public bool left;
@@ -59,23 +23,62 @@ namespace Microbe.Engine
         public bool select;
     }
 
+
+
     public class MicrobeFormMain : Form
     {
-        public GamePadState GamepadState { get; protected set; }
+        CombinedState GetStateFromXInput()
+        {
+
+            var g = XInput.Wrapper.X.Gamepad_1;
+
+            return new CombinedState
+            {
+                a = g.A_down,
+                b = g.B_down,
+                //start = g.Buttons.Start == XInputDotNetPure.ButtonState.Pressed,
+                //select = g.Buttons.Back == XInputDotNetPure.ButtonState.Pressed,
+                //down = g.DPad.Down == XInputDotNetPure.ButtonState.Pressed || g.ThumbSticks.Left.Y > 0.25,
+                //up = g.DPad.Up == XInputDotNetPure.ButtonState.Pressed || g.ThumbSticks.Left.Y < -0.25,
+                //left = g.DPad.Left == XInputDotNetPure.ButtonState.Pressed || g.ThumbSticks.Left.X < -0.25,
+                //right = g.DPad.Right == XInputDotNetPure.ButtonState.Pressed || g.ThumbSticks.Left.X > .25,
+            };
+        }
+
+        public CombinedState KeyboardState { get; protected set; }
+
+        public CombinedState GamepadState
+        {
+            get
+            {
+                var gpState = GetStateFromXInput();
+                return new CombinedState()
+                {
+                    a = KeyboardState.a || gpState.a,
+                    b = KeyboardState.b || gpState.b,
+                    up = KeyboardState.up || gpState.up,
+                    down = KeyboardState.down || gpState.down,
+                    left = KeyboardState.left || gpState.left,
+                    right = KeyboardState.right || gpState.right,
+                    start = KeyboardState.start || gpState.start,
+                    select = KeyboardState.select || gpState.select,
+
+                };
+            }
+        }
 
         private System.Windows.Forms.Timer _tickTimer;
         private Jint.Engine _engine;
         private MicrobeGraphics _graphics;
         private Action<double> _main;
 
-        XInput.Wrapper.X.Gamepad _gamePad;
 
         public MicrobeFormMain(Jint.Engine engine, MicrobeGraphics microbeGraphics)
         {
+            XInput.Wrapper.X.StartPolling(XInput.Wrapper.X.Gamepad_1);
 
             _engine = engine;
             _graphics = microbeGraphics;
-            _gamePad = XInput.Wrapper.X.Gamepad_1;
 
             this.DoubleBuffered = true;
 
@@ -84,79 +87,45 @@ namespace Microbe.Engine
             _tickTimer.Tick += _onTick;
 
             _main = null;
-            GamepadState = new GamePadState();
+            KeyboardState = new CombinedState();
 
-            /*if (_gamePad != null)
-            {
 
-                _gamePad.KeyDown += (s, e) =>
-                {
-                    if (_gamePad.Dpad_Up_down) {
-                        GamepadState.up = true;
-                    }
-                    if (_gamePad.Dpad_Down_down)
-                    {
-                        GamepadState.down = true;
-                    }
-                    if (_gamePad.Dpad_Left_down)
-                    {
-                        GamepadState.left = true;
-                    }
-                    if (_gamePad.Dpad_Right_down)
-                    {
-                        GamepadState.right = true;
-                    }
-                    if (_gamePad.A_down)
-                    {
-                        GamepadState.a = true;
-                    }
-                    if (_gamePad.B_down)
-                    {
-                        GamepadState.b = true;
-                    }
-                    if (_gamePad.Start_down)
-                    {
-                        GamepadState.start = true;
-                    }
-                    if (_gamePad.Back_down)
-                    {
-                        GamepadState.select = true;
-                    }
 
-                    
-                };
+        }
 
-               
-            }*/
-
+        protected override void OnClosed(EventArgs e)
+        {
+            XInput.Wrapper.X.StopPolling();
+            base.OnClosed(e);
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            switch (e.KeyCode) {
+            switch (e.KeyCode)
+            {
                 case Keys.Up:
-                    GamepadState.up = true;
+                    KeyboardState.up = true;
                     break;
                 case Keys.Down:
-                    GamepadState.down = true;
+                    KeyboardState.down = true;
                     break;
                 case Keys.Left:
-                    GamepadState.left = true;
+                    KeyboardState.left = true;
                     break;
                 case Keys.Right:
-                    GamepadState.right = true;
+                    KeyboardState.right = true;
                     break;
                 case Keys.Z:
-                    GamepadState.a = true;
+                    KeyboardState.a = true;
                     break;
                 case Keys.X:
-                    GamepadState.b = true;
+                    KeyboardState.b = true;
                     break;
                 case Keys.Tab:
-                    GamepadState.start = true;
+                    KeyboardState.start = true;
                     break;
                 case Keys.Escape:
-                    GamepadState.select = true;
+                    KeyboardState.select = true;
                     break;
 
                 default:
@@ -171,28 +140,28 @@ namespace Microbe.Engine
             switch (e.KeyCode)
             {
                 case Keys.Up:
-                    GamepadState.up = false;
+                    KeyboardState.up = false;
                     break;
                 case Keys.Down:
-                    GamepadState.down = false;
+                    KeyboardState.down = false;
                     break;
                 case Keys.Left:
-                    GamepadState.left = false;
+                    KeyboardState.left = false;
                     break;
                 case Keys.Right:
-                    GamepadState.right = false;
+                    KeyboardState.right = false;
                     break;
                 case Keys.Z:
-                    GamepadState.a = false;
+                    KeyboardState.a = false;
                     break;
                 case Keys.X:
-                    GamepadState.b = false;
+                    KeyboardState.b = false;
                     break;
                 case Keys.Tab:
-                    GamepadState.start = false;
+                    KeyboardState.start = false;
                     break;
                 case Keys.Escape:
-                    GamepadState.select = false;
+                    KeyboardState.select = false;
                     break;
 
                 default:
@@ -209,22 +178,26 @@ namespace Microbe.Engine
             var cmdArgs = Environment.GetCommandLineArgs();
             var fName = "default.js";
 
-            if (cmdArgs.Length > 1) {
+            if (cmdArgs.Length > 1)
+            {
                 fName = cmdArgs[1];
             }
 
-            _engine.Evaluate(fName=="default.js" ? Properties.Resources._default : File.ReadAllText( fName));
+            _engine.Evaluate(fName == "default.js" ? Properties.Resources._default : File.ReadAllText(fName));
 
         }
 
         private void _onTick(object sender, EventArgs e)
         {
-            _gamePad?.Update();
 
-            this?._main?.Invoke(1/60);
+
+
+            this?._main?.Invoke(1 / 60);
 
             Invalidate();
         }
+
+
 
         protected override void OnPaint(PaintEventArgs e)
         {
@@ -236,10 +209,11 @@ namespace Microbe.Engine
         public void RegisterMain(Action<double> main)
         {
             _main = main;
-            
+
         }
 
-        public void Sync() {
+        public void Sync()
+        {
             Application.DoEvents();
             Invalidate();
         }
