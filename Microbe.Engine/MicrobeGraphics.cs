@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Drawing.Text;
 using System.Linq;
 using System.Reflection;
@@ -7,6 +8,7 @@ using System.Resources;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Xml.Linq;
 
 namespace Microbe.Engine
@@ -93,14 +95,14 @@ namespace Microbe.Engine
             {
                 for (int x = 0; x < 8; x++)
                 {
-                    _tileDataCache[i].SetPixel(x, y, _tileData[i][y * 8 + x] switch
-                    {
-                        0 => Color.Transparent,
-                        1 => _tileColors[_tileToPaletteMap[i]].c1.ToColor(),
-                        2 => _tileColors[_tileToPaletteMap[i]].c2.ToColor(),
-                        3 => _tileColors[_tileToPaletteMap[i]].c3.ToColor(),
-                        _ => Color.Red
-                    });
+                    Color c = Color.Transparent;
+                    switch (_tileData[i][y * 8 + x]){
+                        case 0:c = Color.Transparent; break;
+                        case 1:c = _tileColors[_tileToPaletteMap[i]].c1.ToColor(); break;
+                        case 2:c = _tileColors[_tileToPaletteMap[i]].c2.ToColor(); break;
+                        case 3:c = _tileColors[_tileToPaletteMap[i]].c3.ToColor(); break;
+                    }
+                    _tileDataCache[i].SetPixel(x, y, c);
                 }
             }
         }
@@ -126,39 +128,43 @@ namespace Microbe.Engine
 
         private void CopyFrameBufferToCache()
         {
-            using var backSprites = new Bitmap(160, 144);
-            using var foreSprites = new Bitmap(160, 144);
-
-            using (var g = Graphics.FromImage(_framebufferCache))
+            using (var backSprites = new Bitmap(160, 144))
             {
-                g.Clear(Color.Transparent);
-                FixSpriteAlignment();
-
-                for (int y = -1; y <= 1; y++)
+                using (var foreSprites = new Bitmap(160, 144))
                 {
-                    for (int x = -1; x <= 1; x++)
+
+                    using (var g = Graphics.FromImage(_framebufferCache))
                     {
-                        foreach (var sprite in _sprites.Where(sprite => sprite.background && sprite.visible))
+                        g.Clear(Color.Transparent);
+                        FixSpriteAlignment();
+
+                        for (int y = -1; y <= 1; y++)
                         {
-                            g.DrawImage(_tileDataCache[sprite.tileIndex], new Rectangle(sprite.x + (x * 160), sprite.y + (y * 144), 8, 8));
+                            for (int x = -1; x <= 1; x++)
+                            {
+                                foreach (var sprite in _sprites.Where(sprite => sprite.background && sprite.visible))
+                                {
+                                    g.DrawImage(_tileDataCache[sprite.tileIndex], new Rectangle(sprite.x + (x * 160), sprite.y + (y * 144), 8, 8));
+                                }
+
+
+                                g.DrawImage(_vramCache,
+                                    x * _vramCache.Width + _scrollX,
+                                    y * _vramCache.Height + _scrollY);
+
+                                foreach (var sprite in _sprites.Where(sprite => !sprite.background && sprite.visible))
+                                {
+                                    g.DrawImage(_tileDataCache[sprite.tileIndex], new Rectangle(sprite.x + (x * 160), sprite.y + (y * 144), 8, 8));
+                                }
+
+                            }
                         }
 
 
-                        g.DrawImage(_vramCache,
-                            x * _vramCache.Width + _scrollX,
-                            y * _vramCache.Height + _scrollY);
 
-                        foreach (var sprite in _sprites.Where(sprite => !sprite.background && sprite.visible))
-                        {
-                            g.DrawImage(_tileDataCache[sprite.tileIndex], new Rectangle( sprite.x + (x * 160), sprite.y + (y * 144),8,8));
-                        }
-
+                        g.DrawImage(_textBufferCache, 0, 0);
                     }
                 }
-
-
-
-                g.DrawImage(_textBufferCache, 0, 0);
             }
         }
 
@@ -213,7 +219,7 @@ namespace Microbe.Engine
                     using (var pfc = new PrivateFontCollection())
                     {
                         
-                        AddFont(pfc, Properties.Resources.font);
+                        AddFont(pfc, EngineDNF.Properties.Resources.font);
                         
                         var fam = pfc.Families[0];
 

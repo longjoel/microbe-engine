@@ -61,35 +61,12 @@ namespace Microbe.Engine.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 
-        ///
-        ///setTile(0, [
-        ///    1, 1, 1, 1, 1, 1, 1, 1,
-        ///    1, 2, 1, 1, 1, 2, 1, 1,
-        ///    1, 1, 1, 1, 1, 2, 1, 1,
-        ///    1, 1, 2, 1, 1, 1, 2, 1,
-        ///    1, 1, 1, 1, 1, 1, 1, 1,
-        ///    1, 1, 1, 1, 1, 1, 1, 1,
-        ///    1, 1, 1, 1, 3, 1, 1, 1,
-        ///    1, 1, 1, 1, 1, 1, 1, 1
-        ///]);
-        ///
-        ///setTile(1, [
-        ///    0, 0, 0, 2, 2, 0, 0, 0,
-        ///    0, 0, 0, 2, 2, 0, 0, 0,
-        ///    0, 0, 2, 2, 2, 2, 0, 0,
-        ///    0, 0, 0, 2, 2, 0, 0, 0,
-        ///    0, 2, 2, 2, 2, 2, 2, 0,
-        ///    0, 0, 0, 2, 2, 0, 0, 0,
-        ///    0, 0, 2, 0, 0, 2, 0, 0,
-        ///    0, 0, 2, 0, 0, 2, 0, 0
-        ///]);
-        ///
-        ///var  [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to setString(0, 0, &quot;microbe-engine&quot;);
+        ///.
         /// </summary>
         internal static string _default {
             get {
-                return ResourceManager.GetString("default", resourceCulture);
+                return ResourceManager.GetString("_default", resourceCulture);
             }
         }
         
@@ -148,7 +125,7 @@ namespace Microbe.Engine.Properties {
         /// </summary>
         internal static string note_frequency {
             get {
-                return ResourceManager.GetString("note-frequency", resourceCulture);
+                return ResourceManager.GetString("note_frequency", resourceCulture);
             }
         }
     }

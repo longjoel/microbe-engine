@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34526.213
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microbe.Engine", "Microbe.Engine\Microbe.Engine.csproj", "{EA60340E-F2F5-4A7A-8AB7-AB609031535C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microbe.Engine", "Microbe.Engine\Microbe.Engine.csproj", "{EA60340E-F2F5-4A7A-8AB7-AB609031535C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microbe.Engine.Common", "Microbe.Engine.Common\Microbe.Engine.Common.csproj", "{758E57A1-571C-4DB9-BEB7-C9B1201EA091}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microbe.Engine", "Microbe.Engine\Microbe.Engine.csproj", "{EF90217C-EA4F-4F38-8FBF-0462ECC40235}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{EA60340E-F2F5-4A7A-8AB7-AB609031535C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA60340E-F2F5-4A7A-8AB7-AB609031535C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA60340E-F2F5-4A7A-8AB7-AB609031535C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{758E57A1-571C-4DB9-BEB7-C9B1201EA091}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{758E57A1-571C-4DB9-BEB7-C9B1201EA091}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{758E57A1-571C-4DB9-BEB7-C9B1201EA091}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{758E57A1-571C-4DB9-BEB7-C9B1201EA091}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF90217C-EA4F-4F38-8FBF-0462ECC40235}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF90217C-EA4F-4F38-8FBF-0462ECC40235}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF90217C-EA4F-4F38-8FBF-0462ECC40235}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF90217C-EA4F-4F38-8FBF-0462ECC40235}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

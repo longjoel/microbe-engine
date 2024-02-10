@@ -1,8 +1,10 @@
 using Esprima.Ast;
 using Jint;
+using System;
 using System.Diagnostics;
-using XInputium;
-using XInputium.XInput;
+using System.IO;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace Microbe.Engine
 {
@@ -11,36 +13,36 @@ namespace Microbe.Engine
     {
         public static void RegisterMicrobeGraphicsScriptObjects(this Jint.Engine engine, MicrobeGraphics graphics)
         {
-            engine.SetValue("setTile", graphics.SetTileData);
-            engine.SetValue("setVram", graphics.SetVramData);
-            engine.SetValue("setScroll", (int x, int y)=>graphics.ScrollTo((byte)(x%256), (byte)(y%255)));
-            engine.SetValue("setSprite", graphics.SetSprite);
-            engine.SetValue("getSprite", graphics.GetSprite);
-            engine.SetValue("getPalette", graphics.GetPalette);
-            engine.SetValue("setPalette", graphics.SetPalette);
-            engine.SetValue("setChar", graphics.SetChar);
-            engine.SetValue("setTextColor", graphics.SetTextColor);
-            engine.SetValue("setString", graphics.SetString);
-            engine.SetValue("setTilePalette", graphics.SetTilePalette);
+            engine.SetValue("setTile", new Action<int,double[]>((a,b)=> graphics.SetTileData(a,b.Select(x=>(byte)x).ToArray())));
+            engine.SetValue("setVram", new Action<int,int,int>((a,b,c)=>graphics.SetVramData(a,b,(byte)c)));
+            engine.SetValue("setScroll",new Action<int,int>( (int x, int y)=>graphics.ScrollTo((byte)(x%256), (byte)(y%255))));
+            engine.SetValue("setSprite", new Action<int,Sprite>((a,b)=>graphics.SetSprite(a,b)));
+            engine.SetValue("getSprite", new Func<int,Sprite>((a)=> { return graphics.GetSprite(a); }));
+            engine.SetValue("getPalette", new Func<int, TilePalette>((a)=> graphics.GetPalette(a)));
+            engine.SetValue("setPalette", new Action<int, TilePalette>((a,b)=>graphics.SetPalette(a,b)));
+            engine.SetValue("setChar", new Action<int,int,char>((a,b,c)=>graphics.SetChar(a,b,c)));
+            engine.SetValue("setTextColor", new Action<RGB>(rgb=>graphics.SetTextColor(rgb)));
+            engine.SetValue("setString", new Action<int,int,string>((a,b,c)=>graphics.SetString(a,b,c)));
+            engine.SetValue("setTilePalette", new Action<int, int>((a,b)=>graphics.SetTilePalette(a,b)));
         }
 
         public static void RegisterEventsToMainWindow(this Jint.Engine engine, MicrobeFormMain mainForm)
         {
-            engine.SetValue("setMain", (Action<double> main) =>
+            engine.SetValue("setMain", new Action<Action<double>>((Action<double> main) =>
             {
                 mainForm.RegisterMain(main);
-            });
+            }));
 
-            engine.SetValue("getGamepadState", () => { return mainForm.GamepadState; });
-            engine.SetValue("sync", mainForm.Sync);
+            engine.SetValue("getGamepadState", new Func<GamePadState>( () => { return mainForm.GamepadState; }));
+            //engine.SetValue("sync", mainForm.Sync);
         }
 
         public static void RegisterMicrobeAudio(this Jint.Engine engine, MicrobeAudio audio) {
 
-            engine.SetValue("setSample", audio.SetSample);
-            engine.SetValue("playMusic", audio.PlayMusic);
-            engine.SetValue("playEffect", audio.PlayEffect);
-            engine.SetValue("stopMusic", audio.StopMusic);
+            engine.SetValue("setSample", new Action<int,int,SampleSegment[]> ((a,b,c)=>audio.SetSample(a,b,c)));
+            engine.SetValue("playMusic", new Action<int>(a=> audio.PlayMusic(a)));
+            engine.SetValue("playEffect", new Action<int>(a=>audio.PlayEffect(a)));
+            engine.SetValue("stopMusic", new Action(()=>audio.StopMusic()));
 
         }
 
@@ -64,16 +66,16 @@ namespace Microbe.Engine
         private System.Windows.Forms.Timer _tickTimer;
         private Jint.Engine _engine;
         private MicrobeGraphics _graphics;
-        private Action<double>? _main;
+        private Action<double> _main;
 
-        XGamepad? _gamePad;
+        XInput.Wrapper.X.Gamepad _gamePad;
 
         public MicrobeFormMain(Jint.Engine engine, MicrobeGraphics microbeGraphics)
         {
 
             _engine = engine;
             _graphics = microbeGraphics;
-            _gamePad = new XGamepad();
+            _gamePad = XInput.Wrapper.X.Gamepad_1;
 
             this.DoubleBuffered = true;
 
@@ -84,77 +86,48 @@ namespace Microbe.Engine
             _main = null;
             GamepadState = new GamePadState();
 
-            if (_gamePad != null)
+            /*if (_gamePad != null)
             {
 
-                _gamePad.ButtonPressed += (s, e) =>
+                _gamePad.KeyDown += (s, e) =>
                 {
-                    switch (e.Button.Button)
-                    {
-                        case XButtons.DPadUp:
-                            GamepadState.up = true;
-                            break;
-                        case XButtons.DPadDown:
-                            GamepadState.down = true;
-                            break;
-                        case XButtons.DPadLeft:
-                            GamepadState.left = true;
-                            break;
-                        case XButtons.DPadRight:
-                            GamepadState.right = true;
-                            break;
-                        case XButtons.A:
-                            GamepadState.a = true;
-                            break;
-                        case XButtons.B:
-                            GamepadState.b = true;
-                            break;
-                        case XButtons.Start:
-                            GamepadState.start = true;
-                            break;
-                        case XButtons.Back:
-                            GamepadState.select = true;
-                            break;
-
-                        default:
-                            break;
+                    if (_gamePad.Dpad_Up_down) {
+                        GamepadState.up = true;
                     }
+                    if (_gamePad.Dpad_Down_down)
+                    {
+                        GamepadState.down = true;
+                    }
+                    if (_gamePad.Dpad_Left_down)
+                    {
+                        GamepadState.left = true;
+                    }
+                    if (_gamePad.Dpad_Right_down)
+                    {
+                        GamepadState.right = true;
+                    }
+                    if (_gamePad.A_down)
+                    {
+                        GamepadState.a = true;
+                    }
+                    if (_gamePad.B_down)
+                    {
+                        GamepadState.b = true;
+                    }
+                    if (_gamePad.Start_down)
+                    {
+                        GamepadState.start = true;
+                    }
+                    if (_gamePad.Back_down)
+                    {
+                        GamepadState.select = true;
+                    }
+
+                    
                 };
 
-                _gamePad.ButtonReleased += (s, e) =>
-                {
-                    switch (e.Button.Button)
-                    {
-                        case XButtons.DPadUp:
-                            GamepadState.up = false;
-                            break;
-                        case XButtons.DPadDown:
-                            GamepadState.down = false;
-                            break;
-                        case XButtons.DPadLeft:
-                            GamepadState.left = false;
-                            break;
-                        case XButtons.DPadRight:
-                            GamepadState.right = false;
-                            break;
-                        case XButtons.A:
-                            GamepadState.a = false;
-                            break;
-                        case XButtons.B:
-                            GamepadState.b = false;
-                            break;
-                        case XButtons.Start:
-                            GamepadState.start = false;
-                            break;
-                        case XButtons.Back:
-                            GamepadState.select = false;
-                            break;
-
-                        default:
-                            break;
-                    }
-                };
-            }
+               
+            }*/
 
         }
 
@@ -240,11 +213,11 @@ namespace Microbe.Engine
                 fName = cmdArgs[1];
             }
 
-            _engine.Evaluate(fName=="default.js" ? Properties.Resources._default : File.ReadAllText( fName));
+            _engine.Evaluate(fName=="default.js" ? EngineDNF.Properties.Resources._default : File.ReadAllText( fName));
 
         }
 
-        private void _onTick(object? sender, EventArgs e)
+        private void _onTick(object sender, EventArgs e)
         {
             _gamePad?.Update();
 
@@ -282,7 +255,7 @@ namespace Microbe.Engine
         {
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
-            ApplicationConfiguration.Initialize();
+            //ApplicationConfiguration.Initialize();
 
             var engine = new Jint.Engine();
 

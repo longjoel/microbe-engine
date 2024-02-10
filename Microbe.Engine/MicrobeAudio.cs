@@ -1,14 +1,8 @@
-﻿using Esprima.Ast;
-using Microsoft.VisualBasic.Devices;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Media;
-using System.Reflection;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace Microbe.Engine
 {
     public class SampleSegment
@@ -27,7 +21,7 @@ namespace Microbe.Engine
         private byte[][] _samples;
 
         private Dictionary<string, double> _notes;
-        private SoundPlayer? _bgMusicPlayer;
+        private SoundPlayer _bgMusicPlayer;
 
 
 
@@ -35,7 +29,7 @@ namespace Microbe.Engine
         {
             _notes = new Dictionary<string, double>();
             _samples = new byte[256][];
-            var noteFrequency = Properties.Resources.note_frequency.Split(Environment.NewLine).Where(x=>x.Length>0).ToList();
+            var noteFrequency = EngineDNF.Properties.Resources.note_frequency.Split(new string[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries).Where(x=>x.Length>0).ToList();
             for (int i = 1; i < noteFrequency.Count; i++)
             {
                 var row = noteFrequency[i];

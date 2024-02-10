@@ -9,7 +9,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:win-x64":"dotnet build && dotnet publish -c Release -r win-x64 --output ./bin Microbe.sln",
-    "start":"cd example && npm run build && npm run start"
+    "start":"cd example && npm install && npm run build && npm run start"
   },
   "author": "Joel Longanecker",
   "license": "BSD-3-Clause"
