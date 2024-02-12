@@ -72,6 +72,15 @@ namespace Microbe.Engine
 
         private bool _isDirty;
 
+        public static System.Drawing.Rectangle CenterRectangle(System.Drawing.Rectangle outer, System.Drawing.Rectangle inner)
+        {
+            int x = outer.Width / 2 - inner.Width / 2;
+            int y = outer.Height / 2 - inner.Height / 2;
+
+            return new System.Drawing.Rectangle(x, y, inner.Width, inner.Height);
+        }
+
+
 
 
         static Rectangle BestFit(Rectangle source, Rectangle target)
@@ -377,10 +386,15 @@ namespace Microbe.Engine
 
             }
 
+            var xScale = Math.Floor((double)(e.ClipRectangle.Width / _framebufferCache.Width));
+            var yScale = Math.Floor((double)(e.ClipRectangle.Height / _framebufferCache.Height));
+
+            var scale = (int)xScale;
+            if (yScale < scale) { scale = (int)yScale; }
 
 
             e.Graphics.DrawImage(_framebufferCache,
-                BestFit(new Rectangle(0, 0, _framebufferCache.Width, _framebufferCache.Height), e.ClipRectangle),
+                CenterRectangle(e.ClipRectangle,new Rectangle(0, 0, _framebufferCache.Width*scale, _framebufferCache.Height*scale)),
                 new Rectangle(0, 0, 160, 144), GraphicsUnit.Pixel);
 
         }
