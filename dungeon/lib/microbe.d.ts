@@ -57,7 +57,7 @@ declare function setString(x:number, y:number, text:string);
 declare function setChar(x:number, y:number, c:string);
 declare function setTextColor(color:RGB);
 declare function setTilePalette(tileIndex:number, paletteIndex:number);
-declare function setMain(cbMain);
+declare function setMain(callback:cbMain);
 
 declare function getGamepadState():GamepadState;
 

@@ -1,33 +1,35 @@
-import {HelloTestExample} from './demo-modules/hello-text-example';
-import {ScrollingBackgroundDemo} from './demo-modules/scrolling-background-demo';
+class playerBuilder {
 
-const states = [ new HelloTestExample(), new ScrollingBackgroundDemo()];
+    playerPalette= {
+        c1:{r:128,g:128,b:128} as RGB,
+        c2:{r:128,g:200,b:128} as RGB,
+        c3:{r:0,g:0,b:0} as RGB
 
-let currentState = 0;
+    } as TilePalette;
 
-let oldGpState = getGamepadState();
+    tiles={stand:[
+        0,0,1,1,1,1,0,0,
+        0,1,3,2,3,2,1,0,
+        0,1,3,2,3,2,1,0,
+        0,0,1,1,1,1,0,0,
+        1,1,1,1,1,1,1,1,
+        0,0,0,1,1,0,0,0,
+        0,0,1,0,0,1,0,0,
+        0,1,1,0,0,1,1,0,
+    ]};
 
-setMain((dt:number)=>{
+    build(tileStart:number, paletteStart:number){
 
-    setString(0,0,'Microbe engine demo');
+        setPalette(paletteStart, this.playerPalette);
+        setTile(tileStart, this.tiles['stand']);
+        setTilePalette(tileStart,paletteStart);
 
-    let gpState = getGamepadState();
-
-    if( !oldGpState.select && gpState.select){
-
-        states[currentState].onStop();
-
-        currentState++;
-
-        if(currentState >= states.length){
-            currentState = 0;
-        }
-
-        states[currentState].onLoad();
-        
     }
 
-    states[currentState].onTick(dt);
-    oldGpState = gpState;
+}
 
+new playerBuilder().build(1,1);
+
+setMain(()=>{
+setSprite(0, {tileIndex:1, background:false, visible:true, x:32,y:32, xFlipped:false, yFlipped:false});
 });
