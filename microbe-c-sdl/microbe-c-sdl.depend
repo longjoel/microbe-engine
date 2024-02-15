@@ -1,9 +1,8 @@
 # depslib dependency file v1.0
-1707940002 source:c:\src\microbe-engine\microbe-c-sdl\main.cpp
-	<exception>
-	<string>
-	<iostream>
+1707960470 source:c:\src\microbe-engine\microbe-c-sdl\main.cpp
 	<SDL2/SDL.h>
+	"duktape.h"
+	"microbe.h"
 
 1707939765 c:\dev\sdl2-2.28.5\x86_64-w64-mingw32\include\sdl2\sdl.h
 	"SDL_main.h"
@@ -501,4 +500,13 @@
 	<inttypes.h>
 	<exception>
 	<stdexcept>
+
+1707960311 source:c:\src\microbe-engine\microbe-c-sdl\microbe-graphics.cpp
+	"microbe.h"
+	<SDL2/SDL.h>
+	"duktape.h"
+
+1707960431 c:\src\microbe-engine\microbe-c-sdl\microbe.h
+	<SDL2/SDL.h>
+	"duktape.h"
 

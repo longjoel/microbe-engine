@@ -51,6 +51,8 @@
 		</Unit>
 		<Unit filename="duktape.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="microbe-graphics.cpp" />
+		<Unit filename="microbe.h" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>
