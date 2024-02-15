@@ -366,3 +366,4 @@ bin/
 node_modules/
 .vs/
 .github/
+microbe-c-sdl/microbe.bin
