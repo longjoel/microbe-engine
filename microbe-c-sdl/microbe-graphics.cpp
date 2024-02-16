@@ -7,7 +7,6 @@ SDL_Surface *microbe_framebuffer_cache;
 SDL_Surface *microbe_backBuffer_cache;
 
 SDL_Window *microbe_window;
-SDL_Renderer *microbe_renderer;
 
 byte_t microbe_tiles[MAX_TILES][64];
 byte_t microbe_vram[32][32];
@@ -16,7 +15,9 @@ byte_t microbe_tilePalette[256];
 
 SDL_Color microbe_palette[MAX_TILES][4]; // 256 entries * 4 colors * 4 bytes for each color.
 
-bool isDirty = false;
+bool microbe_isDirty = false;
+int microbe_scrollX = 0;
+int microbe_scrollY = 0;
 
 /** begin private methods **/
 
@@ -25,8 +26,7 @@ bool isDirty = false;
 SDL_Window *initGraphics()
 {
 
-    microbe_window = SDL_CreateWindow("microbe", -1, -1, -1, -1, SDL_WINDOW_RESIZABLE | SDL_WINDOW_SHOWN);
-    SDL_CreateWindowAndRenderer(640, 480, SDL_WINDOW_RESIZABLE, &microbe_window, &microbe_renderer);
+    microbe_window = SDL_CreateWindow("microbe", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_RESIZABLE | SDL_WINDOW_SHOWN);
 
     for (int i = 0; i < MAX_TILES; i++)
     {
@@ -54,7 +54,7 @@ SDL_Window *initGraphics()
         microbe_palette[i][3].b = 128;
     }
 
-    isDirty = true;
+    microbe_isDirty = true;
 
     return microbe_window;
 }
@@ -82,7 +82,7 @@ duk_ret_t setTile(duk_context *ctx)
         memccpy(pixels, &microbe_palette[microbe_tilePalette[i]], 1, sizeof(SDL_Color));
     }
 
-    isDirty = true;
+    microbe_isDirty = true;
 
     return 1;
 }
@@ -92,11 +92,20 @@ duk_ret_t setVram(duk_context *ctx)
     int y = duk_require_int(ctx,1);
     int tileIndex = duk_require_int(ctx,2);
 
+    microbe_vram[y][x] = ((byte_t)tileIndex);
+
+    microbe_isDirty = true;
 
     return 1;
 }
+
 duk_ret_t setScroll(duk_context *ctx)
 {
+    microbe_scrollX = duk_require_int(ctx,0);
+    microbe_scrollY= duk_require_int(ctx,1);
+
+    microbe_isDirty = false;
+
     return 1;
 }
 duk_ret_t setSprite(duk_context *ctx)
