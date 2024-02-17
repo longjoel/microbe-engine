@@ -12,6 +12,15 @@
 
 */
 
+typedef struct {
+    int x;
+    int y;
+    int tileIndex;
+    bool visible;
+    bool xFlipped;
+    bool yFlipped;
+    bool background;
+} sprite_t;
 
 typedef unsigned char byte_t;
 

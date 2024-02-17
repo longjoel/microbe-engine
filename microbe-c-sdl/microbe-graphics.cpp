@@ -15,6 +15,8 @@ byte_t microbe_tilePalette[256];
 
 SDL_Color microbe_palette[MAX_TILES][4]; // 256 entries * 4 colors * 4 bytes for each color.
 
+sprite_t microbe_sprites[256];
+
 bool microbe_isDirty = false;
 int microbe_scrollX = 0;
 int microbe_scrollY = 0;
@@ -88,9 +90,9 @@ duk_ret_t setTile(duk_context *ctx)
 }
 duk_ret_t setVram(duk_context *ctx)
 {
-    int x = duk_require_int(ctx,0);
-    int y = duk_require_int(ctx,1);
-    int tileIndex = duk_require_int(ctx,2);
+    int x = duk_require_int(ctx, 0);
+    int y = duk_require_int(ctx, 1);
+    int tileIndex = duk_require_int(ctx, 2);
 
     microbe_vram[y][x] = ((byte_t)tileIndex);
 
@@ -101,8 +103,8 @@ duk_ret_t setVram(duk_context *ctx)
 
 duk_ret_t setScroll(duk_context *ctx)
 {
-    microbe_scrollX = duk_require_int(ctx,0);
-    microbe_scrollY= duk_require_int(ctx,1);
+    microbe_scrollX = duk_require_int(ctx, 0);
+    microbe_scrollY = duk_require_int(ctx, 1);
 
     microbe_isDirty = false;
 
@@ -110,6 +112,44 @@ duk_ret_t setScroll(duk_context *ctx)
 }
 duk_ret_t setSprite(duk_context *ctx)
 {
+printf("Made it\n");
+
+    int index = duk_require_int(ctx, 0);
+
+    sprite_t *sprite = &microbe_sprites[index];
+
+
+    duk_require_object(ctx, 1);
+    duk_get_prop_string(ctx, -1, "x");
+    sprite->x = duk_get_int(ctx, -1);
+    duk_pop(ctx);
+
+    duk_get_prop_string(ctx, -1, "y");
+    sprite->y = duk_get_int(ctx, -1);
+    duk_pop(ctx);
+
+    duk_get_prop_string(ctx, -1, "xFlipped");
+    sprite->xFlipped = duk_get_boolean(ctx, -1);
+    duk_pop(ctx);
+
+    duk_get_prop_string(ctx, -1, "yFlipped");
+    sprite->yFlipped = duk_get_boolean(ctx, -1);
+    duk_pop(ctx);
+
+    duk_get_prop_string(ctx, -1, "tileIndex");
+    sprite->tileIndex = duk_get_int(ctx, -1);
+    duk_pop(ctx);
+
+    duk_get_prop_string(ctx, -1, "visible");
+    sprite->tileIndex = duk_get_boolean(ctx, -1);
+    duk_pop(ctx);
+
+    duk_get_prop_string(ctx, -1, "background");
+    sprite->tileIndex = duk_get_int(ctx, -1);
+    duk_pop(ctx);
+
+    duk_pop(ctx);
+
     return 1;
 }
 duk_ret_t getPalette(duk_context *ctx)
@@ -129,6 +169,6 @@ void initDuktapeGraphics(duk_context *ctx)
     duk_push_c_function(ctx, setScroll, 2);
     duk_put_global_string(ctx, "setScroll");
 
-    duk_push_c_function(ctx, setScroll, 2);
-    duk_put_global_string(ctx, "setScroll");
+    duk_push_c_function(ctx, setSprite, 2);
+    duk_put_global_string(ctx, "setSprite");
 }
