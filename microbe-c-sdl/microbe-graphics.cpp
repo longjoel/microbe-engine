@@ -86,7 +86,7 @@ duk_ret_t setTile(duk_context *ctx)
 
     microbe_isDirty = true;
 
-    return 1;
+    return 0;
 }
 duk_ret_t setVram(duk_context *ctx)
 {
@@ -98,7 +98,7 @@ duk_ret_t setVram(duk_context *ctx)
 
     microbe_isDirty = true;
 
-    return 1;
+    return 0;
 }
 
 duk_ret_t setScroll(duk_context *ctx)
@@ -108,7 +108,7 @@ duk_ret_t setScroll(duk_context *ctx)
 
     microbe_isDirty = false;
 
-    return 1;
+    return 0;
 }
 duk_ret_t setSprite(duk_context *ctx)
 {
@@ -150,10 +150,32 @@ printf("Made it\n");
 
     duk_pop(ctx);
 
-    return 1;
+    return 0;
 }
-duk_ret_t getPalette(duk_context *ctx)
+duk_ret_t getSprite(duk_context *ctx)
 {
+    int index = duk_require_int(ctx, 0);
+
+    sprite_t *sprite = &microbe_sprites[index];
+
+duk_idx_t obj_idx = duk_push_object(ctx);  // Push an empty object onto the stack
+duk_push_int(ctx, sprite->x);          // Set a property named "name"
+duk_put_prop_string(ctx, obj_idx, "x"); // Assign the value
+duk_pop(ctx); 
+
+duk_push_int(ctx, sprite->y);          // Set a property named "name"
+duk_put_prop_string(ctx, obj_idx, "y"); // Assign the value
+duk_pop(ctx);  
+
+duk_push_boolean(ctx, sprite->background);          // Set a property named "name"
+duk_put_prop_string(ctx, obj_idx, "background"); // Assign the value
+duk_pop(ctx);                             // Pop the object from the stack
+
+duk_push_boolean(ctx, sprite->tileIndex);          // Set a property named "name"
+duk_put_prop_string(ctx, obj_idx, "tileIndex"); // Assign the value
+duk_pop(ctx);                             // Pop the object from the stack
+
+
     return 1;
 }
 
