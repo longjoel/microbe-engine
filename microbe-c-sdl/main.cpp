@@ -23,6 +23,7 @@ int main(int argc, char *argv[])
     initDuktapeGraphics(ctx);
 
         duk_eval_string_noresult(ctx,"setTile(0, [0,2,0,3,0,0,2,0,0,0,3,0,0,0,0,2,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,2,3,0,0,0,0,0,0,3,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);");
+        duk_eval_string_noresult(ctx,"getSprite(0);");
         duk_eval_string_noresult(ctx,"setSprite(0, {x:100,y:100,tileIndex:0,visible:true,xFlipped:false,yFlipped:true,background:false});");
 
     bool isDone = false;

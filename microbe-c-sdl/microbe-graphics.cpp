@@ -112,12 +112,10 @@ duk_ret_t setScroll(duk_context *ctx)
 }
 duk_ret_t setSprite(duk_context *ctx)
 {
-printf("Made it\n");
 
     int index = duk_require_int(ctx, 0);
 
     sprite_t *sprite = &microbe_sprites[index];
-
 
     duk_require_object(ctx, 1);
     duk_get_prop_string(ctx, -1, "x");
@@ -158,23 +156,30 @@ duk_ret_t getSprite(duk_context *ctx)
 
     sprite_t *sprite = &microbe_sprites[index];
 
-duk_idx_t obj_idx = duk_push_object(ctx);  // Push an empty object onto the stack
-duk_push_int(ctx, sprite->x);          // Set a property named "name"
-duk_put_prop_string(ctx, obj_idx, "x"); // Assign the value
-duk_pop(ctx); 
+    duk_idx_t obj_idx = duk_push_object(ctx); // Push an empty object onto the stack
+    duk_push_int(ctx, sprite->x);             // Set a property named "name"
+    duk_put_prop_string(ctx, obj_idx, "x");   // Assign the value
 
-duk_push_int(ctx, sprite->y);          // Set a property named "name"
-duk_put_prop_string(ctx, obj_idx, "y"); // Assign the value
-duk_pop(ctx);  
+    duk_push_int(ctx, sprite->y);           // Set a property named "name"
+    duk_put_prop_string(ctx, obj_idx, "y"); // Assign the value
 
-duk_push_boolean(ctx, sprite->background);          // Set a property named "name"
-duk_put_prop_string(ctx, obj_idx, "background"); // Assign the value
-duk_pop(ctx);                             // Pop the object from the stack
+    duk_push_boolean(ctx, sprite->background);       // Set a property named "name"
+    duk_put_prop_string(ctx, obj_idx, "background"); // Assign the value
 
-duk_push_boolean(ctx, sprite->tileIndex);          // Set a property named "name"
-duk_put_prop_string(ctx, obj_idx, "tileIndex"); // Assign the value
-duk_pop(ctx);                             // Pop the object from the stack
-
+    duk_push_int(ctx, sprite->tileIndex);           // Set a property named "name"
+    duk_put_prop_string(ctx, obj_idx, "tileIndex"); // Assign the value
+    
+    duk_push_boolean(ctx, sprite->visible);           // Set a property named "name"
+    duk_put_prop_string(ctx, obj_idx, "visible"); // Assign the value
+    
+    duk_push_boolean(ctx, sprite->xFlipped);           // Set a property named "name"
+    duk_put_prop_string(ctx, obj_idx, "xFlipped"); // Assign the value
+    
+    duk_push_boolean(ctx, sprite->yFlipped);           // Set a property named "name"
+    duk_put_prop_string(ctx, obj_idx, "yFlipped"); // Assign the value
+    
+    
+    duk_pop(ctx);                                   // Pop the object from the stack
 
     return 1;
 }
@@ -193,4 +198,7 @@ void initDuktapeGraphics(duk_context *ctx)
 
     duk_push_c_function(ctx, setSprite, 2);
     duk_put_global_string(ctx, "setSprite");
+
+    duk_push_c_function(ctx, getSprite, 1);
+    duk_put_global_string(ctx, "getSprite");
 }
