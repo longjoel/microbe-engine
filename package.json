@@ -12,5 +12,5 @@
     "start":"cd example && npm install && npm run build && npm run start"
   },
   "author": "Joel Longanecker",
-  "license": "BSD-3-Clause"
+  "license": "GPL-3.0-only"
 }
