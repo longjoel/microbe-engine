@@ -65,3 +65,4 @@ declare function setSample(index:number, intervalMS:number ,sample:SampleSegment
 declare function playMusic(index:number);
 declare function playEffect(index:number);
 declare function stopMusic();
+declare function log(message:string);

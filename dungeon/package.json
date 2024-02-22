@@ -7,7 +7,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npx rollup -c",
-    "start": "\"..\\bin\\microbe-engine.exe\" ./bin/index.js"
+    "start": "\"..\\Microbe.Engine\\bin\\Release\\microbe-engine.exe\" ./bin/index.js"
   },
   "author": "",
   "license": "ISC",
