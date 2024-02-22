@@ -71,7 +71,7 @@ namespace Microbe.Engine
         private Jint.Engine _engine;
         private MicrobeGraphics _graphics;
         private Action<double> _main;
-        private DebuggerTools _debugEditor;
+        public DebuggerTools DebugEditor { get; set; }
 
         public MicrobeFormMain(Jint.Engine engine, MicrobeGraphics microbeGraphics)
         {
@@ -89,9 +89,9 @@ namespace Microbe.Engine
             _main = null;
             KeyboardState = new CombinedState();
 
-            _debugEditor = new DebuggerTools(_engine);
+            DebugEditor = new DebuggerTools(_engine);
 
-            _debugEditor.Show();
+            DebugEditor.Show();
 
         }
 

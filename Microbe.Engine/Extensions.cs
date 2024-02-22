@@ -32,6 +32,8 @@ namespace Microbe.Engine
 
             engine.SetValue("getGamepadState", new Func<CombinedState>(() => { return mainForm.GamepadState; }));
             //engine.SetValue("sync", mainForm.Sync);
+
+            engine.SetValue("log", new Action<string>((s) => { mainForm.DebugEditor.Log(s); }));
         }
 
         public static void RegisterMicrobeAudio(this Jint.Engine engine, MicrobeAudio audio)

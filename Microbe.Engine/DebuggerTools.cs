@@ -30,6 +30,10 @@ namespace Microbe.Engine
             InitializeComponent();
         }
 
+        public void Log(string s) {
+            DebugOutputText.AppendText(Environment.NewLine + s);
+        }
+
         private void SubmitInputButton_Click(object sender, EventArgs e)
         {
             try {

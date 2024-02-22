@@ -51,7 +51,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(533, 403);
+            this.tabControl1.Size = new System.Drawing.Size(888, 508);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPage1
@@ -60,7 +60,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(525, 377);
+            this.tabPage1.Size = new System.Drawing.Size(880, 482);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Console";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -78,14 +78,14 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 64F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(519, 371);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(874, 476);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // SubmitInputButton
             // 
             this.SubmitInputButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.SubmitInputButton.Location = new System.Drawing.Point(441, 310);
+            this.SubmitInputButton.Location = new System.Drawing.Point(796, 415);
             this.SubmitInputButton.Name = "SubmitInputButton";
             this.SubmitInputButton.Size = new System.Drawing.Size(75, 58);
             this.SubmitInputButton.TabIndex = 0;
@@ -107,8 +107,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.ConsoleInputText);
-            this.splitContainer1.Size = new System.Drawing.Size(513, 301);
-            this.splitContainer1.SplitterDistance = 150;
+            this.splitContainer1.Size = new System.Drawing.Size(868, 406);
+            this.splitContainer1.SplitterDistance = 203;
             this.splitContainer1.TabIndex = 1;
             // 
             // ConsoleInputText
@@ -117,7 +117,7 @@
             this.ConsoleInputText.IsReadOnly = false;
             this.ConsoleInputText.Location = new System.Drawing.Point(0, 0);
             this.ConsoleInputText.Name = "ConsoleInputText";
-            this.ConsoleInputText.Size = new System.Drawing.Size(513, 147);
+            this.ConsoleInputText.Size = new System.Drawing.Size(868, 199);
             this.ConsoleInputText.TabIndex = 0;
             this.ConsoleInputText.Text = "setString(0,0,\"Hello World\");";
             // 
@@ -130,14 +130,14 @@
             this.DebugOutputText.Multiline = true;
             this.DebugOutputText.Name = "DebugOutputText";
             this.DebugOutputText.ReadOnly = true;
-            this.DebugOutputText.Size = new System.Drawing.Size(513, 150);
+            this.DebugOutputText.Size = new System.Drawing.Size(868, 203);
             this.DebugOutputText.TabIndex = 0;
             // 
             // DebuggerTools
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(533, 403);
+            this.ClientSize = new System.Drawing.Size(888, 508);
             this.Controls.Add(this.tabControl1);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "DebuggerTools";
