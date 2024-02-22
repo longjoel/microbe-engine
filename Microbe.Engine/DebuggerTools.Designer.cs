@@ -28,140 +28,140 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.ConsoleOutputText = new System.Windows.Forms.TextBox();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.ConsoleInputText = new System.Windows.Forms.TextBox();
-            this.SubmitCodeButton = new System.Windows.Forms.Button();
+            this.SubmitInputButton = new System.Windows.Forms.Button();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.ConsoleInputText = new ICSharpCode.TextEditor.TextEditorControl();
+            this.DebugOutputText = new System.Windows.Forms.TextBox();
+            this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
-            this.splitContainer2.Panel1.SuspendLayout();
-            this.splitContainer2.Panel2.SuspendLayout();
-            this.splitContainer2.SuspendLayout();
-            this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // splitContainer1
+            // tabControl1
             // 
-            this.splitContainer1.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.splitContainer1.Name = "splitContainer1";
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(533, 403);
+            this.tabControl1.TabIndex = 0;
             // 
-            // splitContainer1.Panel1
+            // tabPage1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.splitContainer2);
-            this.splitContainer1.Size = new System.Drawing.Size(533, 403);
-            this.splitContainer1.SplitterDistance = 259;
-            this.splitContainer1.SplitterWidth = 3;
-            this.splitContainer1.TabIndex = 0;
-            // 
-            // splitContainer2
-            // 
-            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.splitContainer2.Name = "splitContainer2";
-            this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer2.Panel1
-            // 
-            this.splitContainer2.Panel1.Controls.Add(this.ConsoleOutputText);
-            // 
-            // splitContainer2.Panel2
-            // 
-            this.splitContainer2.Panel2.Controls.Add(this.tableLayoutPanel1);
-            this.splitContainer2.Size = new System.Drawing.Size(259, 403);
-            this.splitContainer2.SplitterDistance = 269;
-            this.splitContainer2.SplitterWidth = 3;
-            this.splitContainer2.TabIndex = 0;
-            // 
-            // ConsoleOutputText
-            // 
-            this.ConsoleOutputText.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ConsoleOutputText.Location = new System.Drawing.Point(0, 0);
-            this.ConsoleOutputText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.ConsoleOutputText.MaximumSize = new System.Drawing.Size(4, 261);
-            this.ConsoleOutputText.Multiline = true;
-            this.ConsoleOutputText.Name = "ConsoleOutputText";
-            this.ConsoleOutputText.ReadOnly = true;
-            this.ConsoleOutputText.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.ConsoleOutputText.Size = new System.Drawing.Size(4, 261);
-            this.ConsoleOutputText.TabIndex = 0;
+            this.tabPage1.Controls.Add(this.tableLayoutPanel1);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(525, 377);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "Console";
+            this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.ConsoleInputText, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.SubmitCodeButton, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.SubmitInputButton, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.splitContainer1, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 42F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(259, 131);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 64F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(519, 371);
             this.tableLayoutPanel1.TabIndex = 0;
+            // 
+            // SubmitInputButton
+            // 
+            this.SubmitInputButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.SubmitInputButton.Location = new System.Drawing.Point(441, 310);
+            this.SubmitInputButton.Name = "SubmitInputButton";
+            this.SubmitInputButton.Size = new System.Drawing.Size(75, 58);
+            this.SubmitInputButton.TabIndex = 0;
+            this.SubmitInputButton.Text = ">>";
+            this.SubmitInputButton.UseVisualStyleBackColor = true;
+            this.SubmitInputButton.Click += new System.EventHandler(this.SubmitInputButton_Click);
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(3, 3);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.DebugOutputText);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.ConsoleInputText);
+            this.splitContainer1.Size = new System.Drawing.Size(513, 301);
+            this.splitContainer1.SplitterDistance = 150;
+            this.splitContainer1.TabIndex = 1;
             // 
             // ConsoleInputText
             // 
             this.ConsoleInputText.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ConsoleInputText.Location = new System.Drawing.Point(2, 2);
-            this.ConsoleInputText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.ConsoleInputText.Multiline = true;
+            this.ConsoleInputText.IsReadOnly = false;
+            this.ConsoleInputText.Location = new System.Drawing.Point(0, 0);
             this.ConsoleInputText.Name = "ConsoleInputText";
-            this.ConsoleInputText.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.ConsoleInputText.Size = new System.Drawing.Size(255, 85);
+            this.ConsoleInputText.Size = new System.Drawing.Size(513, 147);
             this.ConsoleInputText.TabIndex = 0;
+            this.ConsoleInputText.Text = "setString(0,0,\"Hello World\");";
             // 
-            // SubmitCodeButton
+            // DebugOutputText
             // 
-            this.SubmitCodeButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.SubmitCodeButton.Location = new System.Drawing.Point(207, 91);
-            this.SubmitCodeButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.SubmitCodeButton.Name = "SubmitCodeButton";
-            this.SubmitCodeButton.Size = new System.Drawing.Size(50, 38);
-            this.SubmitCodeButton.TabIndex = 1;
-            this.SubmitCodeButton.Text = ">>";
-            this.SubmitCodeButton.UseVisualStyleBackColor = true;
-            this.SubmitCodeButton.Click += new System.EventHandler(this.SubmitCodeButton_Click);
+            this.DebugOutputText.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.DebugOutputText.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.DebugOutputText.Font = new System.Drawing.Font("Cascadia Code", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DebugOutputText.Location = new System.Drawing.Point(0, 0);
+            this.DebugOutputText.Multiline = true;
+            this.DebugOutputText.Name = "DebugOutputText";
+            this.DebugOutputText.ReadOnly = true;
+            this.DebugOutputText.Size = new System.Drawing.Size(513, 150);
+            this.DebugOutputText.TabIndex = 0;
             // 
             // DebuggerTools
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(533, 403);
-            this.Controls.Add(this.splitContainer1);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Controls.Add(this.tabControl1);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "DebuggerTools";
             this.Text = "DebuggerTools";
+            this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tableLayoutPanel1.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel1.PerformLayout();
+            this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            this.splitContainer2.Panel1.ResumeLayout(false);
-            this.splitContainer2.Panel1.PerformLayout();
-            this.splitContainer2.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
-            this.splitContainer2.ResumeLayout(false);
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.SplitContainer splitContainer2;
-        private System.Windows.Forms.TextBox ConsoleOutputText;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.TextBox ConsoleInputText;
-        private System.Windows.Forms.Button SubmitCodeButton;
+        private System.Windows.Forms.Button SubmitInputButton;
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private ICSharpCode.TextEditor.TextEditorControl ConsoleInputText;
+        private System.Windows.Forms.TextBox DebugOutputText;
     }
 }

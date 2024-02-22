@@ -30,21 +30,17 @@ namespace Microbe.Engine
             InitializeComponent();
         }
 
-        private void SubmitCodeButton_Click(object sender, EventArgs e)
+        private void SubmitInputButton_Click(object sender, EventArgs e)
         {
-            try
-            {
+            try {
                 var output = _engine.Evaluate(this.ConsoleInputText.Text);
-                this.ConsoleOutputText.Text += Environment.NewLine + output.ToString();
+                DebugOutputText.AppendText(Environment.NewLine + output);
+            
+            } catch (Exception ex) {
+                var output = ex.Message;
+                DebugOutputText.AppendText(Environment.NewLine + output);
 
             }
-            catch (Exception ex) {
-                this.ConsoleOutputText.Text += Environment.NewLine + ex.Message.ToString();
-
-            }
-
-            this.ConsoleOutputText.ScrollToCaret();
-            //this.ConsoleInputText.Clear();
         }
     }
 }

@@ -64,6 +64,9 @@
     <Reference Include="Esprima, Version=3.0.4.0, Culture=neutral, PublicKeyToken=2e92ba9c8d81157f, processorArchitecture=MSIL">
       <HintPath>..\packages\Esprima.3.0.4\lib\net462\Esprima.dll</HintPath>
     </Reference>
+    <Reference Include="ICSharpCode.TextEditor, Version=3.2.1.6466, Culture=neutral, PublicKeyToken=4d61825e8dd49f1a, processorArchitecture=MSIL">
+      <HintPath>..\packages\ICSharpCode.TextEditor.3.2.1.6466\lib\Net20\ICSharpCode.TextEditor.dll</HintPath>
+    </Reference>
     <Reference Include="Jint, Version=3.0.0.0, Culture=neutral, PublicKeyToken=2e92ba9c8d81157f, processorArchitecture=MSIL">
       <HintPath>..\packages\Jint.3.0.0\lib\net462\Jint.dll</HintPath>
     </Reference>
