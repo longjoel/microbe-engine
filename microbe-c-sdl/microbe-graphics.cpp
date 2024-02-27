@@ -1,10 +1,15 @@
 #include "microbe.h"
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 #include "duktape.h"
 
 SDL_Surface *microbe_tiles_cache[MAX_TILES];
 SDL_Surface *microbe_framebuffer_cache;
 SDL_Surface *microbe_backBuffer_cache;
+
+TTF_Font *microbe_font;
+SDL_Color microbe_fontColor = {255, 255, 255, 255};
+char microbe_textBuffer[20*18];
 
 SDL_Window *microbe_window;
 
@@ -28,7 +33,11 @@ int microbe_scrollY = 0;
 SDL_Window *initGraphics()
 {
 
+    TTF_Init();
+
     microbe_window = SDL_CreateWindow("microbe", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_RESIZABLE | SDL_WINDOW_SHOWN);
+
+    microbe_font = TTF_OpenFont("font.ttf", 8);
 
     for (int i = 0; i < MAX_TILES; i++)
     {
@@ -168,18 +177,17 @@ duk_ret_t getSprite(duk_context *ctx)
 
     duk_push_int(ctx, sprite->tileIndex);           // Set a property named "name"
     duk_put_prop_string(ctx, obj_idx, "tileIndex"); // Assign the value
-    
-    duk_push_boolean(ctx, sprite->visible);           // Set a property named "name"
+
+    duk_push_boolean(ctx, sprite->visible);       // Set a property named "name"
     duk_put_prop_string(ctx, obj_idx, "visible"); // Assign the value
-    
-    duk_push_boolean(ctx, sprite->xFlipped);           // Set a property named "name"
+
+    duk_push_boolean(ctx, sprite->xFlipped);       // Set a property named "name"
     duk_put_prop_string(ctx, obj_idx, "xFlipped"); // Assign the value
-    
-    duk_push_boolean(ctx, sprite->yFlipped);           // Set a property named "name"
+
+    duk_push_boolean(ctx, sprite->yFlipped);       // Set a property named "name"
     duk_put_prop_string(ctx, obj_idx, "yFlipped"); // Assign the value
-    
-    
-    duk_pop(ctx);                                   // Pop the object from the stack
+
+    duk_pop(ctx); // Pop the object from the stack
 
     return 1;
 }

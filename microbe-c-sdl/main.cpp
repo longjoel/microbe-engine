@@ -21,8 +21,9 @@ int main(int argc, char *argv[])
     window = initGraphics();
 
     initDuktapeGraphics(ctx);
+    initDuktapeInput(ctx);
 
-       duk_eval_string_noresult(ctx,"setSprite(0, {x:100,y:100,tileIndex:0,visible:true,xFlipped:false,yFlipped:true,background:false});");
+       duk_eval_string_noresult(ctx,"getInput();");
 
     bool isDone = false;
     while (!isDone)
@@ -44,6 +45,7 @@ int main(int argc, char *argv[])
     }
 
     cleanDuktape();
+    
 
     return 0;
 }
