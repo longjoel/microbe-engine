@@ -72,6 +72,42 @@ namespace Microbe.Engine
 
         private bool _isDirty;
 
+        public Bitmap DEBUG_GetTileData() {
+            var bmp = new Bitmap(8*8, 8*32);
+            using (var ctx = Graphics.FromImage(bmp)) {
+                ctx.FillRectangle(Brushes.Black, new Rectangle(0, 0, 8*8, 32*8));
+                var i = 0;
+                for (int y = 0; y <32;y++) {
+                    for (int x = 0; x < 8; x++)
+                    {
+                        ctx.DrawImage(_tileDataCache[i++], new Rectangle( x*8,y*8, 8, 8));
+                    }
+                }
+
+            }
+            return bmp;
+        }
+
+        public Bitmap DEBUG_GetVram()
+        {
+            var bmp = new Bitmap(256,256);
+            using (var ctx = Graphics.FromImage(bmp))
+            {
+                ctx.FillRectangle(Brushes.Black, new Rectangle(0, 0, 256, 256));
+                ctx.DrawImage(_vramCache, new Rectangle(0, 0, 256, 256));
+
+                for (int i = -1; i <= 1; i++) {
+                    for (int j = -1; j <= 1; j++) {
+
+                        ctx.DrawRectangle(Pens.Red, new Rectangle(_scrollX + (j*256), _scrollY+  (i*256), 160, 144));
+
+                    }
+                }
+
+            }
+            return bmp;
+        }
+
         public static System.Drawing.Rectangle CenterRectangle(System.Drawing.Rectangle outer, System.Drawing.Rectangle inner)
         {
             int x = outer.Width / 2 - inner.Width / 2;
