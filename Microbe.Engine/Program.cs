@@ -36,12 +36,12 @@ namespace Microbe.Engine
             {
                 a = g.A_down,
                 b = g.B_down,
-                //start = g.Buttons.Start == XInputDotNetPure.ButtonState.Pressed,
-                //select = g.Buttons.Back == XInputDotNetPure.ButtonState.Pressed,
-                //down = g.DPad.Down == XInputDotNetPure.ButtonState.Pressed || g.ThumbSticks.Left.Y > 0.25,
-                //up = g.DPad.Up == XInputDotNetPure.ButtonState.Pressed || g.ThumbSticks.Left.Y < -0.25,
-                //left = g.DPad.Left == XInputDotNetPure.ButtonState.Pressed || g.ThumbSticks.Left.X < -0.25,
-                //right = g.DPad.Right == XInputDotNetPure.ButtonState.Pressed || g.ThumbSticks.Left.X > .25,
+                up = g.Dpad_Up_down || g.LStick.Y < -0.75,
+                down = g.Dpad_Down_down || g.LStick.Y > .75,
+                left = g.Dpad_Left_down || g.LStick.X < -0.75,
+                right = g.Dpad_Right_down || g.LStick.X > .75,
+                start = g.Start_down,
+                select = g.Back_down
             };
         }
 
@@ -82,14 +82,14 @@ namespace Microbe.Engine
 
             this.DoubleBuffered = true;
 
-            _tickTimer = new System.Windows.Forms.Timer();
+            _tickTimer = new Timer();
             _tickTimer.Interval = (1000 / 60);
             _tickTimer.Tick += _onTick;
 
             _main = null;
             KeyboardState = new CombinedState();
 
-            DebugEditor = new DebuggerTools(_engine);
+            DebugEditor = new DebuggerTools(_engine, _graphics);
 
             DebugEditor.Show();
 

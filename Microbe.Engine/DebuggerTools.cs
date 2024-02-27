@@ -14,37 +14,73 @@ namespace Microbe.Engine
     public partial class DebuggerTools : Form
     {
         private Jint.Engine _engine;
-
+        private MicrobeGraphics _graphics;
+        Timer _refreshTimer;
         /// <summary>
         /// 
         /// </summary>
-        public DebuggerTools() : this(null) { }
-        
+        public DebuggerTools() : this(null, null) { }
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="engine"></param>
-        public DebuggerTools(Jint.Engine engine)
+        public DebuggerTools(Jint.Engine engine, MicrobeGraphics microbeGraphics)
         {
             _engine = engine;
+            _graphics = microbeGraphics;
+            _refreshTimer = new Timer();
+
+            _refreshTimer.Interval = 100;
+            _refreshTimer.Tick += _refreshTimer_Tick;
+
             InitializeComponent();
+
+            _refreshTimer.Start();
+
         }
 
-        public void Log(string s) {
+        private void _refreshTimer_Tick(object sender, EventArgs e)
+        {
+            this.TilePictureBox.Image = _graphics.DEBUG_GetTileData();
+            this.TilePictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+
+            this.VramPictureBox.Image = _graphics.DEBUG_GetVram();
+            this.VramPictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+        }
+
+        public void Log(string s)
+        {
             DebugOutputText.AppendText(Environment.NewLine + s);
         }
 
         private void SubmitInputButton_Click(object sender, EventArgs e)
         {
-            try {
+            try
+            {
                 var output = _engine.Evaluate(this.ConsoleInputText.Text);
                 DebugOutputText.AppendText(Environment.NewLine + output);
-            
-            } catch (Exception ex) {
+
+            }
+            catch (Exception ex)
+            {
                 var output = ex.Message;
                 DebugOutputText.AppendText(Environment.NewLine + output);
 
             }
         }
+
+        private void DebuggerTools_FormClosing(object sender, FormClosingEventArgs e)
+        {
+
+            e.Cancel = true;
+        }
+
+        private void RefreshVramButton_Click(object sender, EventArgs e)
+        {
+           
+        }
+
+     
     }
 }
