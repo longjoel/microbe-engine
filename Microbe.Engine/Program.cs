@@ -71,7 +71,8 @@ namespace Microbe.Engine
         private Jint.Engine _engine;
         private MicrobeGraphics _graphics;
         private Action<double> _main;
-        public DebuggerTools DebugEditor { get; set; }
+        public DebugConsoleForm DebugConsole { get; set; }
+        public DebugVramForm DebugVram { get; set; }
 
         public MicrobeFormMain(Jint.Engine engine, MicrobeGraphics microbeGraphics)
         {
@@ -162,20 +163,36 @@ namespace Microbe.Engine
                 case Keys.Escape:
                     KeyboardState.select = false;
                     break;
-
-                case Keys.F12:
-                    if (DebugEditor == null)
+                case Keys.F11:
+                    if (DebugVram == null)
                     {
-                        DebugEditor = new DebuggerTools(_engine, _graphics);
+                        DebugVram = new DebugVramForm(_graphics);
 
                     }
 
-                    if (DebugEditor.Visible)
+                    if (DebugVram.Visible)
                     {
-                        DebugEditor.Hide();
+                        DebugVram.Hide();
+                    }
+                    else
+                    {
+                        DebugVram.Show();
+                    }
+
+                    break;
+                case Keys.F12:
+                    if (DebugConsole == null)
+                    {
+                        DebugConsole = new DebugConsoleForm(_engine);
+
+                    }
+
+                    if (DebugConsole.Visible)
+                    {
+                        DebugConsole.Hide();
                     }
                     else {
-                        DebugEditor.Show();
+                        DebugConsole.Show();
                     }
 
                     break;
@@ -213,10 +230,11 @@ namespace Microbe.Engine
                 {
                     if (arg == "--debug")
                     {
-                        DebugEditor = new DebuggerTools(_engine, _graphics);
+                        DebugConsole = new DebugConsoleForm(_engine);
+                        DebugVram = new DebugVramForm(_graphics);
 
-                        DebugEditor.Show();
-
+                        DebugConsole.Show();
+                        DebugVram.Show();
                     }
                 }
 

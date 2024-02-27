@@ -1,5 +1,4 @@
-﻿using Jint;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -11,25 +10,23 @@ using System.Windows.Forms;
 
 namespace Microbe.Engine
 {
-    public partial class DebuggerTools : Form
+    public partial class DebugVramForm : Form
     {
-        private Jint.Engine _engine;
         private MicrobeGraphics _graphics;
         Timer _refreshTimer;
         /// <summary>
         /// 
         /// </summary>
-        public DebuggerTools() : this(null, null) { }
+        public DebugVramForm() : this(null) { }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="engine"></param>
-        public DebuggerTools(Jint.Engine engine, MicrobeGraphics microbeGraphics)
+        public DebugVramForm( MicrobeGraphics microbeGraphics)
         {
 
             this.KeyPreview = true;
-            _engine = engine;
             _graphics = microbeGraphics;
             _refreshTimer = new Timer();
 
@@ -51,26 +48,8 @@ namespace Microbe.Engine
             this.VramPictureBox.SizeMode = PictureBoxSizeMode.Zoom;
         }
 
-        public void Log(string s)
-        {
-            DebugOutputText.AppendText(Environment.NewLine + s);
-        }
 
-        private void SubmitInputButton_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                var output = _engine.Evaluate(this.ConsoleInputText.Text);
-                DebugOutputText.AppendText(Environment.NewLine + output);
-
-            }
-            catch (Exception ex)
-            {
-                var output = ex.Message;
-                DebugOutputText.AppendText(Environment.NewLine + output);
-
-            }
-        }
+       
 
         private void DebuggerTools_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -78,19 +57,14 @@ namespace Microbe.Engine
             e.Cancel = true;
         }
 
-        private void RefreshVramButton_Click(object sender, EventArgs e)
-        {
-
-        }
-
+      
 
         protected override void OnKeyUp(KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.F12)
+            if (e.KeyCode == Keys.F11)
             {
                 this.Hide();
             }
         }
-       
     }
 }
