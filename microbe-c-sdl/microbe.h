@@ -22,10 +22,24 @@ typedef struct {
     bool background;
 } sprite_t;
 
+typedef struct {
+bool up;
+bool down;
+bool left;
+bool right;
+bool a;
+bool b;
+bool start;
+bool select;
+} input_state_t;
+
 typedef unsigned char byte_t;
 
 
 void initDuktapeGraphics(duk_context *ctx);
+
+void initDuktapeInput(duk_context *ctx);
+
 SDL_Window *initGraphics();
 
 
