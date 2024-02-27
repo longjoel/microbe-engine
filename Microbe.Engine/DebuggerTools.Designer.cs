@@ -74,7 +74,7 @@
             this.tabPage1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tabPage1.Size = new System.Drawing.Size(1324, 749);
+            this.tabPage1.Size = new System.Drawing.Size(1514, 832);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Console";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -93,14 +93,14 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 98F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1316, 739);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1506, 822);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // SubmitInputButton
             // 
             this.SubmitInputButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.SubmitInputButton.Location = new System.Drawing.Point(1200, 646);
+            this.SubmitInputButton.Location = new System.Drawing.Point(1390, 729);
             this.SubmitInputButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.SubmitInputButton.Name = "SubmitInputButton";
             this.SubmitInputButton.Size = new System.Drawing.Size(112, 88);
@@ -124,8 +124,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.ConsoleInputText);
-            this.splitContainer1.Size = new System.Drawing.Size(1308, 631);
-            this.splitContainer1.SplitterDistance = 315;
+            this.splitContainer1.Size = new System.Drawing.Size(1498, 714);
+            this.splitContainer1.SplitterDistance = 356;
             this.splitContainer1.SplitterWidth = 6;
             this.splitContainer1.TabIndex = 1;
             // 
@@ -139,7 +139,7 @@
             this.DebugOutputText.Multiline = true;
             this.DebugOutputText.Name = "DebugOutputText";
             this.DebugOutputText.ReadOnly = true;
-            this.DebugOutputText.Size = new System.Drawing.Size(1308, 315);
+            this.DebugOutputText.Size = new System.Drawing.Size(1498, 356);
             this.DebugOutputText.TabIndex = 0;
             // 
             // ConsoleInputText
@@ -149,7 +149,7 @@
             this.ConsoleInputText.Location = new System.Drawing.Point(0, 0);
             this.ConsoleInputText.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.ConsoleInputText.Name = "ConsoleInputText";
-            this.ConsoleInputText.Size = new System.Drawing.Size(1308, 310);
+            this.ConsoleInputText.Size = new System.Drawing.Size(1498, 352);
             this.ConsoleInputText.TabIndex = 0;
             this.ConsoleInputText.Text = "setString(0,0,\"Hello World\");";
             // 

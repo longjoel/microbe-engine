@@ -89,9 +89,6 @@ namespace Microbe.Engine
             _main = null;
             KeyboardState = new CombinedState();
 
-            DebugEditor = new DebuggerTools(_engine, _graphics);
-
-            DebugEditor.Show();
 
         }
 
@@ -166,6 +163,23 @@ namespace Microbe.Engine
                     KeyboardState.select = false;
                     break;
 
+                case Keys.F12:
+                    if (DebugEditor == null)
+                    {
+                        DebugEditor = new DebuggerTools(_engine, _graphics);
+
+                    }
+
+                    if (DebugEditor.Visible)
+                    {
+                        DebugEditor.Hide();
+                    }
+                    else {
+                        DebugEditor.Show();
+                    }
+
+                    break;
+
                 default:
                     break;
             }
@@ -177,12 +191,39 @@ namespace Microbe.Engine
             Width = 640;
             Height = 480;
             _tickTimer.Start();
-            var cmdArgs = Environment.GetCommandLineArgs();
+            var cmdArgs = Environment.CommandLine.Split(' ');
             var fName = "default.js";
 
-            if (cmdArgs.Length > 1)
+            // first argument is always the name of the executable.
+            foreach (var arg in cmdArgs.Skip(1))
             {
-                fName = cmdArgs[1];
+
+                if (arg.Contains('='))
+                {
+                    var left = arg.Split('=')[0];
+                    var right = arg.Split('=')[0];
+
+                    if (left == "")
+                    {
+
+                    }
+                }
+
+                else if (arg.Contains("--"))
+                {
+                    if (arg == "--debug")
+                    {
+                        DebugEditor = new DebuggerTools(_engine, _graphics);
+
+                        DebugEditor.Show();
+
+                    }
+                }
+
+                else
+                {
+                    fName = arg;
+                }
             }
 
             _engine.Evaluate(fName == "default.js" ? Properties.Resources._default : File.ReadAllText(fName));

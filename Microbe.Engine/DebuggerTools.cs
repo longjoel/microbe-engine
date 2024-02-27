@@ -27,6 +27,8 @@ namespace Microbe.Engine
         /// <param name="engine"></param>
         public DebuggerTools(Jint.Engine engine, MicrobeGraphics microbeGraphics)
         {
+
+            this.KeyPreview = true;
             _engine = engine;
             _graphics = microbeGraphics;
             _refreshTimer = new Timer();
@@ -78,9 +80,17 @@ namespace Microbe.Engine
 
         private void RefreshVramButton_Click(object sender, EventArgs e)
         {
-           
+
         }
 
-     
+
+        protected override void OnKeyUp(KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.F12)
+            {
+                this.Hide();
+            }
+        }
+       
     }
 }
