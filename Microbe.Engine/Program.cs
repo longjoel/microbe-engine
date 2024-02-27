@@ -36,12 +36,12 @@ namespace Microbe.Engine
             {
                 a = g.A_down,
                 b = g.B_down,
-                //start = g.Buttons.Start == XInputDotNetPure.ButtonState.Pressed,
-                //select = g.Buttons.Back == XInputDotNetPure.ButtonState.Pressed,
-                //down = g.DPad.Down == XInputDotNetPure.ButtonState.Pressed || g.ThumbSticks.Left.Y > 0.25,
-                //up = g.DPad.Up == XInputDotNetPure.ButtonState.Pressed || g.ThumbSticks.Left.Y < -0.25,
-                //left = g.DPad.Left == XInputDotNetPure.ButtonState.Pressed || g.ThumbSticks.Left.X < -0.25,
-                //right = g.DPad.Right == XInputDotNetPure.ButtonState.Pressed || g.ThumbSticks.Left.X > .25,
+                up = g.Dpad_Up_down || g.LStick.Y < -0.75,
+                down = g.Dpad_Down_down || g.LStick.Y > .75,
+                left = g.Dpad_Left_down || g.LStick.X < -0.75,
+                right = g.Dpad_Right_down || g.LStick.X > .75,
+                start = g.Start_down,
+                select = g.Back_down
             };
         }
 
@@ -71,7 +71,8 @@ namespace Microbe.Engine
         private Jint.Engine _engine;
         private MicrobeGraphics _graphics;
         private Action<double> _main;
-
+        public DebugConsoleForm DebugConsole { get; set; }
+        public DebugVramForm DebugVram { get; set; }
 
         public MicrobeFormMain(Jint.Engine engine, MicrobeGraphics microbeGraphics)
         {
@@ -82,13 +83,12 @@ namespace Microbe.Engine
 
             this.DoubleBuffered = true;
 
-            _tickTimer = new System.Windows.Forms.Timer();
+            _tickTimer = new Timer();
             _tickTimer.Interval = (1000 / 60);
             _tickTimer.Tick += _onTick;
 
             _main = null;
             KeyboardState = new CombinedState();
-
 
 
         }
@@ -163,6 +163,39 @@ namespace Microbe.Engine
                 case Keys.Escape:
                     KeyboardState.select = false;
                     break;
+                case Keys.F11:
+                    if (DebugVram == null)
+                    {
+                        DebugVram = new DebugVramForm(_graphics);
+
+                    }
+
+                    if (DebugVram.Visible)
+                    {
+                        DebugVram.Hide();
+                    }
+                    else
+                    {
+                        DebugVram.Show();
+                    }
+
+                    break;
+                case Keys.F12:
+                    if (DebugConsole == null)
+                    {
+                        DebugConsole = new DebugConsoleForm(_engine);
+
+                    }
+
+                    if (DebugConsole.Visible)
+                    {
+                        DebugConsole.Hide();
+                    }
+                    else {
+                        DebugConsole.Show();
+                    }
+
+                    break;
 
                 default:
                     break;
@@ -175,12 +208,40 @@ namespace Microbe.Engine
             Width = 640;
             Height = 480;
             _tickTimer.Start();
-            var cmdArgs = Environment.GetCommandLineArgs();
+            var cmdArgs = Environment.CommandLine.Split(' ');
             var fName = "default.js";
 
-            if (cmdArgs.Length > 1)
+            // first argument is always the name of the executable.
+            foreach (var arg in cmdArgs.Skip(1))
             {
-                fName = cmdArgs[1];
+
+                if (arg.Contains('='))
+                {
+                    var left = arg.Split('=')[0];
+                    var right = arg.Split('=')[0];
+
+                    if (left == "")
+                    {
+
+                    }
+                }
+
+                else if (arg.Contains("--"))
+                {
+                    if (arg == "--debug")
+                    {
+                        DebugConsole = new DebugConsoleForm(_engine);
+                        DebugVram = new DebugVramForm(_graphics);
+
+                        DebugConsole.Show();
+                        DebugVram.Show();
+                    }
+                }
+
+                else
+                {
+                    fName = arg;
+                }
             }
 
             _engine.Evaluate(fName == "default.js" ? Properties.Resources._default : File.ReadAllText(fName));
