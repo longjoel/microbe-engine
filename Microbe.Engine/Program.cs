@@ -91,6 +91,7 @@ namespace Microbe.Engine
             KeyboardState = new CombinedState();
 
 
+
         }
 
         protected override void OnClosed(EventArgs e)
@@ -302,7 +303,7 @@ namespace Microbe.Engine
             engine.RegisterEventsToMainWindow(frmMain);
             engine.RegisterMicrobeAudio(microbeAudio);
 
-            Application.Run(frmMain);
+            Application.Run(new MetaTileEditorForm());
         }
     }
 }

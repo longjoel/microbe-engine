@@ -74,6 +74,7 @@
             this.TileSelectorPictureBox.TabIndex = 0;
             this.TileSelectorPictureBox.TabStop = false;
             this.TileSelectorPictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.TileSelectorPictureBox_Paint);
+            this.TileSelectorPictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.TileSelectorPictureBox_MouseClick);
             // 
             // MetaTileEditorForm
             // 

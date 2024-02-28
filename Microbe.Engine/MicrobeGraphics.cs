@@ -53,11 +53,11 @@ namespace Microbe.Engine
         private Bitmap _textBufferCache;
         private Color _textColor;
 
-        private TilePalette[] _tileColors;
+        public TilePalette[] TileColors { get; set; }
 
-        private byte[] _tileToPaletteMap;
+        public byte[] TileToPaletteMap { get; set; }
 
-        private Bitmap[] _tileDataCache;
+        public Bitmap[] TileDataCache { get; set; }
         private Bitmap _vramCache;
 
         private Bitmap _framebufferCache;
@@ -80,7 +80,7 @@ namespace Microbe.Engine
                 for (int y = 0; y <32;y++) {
                     for (int x = 0; x < 8; x++)
                     {
-                        ctx.DrawImage(_tileDataCache[i++], new Rectangle( x*8,y*8, 8, 8));
+                        ctx.DrawImage(TileDataCache[i++], new Rectangle( x*8,y*8, 8, 8));
                     }
                 }
 
@@ -143,11 +143,11 @@ namespace Microbe.Engine
                     Color c = Color.Transparent;
                     switch (_tileData[i][y * 8 + x]){
                         case 0:c = Color.Transparent; break;
-                        case 1:c = _tileColors[_tileToPaletteMap[i]].c1.ToColor(); break;
-                        case 2:c = _tileColors[_tileToPaletteMap[i]].c2.ToColor(); break;
-                        case 3:c = _tileColors[_tileToPaletteMap[i]].c3.ToColor(); break;
+                        case 1:c = TileColors[TileToPaletteMap[i]].c1.ToColor(); break;
+                        case 2:c = TileColors[TileToPaletteMap[i]].c2.ToColor(); break;
+                        case 3:c = TileColors[TileToPaletteMap[i]].c3.ToColor(); break;
                     }
-                    _tileDataCache[i].SetPixel(x, y, c);
+                    TileDataCache[i].SetPixel(x, y, c);
                 }
             }
         }
@@ -164,7 +164,7 @@ namespace Microbe.Engine
                 {
                     for (int x = 0; x < 32; x++)
                     {
-                        g.DrawImage(_tileDataCache[_vram[y * 32 + x]], x * 8, y * 8);
+                        g.DrawImage(TileDataCache[_vram[y * 32 + x]], x * 8, y * 8);
                     }
                 }
             }
@@ -189,7 +189,7 @@ namespace Microbe.Engine
                             {
                                 foreach (var sprite in _sprites.Where(sprite => sprite.background && sprite.visible))
                                 {
-                                    g.DrawImage(_tileDataCache[sprite.tileIndex], new Rectangle(sprite.x + (x * 160), sprite.y + (y * 144), 8, 8));
+                                    g.DrawImage(TileDataCache[sprite.tileIndex], new Rectangle(sprite.x + (x * 160), sprite.y + (y * 144), 8, 8));
                                 }
 
 
@@ -199,7 +199,7 @@ namespace Microbe.Engine
 
                                 foreach (var sprite in _sprites.Where(sprite => !sprite.background && sprite.visible))
                                 {
-                                    g.DrawImage(_tileDataCache[sprite.tileIndex], new Rectangle(sprite.x + (x * 160), sprite.y + (y * 144), 8, 8));
+                                    g.DrawImage(TileDataCache[sprite.tileIndex], new Rectangle(sprite.x + (x * 160), sprite.y + (y * 144), 8, 8));
                                 }
 
                             }
@@ -292,10 +292,10 @@ namespace Microbe.Engine
 
         public MicrobeGraphics()
         {
-            _tileDataCache = new Bitmap[256];
+            TileDataCache = new Bitmap[256];
             _tileData = new List<byte[]>();
-            _tileColors = new TilePalette[256];
-            _tileToPaletteMap = new byte[256];
+            TileColors = new TilePalette[256];
+            TileToPaletteMap = new byte[256];
 
             _textBuffer = new char[20 * 18];
             _textBufferCache = new Bitmap(160, 144);
@@ -318,9 +318,9 @@ namespace Microbe.Engine
             for (int i = 0; i < 256; i++)
             {
                 _tileData.Add(new byte[64]);
-                _tileDataCache[i] = new Bitmap(8, 8);
-                _tileColors[i] = new TilePalette();
-                _tileToPaletteMap[i] = (byte)i;
+                TileDataCache[i] = new Bitmap(8, 8);
+                TileColors[i] = new TilePalette();
+                TileToPaletteMap[i] = (byte)i;
                 CopyTileToCache(i);
             }
 
@@ -334,14 +334,14 @@ namespace Microbe.Engine
         }
 
         public void SetTilePalette(int tileIndex, int paletteIndex) {
-            _tileToPaletteMap[tileIndex] = (byte)paletteIndex;
+            TileToPaletteMap[tileIndex] = (byte)paletteIndex;
             CopyTileToCache(tileIndex);
             _isDirty = true;
         }
 
         public void SetPalette(int index, TilePalette p)
         {
-            _tileColors[index] = p;
+            TileColors[index] = p;
             CopyTileToCache(index);
 
             _isDirty = true;
@@ -372,7 +372,7 @@ namespace Microbe.Engine
 
 
 
-        public TilePalette GetPalette(int index) { return _tileColors[index]; }
+        public TilePalette GetPalette(int index) { return TileColors[index]; }
 
         public void SetTileData(int tileIndex, byte[] data)
         {
@@ -380,6 +380,10 @@ namespace Microbe.Engine
             CopyTileToCache(tileIndex);
 
             _isDirty = true;
+        }
+
+        public byte[] GetTileData(int tileIndex) {
+            return _tileData[tileIndex];
         }
         public void SetVramData(int x, int y, byte tileIndex)
         {
