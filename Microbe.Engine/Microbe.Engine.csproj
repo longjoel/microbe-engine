@@ -112,6 +112,12 @@
       <DependentUpon>DebugVramForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Extensions.cs" />
+    <Compile Include="MetaTileEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MetaTileEditorForm.Designer.cs">
+      <DependentUpon>MetaTileEditorForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="MicrobeAudio.cs" />
     <Compile Include="MicrobeGraphics.cs" />
     <Compile Include="Program.cs" />
@@ -121,6 +127,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DebugVramForm.resx">
       <DependentUpon>DebugVramForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MetaTileEditorForm.resx">
+      <DependentUpon>MetaTileEditorForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
