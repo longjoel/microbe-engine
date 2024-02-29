@@ -19,15 +19,32 @@ namespace Microbe.Engine
         bool _mouseIsDown;
         Timer _refreshTimer;
 
+        Color[] _palette;
+        int _paletteIndex;
+
         public MetaTileEditorForm(MicrobeGraphics graphics)
         {
-            _graphics = graphics != null ? graphics: new MicrobeGraphics();
+            _graphics = graphics != null ? graphics : new MicrobeGraphics();
             _selectedTileIndex = 0;
             _refreshTimer = new Timer();
             _refreshTimer.Interval = 100;
             _refreshTimer.Tick += RefreshTimer_Tick;
+            _palette = new Color[4];
             _refreshTimer.Start();
             InitializeComponent();
+        }
+
+        private void SetPalette()
+        {
+            _palette[0] = Color.Transparent;
+            _palette[1] = Color.FromArgb(255, _graphics.GetPalette(_graphics.TileToPaletteMap[_selectedTileIndex]).c1.r, _graphics.GetPalette(_graphics.TileToPaletteMap[_selectedTileIndex]).c1.g, _graphics.GetPalette(_graphics.TileToPaletteMap[_selectedTileIndex]).c1.b);
+            _palette[2] = Color.FromArgb(255, _graphics.GetPalette(_graphics.TileToPaletteMap[_selectedTileIndex]).c2.r, _graphics.GetPalette(_graphics.TileToPaletteMap[_selectedTileIndex]).c2.g, _graphics.GetPalette(_graphics.TileToPaletteMap[_selectedTileIndex]).c2.b);
+            _palette[3] = Color.FromArgb(255, _graphics.GetPalette(_graphics.TileToPaletteMap[_selectedTileIndex]).c3.r, _graphics.GetPalette(_graphics.TileToPaletteMap[_selectedTileIndex]).c3.g, _graphics.GetPalette(_graphics.TileToPaletteMap[_selectedTileIndex]).c3.b);
+
+            Palette1Button.BackColor = _palette[1];
+            Palette2Button.BackColor = _palette[2];
+            Palette3Button.BackColor = _palette[3];
+
         }
 
         private void RefreshTimer_Tick(object sender, EventArgs e)
@@ -38,7 +55,8 @@ namespace Microbe.Engine
 
         protected override void OnLoad(EventArgs e)
         {
-            Invalidate();
+            SetPalette();
+
         }
 
         private int GetCols()
@@ -124,7 +142,7 @@ namespace Microbe.Engine
 
 
             var oldData = _graphics.GetTileData(_selectedTileIndex);
-            oldData[(ly * 8) + lx] = 2;
+            oldData[(ly * 8) + lx] = (byte)_paletteIndex;
 
             _graphics.SetTileData(_selectedTileIndex, oldData);
             Invalidate();
@@ -177,6 +195,37 @@ namespace Microbe.Engine
 
         private void splitContainer1_SplitterMoved(object sender, SplitterEventArgs e)
         {
+
+        }
+
+       
+
+        private void PaletteSelect_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            _graphics.SetTilePalette(_selectedTileIndex,
+                int.Parse(this.PaletteSelect.Text.ToString()));
+        }
+
+        private void ColorPickerClicked(object sender, EventArgs e)
+        {
+            if (((Button)sender).Name == nameof(Palette1Button))
+            {
+                _paletteIndex = 1;
+
+            }
+            else
+            if (((Button)sender).Name == nameof(Palette2Button))
+            {
+                _paletteIndex = 2;
+
+            }
+            else
+            if (((Button)sender).Name == nameof(Palette3Button))
+            {
+                _paletteIndex = 3;
+
+            }
+            else { _paletteIndex = 0; }
 
         }
     }
