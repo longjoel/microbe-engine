@@ -31,11 +31,14 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.TileSelectorPictureBox = new System.Windows.Forms.PictureBox();
+            this.TileEditPictureBox = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TileSelectorPictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.TileEditPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -61,6 +64,10 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.Controls.Add(this.TileSelectorPictureBox);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.TileEditPictureBox);
             this.splitContainer1.Size = new System.Drawing.Size(1264, 649);
             this.splitContainer1.SplitterDistance = 421;
             this.splitContainer1.TabIndex = 0;
@@ -76,19 +83,36 @@
             this.TileSelectorPictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.TileSelectorPictureBox_Paint);
             this.TileSelectorPictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.TileSelectorPictureBox_MouseClick);
             // 
+            // TileEditPictureBox
+            // 
+            this.TileEditPictureBox.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.TileEditPictureBox.Location = new System.Drawing.Point(0, 0);
+            this.TileEditPictureBox.Margin = new System.Windows.Forms.Padding(0);
+            this.TileEditPictureBox.Name = "TileEditPictureBox";
+            this.TileEditPictureBox.Size = new System.Drawing.Size(800, 800);
+            this.TileEditPictureBox.TabIndex = 0;
+            this.TileEditPictureBox.TabStop = false;
+            this.TileEditPictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.TileEditPictureBox_Paint);
+            this.TileEditPictureBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TileEditPictureBox_MouseDown);
+            this.TileEditPictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.TileEditPictureBox_MouseMove);
+            this.TileEditPictureBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.TileEditPictureBox_MouseUp);
+            // 
             // MetaTileEditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1270, 735);
             this.Controls.Add(this.tableLayoutPanel1);
+            this.DoubleBuffered = true;
             this.Name = "MetaTileEditorForm";
             this.Text = "MetaTileEditorForm";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.TileSelectorPictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.TileEditPictureBox)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -98,5 +122,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.PictureBox TileSelectorPictureBox;
+        private System.Windows.Forms.PictureBox TileEditPictureBox;
     }
 }
