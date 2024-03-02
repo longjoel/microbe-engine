@@ -192,6 +192,56 @@ duk_ret_t getSprite(duk_context *ctx)
     return 1;
 }
 
+duk_ret_t getPalette(duk_context *ctx){
+
+int index = duk_require_int(ctx, 0);
+duk_idx_t obj_idx = duk_push_object(ctx); // Push an empty object onto the stack
+
+duk_idx_t c1 = duk_push_object(ctx); // Push an empty object onto the stack
+
+duk_push_int(ctx, microbe_palette[index][1].r);
+duk_put_prop_string(ctx, c1, "r");
+
+duk_push_int(ctx, microbe_palette[index][1].g);
+duk_put_prop_string(ctx, c1, "g");
+
+duk_push_int(ctx, microbe_palette[index][1].b);
+duk_put_prop_string(ctx, c1, "b");
+
+duk_put_prop_string(ctx,obj_idx, "c1");
+
+
+
+duk_idx_t c2 = duk_push_object(ctx);
+
+duk_push_int(ctx, microbe_palette[index][2].r);
+duk_put_prop_string(ctx, c2, "r");
+
+duk_push_int(ctx, microbe_palette[index][2].g);
+duk_put_prop_string(ctx, c2, "g");
+
+duk_push_int(ctx, microbe_palette[index][2].b);
+duk_put_prop_string(ctx, c2, "b");
+
+duk_put_prop_string(ctx,obj_idx, "c2");
+
+
+
+duk_idx_t c3 = duk_push_object(ctx);
+
+duk_push_int(ctx, microbe_palette[index][3].r);
+duk_put_prop_string(ctx, c3, "r");
+duk_push_int(ctx, microbe_palette[index][3].g);
+duk_put_prop_string(ctx, c3, "g");
+duk_push_int(ctx, microbe_palette[index][3].b);
+duk_put_prop_string(ctx, c3, "b");
+duk_put_prop_string(ctx,obj_idx, "c3");
+
+
+return 1;
+             // Set a property named "name"
+}
+
 void initDuktapeGraphics(duk_context *ctx)
 {
 
@@ -209,4 +259,8 @@ void initDuktapeGraphics(duk_context *ctx)
 
     duk_push_c_function(ctx, getSprite, 1);
     duk_put_global_string(ctx, "getSprite");
+
+     duk_push_c_function(ctx, getPalette, 1);
+    duk_put_global_string(ctx, "getPalette");
+
 }
