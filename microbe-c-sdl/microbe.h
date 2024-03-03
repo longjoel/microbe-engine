@@ -42,12 +42,6 @@ void initDuktapeInput(duk_context *ctx);
 
 SDL_Window *initGraphics();
 
-
-duk_ret_t setTile(duk_context *ctx);
-duk_ret_t setVram(duk_context *ctx);
-duk_ret_t setScroll(duk_context *ctx);
-duk_ret_t setSprite(duk_context *ctx);
-duk_ret_t getPalette(duk_context *ctx);
-
+void DrawToScreen(SDL_Surface *screenSurface);
 
 #endif // __MICROBE__H__

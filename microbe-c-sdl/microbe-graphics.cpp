@@ -4,17 +4,18 @@
 #include "duktape.h"
 
 SDL_Surface *microbe_tiles_cache[MAX_TILES];
-SDL_Surface *microbe_framebuffer_cache;
-SDL_Surface *microbe_backBuffer_cache;
 
 TTF_Font *microbe_font;
 SDL_Color microbe_fontColor = {255, 255, 255, 255};
 char microbe_textBuffer[20 * 18];
+SDL_Surface *microbe_textCache;
+SDL_Surface *microbe_framebufferCache;
 
 SDL_Window *microbe_window;
 
 byte_t microbe_tiles[MAX_TILES][64];
 byte_t microbe_vram[32][32];
+SDL_Surface *microbe_vramCache;
 
 byte_t microbe_tilePalette[256];
 
@@ -22,7 +23,7 @@ SDL_Color microbe_palette[MAX_TILES][4]; // 256 entries * 4 colors * 4 bytes for
 
 sprite_t microbe_sprites[256];
 
-bool microbe_isDirty = false;
+bool microbe_isDirty = true;
 int microbe_scrollX = 0;
 int microbe_scrollY = 0;
 
@@ -36,6 +37,9 @@ SDL_Window *initGraphics()
     TTF_Init();
 
     microbe_window = SDL_CreateWindow("microbe", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_RESIZABLE | SDL_WINDOW_SHOWN);
+    microbe_vramCache = SDL_CreateRGBSurfaceWithFormat(0, 32 * 8, 32 * 8, 32, SDL_PIXELFORMAT_RGBA8888);
+    microbe_textCache = SDL_CreateRGBSurfaceWithFormat(0, 20 * 8, 18 * 8, 32, SDL_PIXELFORMAT_RGBA8888);
+    microbe_framebufferCache = SDL_CreateRGBSurfaceWithFormat(0, 160, 144, 32, SDL_PIXELFORMAT_RGBA8888);
 
     microbe_font = TTF_OpenFont("font.ttf", 8);
 
@@ -74,6 +78,7 @@ duk_ret_t setTile(duk_context *ctx)
 {
 
     int index = duk_require_int(ctx, 0);
+        printf("made it!\n");
 
     if (!duk_is_array(ctx, 1))
     {
@@ -90,6 +95,7 @@ duk_ret_t setTile(duk_context *ctx)
         duk_get_prop_index(ctx, 1, i);
         microbe_tiles[index][i] = duk_get_int(ctx, -1);
         SDL_Color *pixels = ((SDL_Color *)microbe_tiles_cache[index]->pixels);
+        printf("made it!\n");
         memccpy(pixels, &microbe_palette[microbe_tilePalette[i]], 1, sizeof(SDL_Color));
     }
 
@@ -238,43 +244,44 @@ duk_ret_t getPalette(duk_context *ctx)
     // Set a property named "name"
 }
 
-duk_ret_t setPalette(duk_context *ctx){
+duk_ret_t setPalette(duk_context *ctx)
+{
     int index = duk_require_int(ctx, 0);
 
     duk_require_object(ctx, 1);
     duk_get_prop_string(ctx, -1, "c1");
     duk_get_prop_string(ctx, -1, "r");
-    microbe_palette[index][1].r= duk_get_int(ctx, -1);
+    microbe_palette[index][1].r = duk_get_int(ctx, -1);
     duk_pop(ctx);
     duk_get_prop_string(ctx, -1, "g");
-    microbe_palette[index][1].g= duk_get_int(ctx, -1);
+    microbe_palette[index][1].g = duk_get_int(ctx, -1);
     duk_pop(ctx);
     duk_get_prop_string(ctx, -1, "b");
-    microbe_palette[index][1].b= duk_get_int(ctx, -1);
+    microbe_palette[index][1].b = duk_get_int(ctx, -1);
     duk_pop(ctx);
     duk_pop(ctx);
 
-     duk_get_prop_string(ctx, -1, "c2");
+    duk_get_prop_string(ctx, -1, "c2");
     duk_get_prop_string(ctx, -1, "r");
-    microbe_palette[index][2].r= duk_get_int(ctx, -1);
+    microbe_palette[index][2].r = duk_get_int(ctx, -1);
     duk_pop(ctx);
     duk_get_prop_string(ctx, -1, "g");
-    microbe_palette[index][2].g= duk_get_int(ctx, -1);
+    microbe_palette[index][2].g = duk_get_int(ctx, -1);
     duk_pop(ctx);
     duk_get_prop_string(ctx, -1, "b");
-    microbe_palette[index][2].b= duk_get_int(ctx, -1);
+    microbe_palette[index][2].b = duk_get_int(ctx, -1);
     duk_pop(ctx);
     duk_pop(ctx);
 
     duk_get_prop_string(ctx, -1, "c3");
     duk_get_prop_string(ctx, -1, "r");
-    microbe_palette[index][3].r= duk_get_int(ctx, -1);
+    microbe_palette[index][3].r = duk_get_int(ctx, -1);
     duk_pop(ctx);
     duk_get_prop_string(ctx, -1, "g");
-    microbe_palette[index][3].g= duk_get_int(ctx, -1);
+    microbe_palette[index][3].g = duk_get_int(ctx, -1);
     duk_pop(ctx);
     duk_get_prop_string(ctx, -1, "b");
-    microbe_palette[index][3].b= duk_get_int(ctx, -1);
+    microbe_palette[index][3].b = duk_get_int(ctx, -1);
     duk_pop(ctx);
     duk_pop(ctx);
 
@@ -302,6 +309,87 @@ void initDuktapeGraphics(duk_context *ctx)
     duk_push_c_function(ctx, getPalette, 1);
     duk_put_global_string(ctx, "getPalette");
 
-     duk_push_c_function(ctx, setPalette, 2);
+    duk_push_c_function(ctx, setPalette, 2);
     duk_put_global_string(ctx, "setPalette");
+}
+
+void updateVramCache()
+{
+    SDL_FillRect(microbe_vramCache, NULL, SDL_MapRGBA(microbe_vramCache->format, 0, 0, 0, 255));
+
+    for (int y = 0; y < 32; y++)
+    {
+        for (int x = 0; x < 32; x++)
+        {
+            int tileIndex = microbe_vram[y][x];
+            SDL_Rect dest;
+            dest.x = x * 8;
+            dest.y = y * 8;
+            dest.w = 8;
+            dest.h = 8;
+
+            SDL_BlitSurface(microbe_tiles_cache[tileIndex], NULL, microbe_vramCache, &dest);
+        }
+    }
+}
+
+void DrawToScreen(SDL_Surface *screenSurface)
+{
+
+    if (microbe_isDirty)
+    {
+        SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 0, 128, 255));
+        SDL_FillRect(microbe_framebufferCache, NULL, SDL_MapRGBA(microbe_framebufferCache->format, 0, 0, 0, 255));
+
+        updateVramCache();
+
+        for (int dy = -1; dy <= 1; dy++)
+        {
+
+            for (int dx = -1; dx <= 1; dx++)
+            {
+
+                for (int i = 0; i < 256; i++)
+                {
+                    sprite_t *sprite = &microbe_sprites[i];
+                    if (sprite->visible && sprite->background)
+                    {
+                        SDL_Rect dest;
+                        dest.x = sprite->x + (dx * 160);
+                        dest.y = sprite->y + (dy * 144);
+                        dest.w = 8;
+                        dest.h = 8;
+
+                        SDL_BlitSurface(microbe_tiles_cache[sprite->tileIndex], NULL, microbe_vramCache, &dest);
+                    }
+                }
+
+                SDL_Rect dest;
+                dest.x = (dy * 32 * 8) + microbe_scrollX;
+                dest.y = (dy * 32 * 8) + microbe_scrollY;
+                dest.w = 32 * 8;
+                dest.h = 32 * 8;
+                SDL_BlitSurface(microbe_vramCache, NULL, microbe_framebufferCache, &dest);
+
+                for (int i = 0; i < 256; i++)
+                {
+                    sprite_t *sprite = &microbe_sprites[i];
+                    if (sprite->visible && !sprite->background)
+                    {
+                        SDL_Rect dest;
+                        dest.x = sprite->x + (dx * 160);
+                        dest.y = sprite->y + (dy * 144);
+                        dest.w = 8;
+                        dest.h = 8;
+
+                        SDL_BlitSurface(microbe_tiles_cache[sprite->tileIndex], NULL, microbe_vramCache, &dest);
+                    }
+                }
+            }
+        }
+
+        SDL_BlitScaled(microbe_framebufferCache, NULL, screenSurface, NULL);
+        microbe_isDirty = false;
+    }
+  
 }

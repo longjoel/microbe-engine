@@ -16,6 +16,7 @@ int main(int argc, char *argv[])
     SDL_Window *window;
     SDL_Surface *screenSurface;
 
+
     ctx = duk_create_heap_default();
 
     window = initGraphics();
@@ -23,7 +24,7 @@ int main(int argc, char *argv[])
     initDuktapeGraphics(ctx);
     initDuktapeInput(ctx);
 
-       duk_eval_string_noresult(ctx,"setPalette(0,getPalette(0));");
+       duk_eval_string_noresult(ctx,"setTile(0, [2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2]);");
 
     bool isDone = false;
     while (!isDone)
@@ -40,6 +41,8 @@ int main(int argc, char *argv[])
 
         screenSurface = SDL_GetWindowSurface(window);
         SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 255, 128, 255));
+
+        DrawToScreen(screenSurface);
 
         SDL_UpdateWindowSurface(window);
     }
