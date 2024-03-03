@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
         }
 
         screenSurface = SDL_GetWindowSurface(window);
-        SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 255, 128, 255));
+        SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 128, 128, 255));
 
         DrawToScreen(screenSurface);
 

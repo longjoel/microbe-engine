@@ -48,7 +48,7 @@ SDL_Window *initGraphics()
         microbe_tilePalette[i] = i;
         microbe_tiles_cache[i] = SDL_CreateRGBSurfaceWithFormat(0, 8, 8, 32, SDL_PIXELFORMAT_RGBA8888);
 
-        microbe_palette[i][0].a = 0;
+        microbe_palette[i][0].a = 255;
         microbe_palette[i][0].r = 0;
         microbe_palette[i][0].g = 0;
         microbe_palette[i][0].b = 0;
@@ -78,7 +78,7 @@ duk_ret_t setTile(duk_context *ctx)
 {
 
     int index = duk_require_int(ctx, 0);
-        printf("made it!\n");
+    printf("made it!\n");
 
     if (!duk_is_array(ctx, 1))
     {
@@ -90,14 +90,26 @@ duk_ret_t setTile(duk_context *ctx)
         return DUK_ERR_ERROR;
     }
 
+SDL_LockSurface(microbe_tiles_cache[index]);
+
     for (int i = 0; i < 64; i++)
     {
         duk_get_prop_index(ctx, 1, i);
         microbe_tiles[index][i] = duk_get_int(ctx, -1);
-        SDL_Color *pixels = ((SDL_Color *)microbe_tiles_cache[index]->pixels);
-        printf("made it!\n");
-        memccpy(pixels, &microbe_palette[microbe_tilePalette[i]], 1, sizeof(SDL_Color));
+        duk_pop(ctx);
+
+        auto *pixels = (uint32_t *)microbe_tiles_cache[index]->pixels;
+        auto color = microbe_palette[microbe_tilePalette[index]][microbe_tiles[index][i]];
+
+        pixels[i] = SDL_MapRGBA(microbe_tiles_cache[index]->format, color.r, color.g, color.b, color.a);
+
+        // SDL_Color *pixels = ((SDL_Color *)microbe_tiles_cache[index]->pixels);
+        // memcpy(pixels, &microbe_palette[microbe_tilePalette[i]], sizeof(SDL_Color)); // Replace memccpy with memcpy
+    
     }
+
+    SDL_UnlockSurface(microbe_tiles_cache[index]);
+
 
     microbe_isDirty = true;
 
@@ -121,7 +133,7 @@ duk_ret_t setScroll(duk_context *ctx)
     microbe_scrollX = duk_require_int(ctx, 0);
     microbe_scrollY = duk_require_int(ctx, 1);
 
-    microbe_isDirty = false;
+    microbe_isDirty = true;
 
     return 0;
 }
@@ -162,6 +174,8 @@ duk_ret_t setSprite(duk_context *ctx)
     duk_pop(ctx);
 
     duk_pop(ctx);
+
+    microbe_isDirty = true;
 
     return 0;
 }
@@ -285,6 +299,8 @@ duk_ret_t setPalette(duk_context *ctx)
     duk_pop(ctx);
     duk_pop(ctx);
 
+    microbe_isDirty = true;
+
     return 0;
 }
 
@@ -365,7 +381,7 @@ void DrawToScreen(SDL_Surface *screenSurface)
                 }
 
                 SDL_Rect dest;
-                dest.x = (dy * 32 * 8) + microbe_scrollX;
+                dest.x = (dx * 32 * 8) + microbe_scrollX;
                 dest.y = (dy * 32 * 8) + microbe_scrollY;
                 dest.w = 32 * 8;
                 dest.h = 32 * 8;
@@ -391,5 +407,4 @@ void DrawToScreen(SDL_Surface *screenSurface)
         SDL_BlitScaled(microbe_framebufferCache, NULL, screenSurface, NULL);
         microbe_isDirty = false;
     }
-  
 }
