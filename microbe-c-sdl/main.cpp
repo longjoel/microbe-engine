@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
     initDuktapeGraphics(ctx);
     initDuktapeInput(ctx);
 
-       duk_eval_string_noresult(ctx,"getPalette(0);");
+       duk_eval_string_noresult(ctx,"setPalette(0,getPalette(0));");
 
     bool isDone = false;
     while (!isDone)
