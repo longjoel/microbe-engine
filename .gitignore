@@ -369,3 +369,7 @@ node_modules/
 microbe-c-sdl/microbe.bin
 .vscode/launch.json
 .vscode/tasks.json
+
+
+*.o
+microbe-c-sdl/myapp.exe
