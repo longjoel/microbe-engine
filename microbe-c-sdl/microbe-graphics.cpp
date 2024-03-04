@@ -354,7 +354,7 @@ void DrawToScreen(SDL_Surface *screenSurface)
          updateVramCache();
          
      }
-        SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 0, 128, 0));
+        SDL_FillRect(screenSurface, NULL, SDL_MapRGBA(screenSurface->format, 0, 128, 0,255));
         SDL_FillRect(microbe_framebufferCache, NULL, SDL_MapRGBA(microbe_framebufferCache->format, 0, 0, 128, 255));
 
        
