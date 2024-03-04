@@ -45,6 +45,9 @@ int main(int argc, char *argv[])
         DrawToScreen(screenSurface);
 
         SDL_UpdateWindowSurface(window);
+
+        SDL_Delay(16);
+
     }
 
     cleanDuktape();

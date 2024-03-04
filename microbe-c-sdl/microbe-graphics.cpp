@@ -349,12 +349,15 @@ void updateVramCache()
 void DrawToScreen(SDL_Surface *screenSurface)
 {
 
-    // if (microbe_isDirty)
-    // {
+    if (microbe_isDirty)
+     {
+         updateVramCache();
+         
+     }
         SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 0, 128, 0));
         SDL_FillRect(microbe_framebufferCache, NULL, SDL_MapRGBA(microbe_framebufferCache->format, 0, 0, 128, 255));
 
-        updateVramCache();
+       
 
         for (int dy = -1; dy <= 1; dy++)
         {
@@ -399,9 +402,10 @@ void DrawToScreen(SDL_Surface *screenSurface)
                     }
                 }
             }
-       // }
+      
 
         SDL_BlitScaled(microbe_framebufferCache, NULL, screenSurface, NULL);
         microbe_isDirty = false;
+
     }
 }
