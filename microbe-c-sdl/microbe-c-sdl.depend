@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1708107178 source:c:\src\microbe-engine\microbe-c-sdl\main.cpp
+1709478715 source:c:\src\microbe-engine\microbe-c-sdl\main.cpp
 	<SDL2/SDL.h>
 	"duktape.h"
 	"microbe.h"
@@ -397,17 +397,17 @@
 	"begin_code.h"
 	"close_code.h"
 
-1645219339 source:c:\src\microbe-engine\microbe-c-sdl\duktape.c
+1709348896 source:c:\src\microbe-engine\microbe-c-sdl\duktape.c
 	"duktape.h"
 	<stdio.h>
 	<stdlib.h>
 	<stdarg.h>
 	<string.h>
 
-1645219339 c:\src\microbe-engine\microbe-c-sdl\duktape.h
+1709348896 c:\src\microbe-engine\microbe-c-sdl\duktape.h
 	"duk_config.h"
 
-1645219339 c:\src\microbe-engine\microbe-c-sdl\duk_config.h
+1709348896 c:\src\microbe-engine\microbe-c-sdl\duk_config.h
 	<sys/isa_defs.h>
 	<TargetConditionals.h>
 	<architecture/byte_order.h>
@@ -506,7 +506,10 @@
 	<SDL2/SDL.h>
 	"duktape.h"
 
-1707960431 c:\src\microbe-engine\microbe-c-sdl\microbe.h
+1709478499 c:\src\microbe-engine\microbe-c-sdl\microbe.h
 	<SDL2/SDL.h>
 	"duktape.h"
+
+1709348896 source:c:\src\microbe-engine\microbe-c-sdl\microbe-input.cpp
+	"microbe.h"
 

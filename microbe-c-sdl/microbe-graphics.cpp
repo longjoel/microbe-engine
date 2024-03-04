@@ -90,26 +90,23 @@ duk_ret_t setTile(duk_context *ctx)
         return DUK_ERR_ERROR;
     }
 
-SDL_LockSurface(microbe_tiles_cache[index]);
-
+    SDL_LockSurface(microbe_tiles_cache[index]);
+    auto *pixels = (uint32_t *)microbe_tiles_cache[index]->pixels;
     for (int i = 0; i < 64; i++)
     {
         duk_get_prop_index(ctx, 1, i);
         microbe_tiles[index][i] = duk_get_int(ctx, -1);
         duk_pop(ctx);
 
-        auto *pixels = (uint32_t *)microbe_tiles_cache[index]->pixels;
         auto color = microbe_palette[microbe_tilePalette[index]][microbe_tiles[index][i]];
 
         pixels[i] = SDL_MapRGBA(microbe_tiles_cache[index]->format, color.r, color.g, color.b, color.a);
 
         // SDL_Color *pixels = ((SDL_Color *)microbe_tiles_cache[index]->pixels);
         // memcpy(pixels, &microbe_palette[microbe_tilePalette[i]], sizeof(SDL_Color)); // Replace memccpy with memcpy
-    
     }
 
     SDL_UnlockSurface(microbe_tiles_cache[index]);
-
 
     microbe_isDirty = true;
 
@@ -352,10 +349,10 @@ void updateVramCache()
 void DrawToScreen(SDL_Surface *screenSurface)
 {
 
-    if (microbe_isDirty)
-    {
-        SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 0, 128, 255));
-        SDL_FillRect(microbe_framebufferCache, NULL, SDL_MapRGBA(microbe_framebufferCache->format, 0, 0, 0, 255));
+    // if (microbe_isDirty)
+    // {
+        SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 0, 128, 0));
+        SDL_FillRect(microbe_framebufferCache, NULL, SDL_MapRGBA(microbe_framebufferCache->format, 0, 0, 128, 255));
 
         updateVramCache();
 
@@ -402,7 +399,7 @@ void DrawToScreen(SDL_Surface *screenSurface)
                     }
                 }
             }
-        }
+       // }
 
         SDL_BlitScaled(microbe_framebufferCache, NULL, screenSurface, NULL);
         microbe_isDirty = false;

@@ -14,8 +14,6 @@ int main(int argc, char *argv[])
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_AUDIO);
 
     SDL_Window *window;
-    SDL_Surface *screenSurface;
-
 
     ctx = duk_create_heap_default();
 
@@ -24,7 +22,7 @@ int main(int argc, char *argv[])
     initDuktapeGraphics(ctx);
     initDuktapeInput(ctx);
 
-       duk_eval_string_noresult(ctx,"setTile(0, [2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2]);");
+    duk_eval_string_noresult(ctx, "setTile(0, [2,2,3,2,2,3,2,2, 2,2,2,3,2,2,2,2, 2,2,2,3,2,2,2,2, 2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2]);");
 
     bool isDone = false;
     while (!isDone)
@@ -39,8 +37,10 @@ int main(int argc, char *argv[])
             }
         }
 
-        screenSurface = SDL_GetWindowSurface(window);
-        SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 128, 128, 255));
+        SDL_Surface *screenSurface = SDL_GetWindowSurface(window);
+        SDL_SetSurfaceBlendMode(screenSurface, SDL_BLENDMODE_BLEND);
+
+        SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 128, 0, 0));
 
         DrawToScreen(screenSurface);
 
@@ -48,7 +48,6 @@ int main(int argc, char *argv[])
     }
 
     cleanDuktape();
-    
 
     return 0;
 }
