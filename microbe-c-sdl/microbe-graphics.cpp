@@ -148,35 +148,35 @@ duk_ret_t setSprite(duk_context *ctx)
     sprite_t *sprite = &microbe_sprites[index];
 
     duk_require_object(ctx, 1);
-    duk_get_prop_string(ctx, -1, "x");
-    sprite->x = duk_get_int(ctx, -1);
+    // duk_get_prop_string(ctx, -1, "x");
+    // sprite->x = duk_get_int(ctx, -1);
     duk_pop(ctx);
 
-    duk_get_prop_string(ctx, -1, "y");
-    sprite->y = duk_get_int(ctx, -1);
-    duk_pop(ctx);
+    // duk_get_prop_string(ctx, -1, "y");
+    // sprite->y = duk_get_int(ctx, -1);
+    // duk_pop(ctx);
 
-    duk_get_prop_string(ctx, -1, "xFlipped");
-    sprite->xFlipped = duk_get_boolean(ctx, -1);
-    duk_pop(ctx);
+    // duk_get_prop_string(ctx, -1, "xFlipped");
+    // sprite->xFlipped = duk_get_boolean(ctx, -1);
+    // duk_pop(ctx);
 
-    duk_get_prop_string(ctx, -1, "yFlipped");
-    sprite->yFlipped = duk_get_boolean(ctx, -1);
-    duk_pop(ctx);
+    // duk_get_prop_string(ctx, -1, "yFlipped");
+    // sprite->yFlipped = duk_get_boolean(ctx, -1);
+    // duk_pop(ctx);
 
-    duk_get_prop_string(ctx, -1, "tileIndex");
-    sprite->tileIndex = duk_get_int(ctx, -1);
-    duk_pop(ctx);
+    // duk_get_prop_string(ctx, -1, "tileIndex");
+    // sprite->tileIndex = duk_get_int(ctx, -1);
+    // duk_pop(ctx);
 
-    duk_get_prop_string(ctx, -1, "visible");
-    sprite->tileIndex = duk_get_boolean(ctx, -1);
-    duk_pop(ctx);
+    // duk_get_prop_string(ctx, -1, "visible");
+    // sprite->tileIndex = duk_get_boolean(ctx, -1);
+    // duk_pop(ctx);
 
-    duk_get_prop_string(ctx, -1, "background");
-    sprite->tileIndex = duk_get_int(ctx, -1);
-    duk_pop(ctx);
+    // duk_get_prop_string(ctx, -1, "background");
+    // sprite->tileIndex = duk_get_int(ctx, -1);
+    // duk_pop(ctx);
 
-    duk_pop(ctx);
+    //duk_pop(ctx);
 
     microbe_isDirty = true;
 
