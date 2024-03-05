@@ -34,7 +34,7 @@ int microbe_scrollY = 0;
 SDL_Window *initGraphics()
 {
 
-    TTF_Init();
+    //TTF_Init();
 
     microbe_window = SDL_CreateWindow("microbe", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_RESIZABLE | SDL_WINDOW_SHOWN);
     microbe_vramCache = SDL_CreateRGBSurfaceWithFormat(0, 32 * 8, 32 * 8, 32, SDL_PIXELFORMAT_RGBA8888);
