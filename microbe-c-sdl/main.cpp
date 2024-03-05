@@ -22,9 +22,37 @@ int main(int argc, char *argv[])
     initDuktapeGraphics(ctx);
     initDuktapeInput(ctx);
 
-    duk_eval_string_noresult(ctx, "setTile(0, [2,2,3,2,2,3,2,2, 2,2,2,3,2,2,2,2, 2,2,2,3,2,2,2,2, 2,2,0,0,2,2,2,2, 2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2]);");
-    duk_eval_string_noresult(ctx, "setString(0,0,\"Hello, World!\");");
+bool hasContent = false;
 
+    if (argc > 1)
+    {
+        FILE *file = fopen(argv[1], "r");
+        if (file)
+        {
+            // Read the contents of the file
+            fseek(file, 0, SEEK_END);
+            long fileSize = ftell(file);
+            fseek(file, 0, SEEK_SET);
+            char *fileContents = new char[fileSize + 1];
+            fread(fileContents, 1, fileSize, file);
+            fileContents[fileSize] = '\0';
+
+            // Evaluate the contents of the file in the Duktape context
+            duk_eval_string_noresult(ctx, fileContents);
+
+            // Clean up
+            delete[] fileContents;
+            fclose(file);
+            hasContent = true;
+        }}
+
+        if(!hasContent){
+        
+            // duk_eval_string_noresult(ctx, "setTile(0, [2,2,3,2,2,3,2,2, 2,2,2,3,2,2,2,2, 2,2,2,3,2,2,2,2, 2,2,0,0,2,2,2,2, 2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2]);");
+            duk_eval_string_noresult(ctx, "setString(0,0,\"  *Microbe Engine*\");");
+            duk_eval_string_noresult(ctx, "setString(0,1,\"No Game Loaded.\");");
+        }        
+    
     bool isDone = false;
     while (!isDone)
     {
@@ -48,7 +76,6 @@ int main(int argc, char *argv[])
         SDL_UpdateWindowSurface(window);
 
         SDL_Delay(16);
-
     }
 
     cleanDuktape();

@@ -258,7 +258,6 @@ duk_ret_t getPalette(duk_context *ctx)
     duk_put_prop_string(ctx, obj_idx, "c3");
 
     return 1;
-    // Set a property named "name"
 }
 
 duk_ret_t setPalette(duk_context *ctx)
@@ -313,19 +312,13 @@ duk_ret_t setChar(duk_context *ctx)
     int y = duk_require_int(ctx, 1);
     const char *text = duk_require_string(ctx, 2);
 
-    SDL_Surface *textSurface = TTF_RenderText_Solid(microbe_font, text, microbe_fontColor);
-
-if(textSurface == NULL){abort();}
-    SDL_Rect dest;
-    dest.x = x * 8;
-    dest.y = y * 8;
-    dest.w = 8;
-    dest.h = 8;
-
-    SDL_BlitSurface(textSurface, NULL, microbe_textCache, &dest);
-
-    SDL_FreeSurface(textSurface);
-
+for(int i = 0; i < strlen(text); i++){
+    if(x + i < 20 && y < 18){
+    microbe_textBuffer[(y * 20) + x + i] = text[i];}
+    else{
+        break;
+    }   
+}
     return 0;
 }
 
@@ -436,6 +429,20 @@ void DrawToScreen(SDL_Surface *screenSurface)
                     }
                 }
             }
+
+        for(int y = 0; y < 18; y++){
+            for(int x =0;x < 20; x++){
+                char c = microbe_textBuffer[(y * 20) + x];
+                SDL_Surface *glyph = TTF_RenderGlyph_Solid(microbe_font, c, microbe_fontColor);
+                SDL_Rect dest;
+                dest.x = x * 8;
+                dest.y = y * 8;
+                dest.w = 8;
+                dest.h = 8;
+                SDL_BlitSurface(glyph, NULL, microbe_textCache, &dest);
+                SDL_FreeSurface(glyph);
+            }
+        }
       
         SDL_BlitScaled(microbe_textCache, NULL, microbe_framebufferCache, NULL);
 
