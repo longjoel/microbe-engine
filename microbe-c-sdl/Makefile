@@ -5,7 +5,7 @@ CC := g++
 CFLAGS := -Wall -Wextra -g `sdl2-config --cflags`
 
 # Linker flags
-LDFLAGS := -L C:\dev\w64devkit\lib -L C:\dev\w64devkit\x86_64-w64-mingw32\lib `sdl2-config --libs` -lm  -lSDL2_ttf 
+LDFLAGS := -L C:\dev\w64devkit\lib -L C:\dev\w64devkit\x86_64-w64-mingw32\lib `sdl2-config --libs` -lm  -lSDL2_ttf -ggdb
 
 # Source files
 SRCS := $(wildcard *.c) $(wildcard *.cpp)

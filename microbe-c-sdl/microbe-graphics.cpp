@@ -34,7 +34,7 @@ int microbe_scrollY = 0;
 SDL_Window *initGraphics()
 {
 
-    //TTF_Init();
+    TTF_Init();
 
     microbe_window = SDL_CreateWindow("microbe", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_RESIZABLE | SDL_WINDOW_SHOWN);
     microbe_vramCache = SDL_CreateRGBSurfaceWithFormat(0, 32 * 8, 32 * 8, 32, SDL_PIXELFORMAT_RGBA8888);
@@ -42,6 +42,12 @@ SDL_Window *initGraphics()
     microbe_framebufferCache = SDL_CreateRGBSurfaceWithFormat(0, 160, 144, 32, SDL_PIXELFORMAT_RGBA8888);
 
     microbe_font = TTF_OpenFont("font.ttf", 8);
+
+if(microbe_font == NULL){
+    
+    abort();}
+
+    microbe_fontColor = {255, 255, 255, 255};
 
     for (int i = 0; i < MAX_TILES; i++)
     {
@@ -301,6 +307,28 @@ duk_ret_t setPalette(duk_context *ctx)
     return 0;
 }
 
+duk_ret_t setChar(duk_context *ctx)
+{
+    int x = duk_require_int(ctx, 0);
+    int y = duk_require_int(ctx, 1);
+    const char *text = duk_require_string(ctx, 2);
+
+    SDL_Surface *textSurface = TTF_RenderText_Solid(microbe_font, text, microbe_fontColor);
+
+if(textSurface == NULL){abort();}
+    SDL_Rect dest;
+    dest.x = x * 8;
+    dest.y = y * 8;
+    dest.w = 8;
+    dest.h = 8;
+
+    SDL_BlitSurface(textSurface, NULL, microbe_textCache, &dest);
+
+    SDL_FreeSurface(textSurface);
+
+    return 0;
+}
+
 void initDuktapeGraphics(duk_context *ctx)
 {
 
@@ -324,6 +352,12 @@ void initDuktapeGraphics(duk_context *ctx)
 
     duk_push_c_function(ctx, setPalette, 2);
     duk_put_global_string(ctx, "setPalette");
+
+    duk_push_c_function(ctx, setChar, 3);
+    duk_put_global_string(ctx, "setChar");
+
+    duk_push_c_function(ctx, setChar, 3);
+    duk_put_global_string(ctx, "setString");
 }
 
 void updateVramCache()
@@ -403,6 +437,7 @@ void DrawToScreen(SDL_Surface *screenSurface)
                 }
             }
       
+        SDL_BlitScaled(microbe_textCache, NULL, microbe_framebufferCache, NULL);
 
         SDL_BlitScaled(microbe_framebufferCache, NULL, screenSurface, NULL);
         microbe_isDirty = false;

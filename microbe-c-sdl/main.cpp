@@ -23,6 +23,7 @@ int main(int argc, char *argv[])
     initDuktapeInput(ctx);
 
     duk_eval_string_noresult(ctx, "setTile(0, [2,2,3,2,2,3,2,2, 2,2,2,3,2,2,2,2, 2,2,2,3,2,2,2,2, 2,2,0,0,2,2,2,2, 2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2]);");
+    duk_eval_string_noresult(ctx, "setString(0,0,\"Hello, World!\");");
 
     bool isDone = false;
     while (!isDone)
