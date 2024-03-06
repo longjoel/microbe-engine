@@ -147,7 +147,7 @@
             this.Palette3Button.Size = new System.Drawing.Size(149, 62);
             this.Palette3Button.TabIndex = 4;
             this.Palette3Button.UseVisualStyleBackColor = true;
-            this.Palette3Button.Click += new System.EventHandler(this.ColorPickerClicked);
+            this.Palette3Button.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ColorPickerClicked);
             // 
             // Palette2Button
             // 
@@ -157,7 +157,7 @@
             this.Palette2Button.Size = new System.Drawing.Size(145, 62);
             this.Palette2Button.TabIndex = 3;
             this.Palette2Button.UseVisualStyleBackColor = true;
-            this.Palette2Button.Click += new System.EventHandler(this.ColorPickerClicked);
+            this.Palette2Button.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ColorPickerClicked);
             // 
             // Palette1Button
             // 
@@ -167,7 +167,7 @@
             this.Palette1Button.Size = new System.Drawing.Size(145, 62);
             this.Palette1Button.TabIndex = 0;
             this.Palette1Button.UseVisualStyleBackColor = true;
-            this.Palette1Button.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ColorPickerClicked);
+            this.Palette1Button.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ColorPickerClicked);
             // 
             // PaletteSelect
             // 
@@ -204,7 +204,8 @@
             this.ClearColor.TabIndex = 2;
             this.ClearColor.Text = "Clear";
             this.ClearColor.UseVisualStyleBackColor = true;
-            this.ClearColor.Click += new System.EventHandler(this.ColorPickerClicked);
+            this.ClearColor .MouseClick += new System.Windows.Forms.MouseEventHandler(this.ColorPickerClicked);
+           
             // 
             // MetaTileEditorForm
             // 

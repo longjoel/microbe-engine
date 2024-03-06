@@ -6,6 +6,8 @@
 
 This engine uses WinForms for graphics and event handling, JInt as the Javascript engine, and XInputium for connecting with gamepads.
 
+![Screen0](docs/screen0.png)
+
 ## Constraints
 
 `microbe-engine` supports 256 tiles, with a vram area that supports 32 x 32 tiles. The framebuffer is 160x144 pixels, or 20x18 tiles.

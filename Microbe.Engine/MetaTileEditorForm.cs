@@ -55,6 +55,11 @@ namespace Microbe.Engine
 
         protected override void OnLoad(EventArgs e)
         {
+            PaletteSelect.Items.Clear();
+            for (int i = 0; i < 256; i++)
+            {
+                PaletteSelect.Items.Add(i);
+            }
             SetPalette();
 
         }
@@ -78,12 +83,13 @@ namespace Microbe.Engine
             {
                 e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
 
-                g.DrawImage(_graphics.TileDataCache[i], new Rectangle(incX * 32, incY * 32, 32, 32), new Rectangle(0,0,8,8), GraphicsUnit.Pixel);
+                g.DrawImage(_graphics.TileDataCache[i], new Rectangle(incX * 32, incY * 32, 32, 32), new Rectangle(0, 0, 8, 8), GraphicsUnit.Pixel);
 
                 if (i == _selectedTileIndex)
                 {
-                    g.DrawRectangle(Pens.Black, new Rectangle((incX * 32) - 1, (incY * 32) - 1, 34, 34));
+                    g.DrawRectangle(Pens.White, new Rectangle((incX * 32) - 1, (incY * 32) - 1, 34, 34));
                 }
+                else { g.DrawRectangle(Pens.Black, new Rectangle((incX * 32) - 1, (incY * 32) - 1, 34, 34)); }
 
                 incX = incX + 1;
                 if (incX >= GetCols())
@@ -95,7 +101,7 @@ namespace Microbe.Engine
 
             }
 
-          
+
 
 
         }
@@ -110,6 +116,7 @@ namespace Microbe.Engine
             if (index < 256)
             {
                 _selectedTileIndex = index;
+                this.PaletteSelect.Text = _graphics.TileToPaletteMap[_selectedTileIndex].ToString();
             }
         }
 
@@ -145,7 +152,6 @@ namespace Microbe.Engine
             oldData[(ly * 8) + lx] = (byte)_paletteIndex;
 
             _graphics.SetTileData(_selectedTileIndex, oldData);
-            Invalidate();
         }
 
         private void TileEditPictureBox_MouseDown(object sender, MouseEventArgs e)
@@ -159,20 +165,25 @@ namespace Microbe.Engine
         {
             e.Graphics.Clear(Color.DarkSlateBlue);
             e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-           
-          
-            for (int y = 0; y < 8; y++) {
-                for (int x = 0; x < 8; x++) {
+
+
+            for (int y = 0; y < 8; y++)
+            {
+                for (int x = 0; x < 8; x++)
+                {
                     var sx = Math.Floor(((double)x / 8.0) * TileEditPictureBox.ClientRectangle.Width);
                     var sy = Math.Floor(((double)y / 8.0) * TileEditPictureBox.ClientRectangle.Height);
-                    Brush c = Brushes.Transparent;
-                    
+                    Color c = Color.Transparent;
+
                     var colorIndex = _graphics.GetTileData(_selectedTileIndex)[y * 8 + x];
-                    if(colorIndex == 1) { c = Brushes.Black; }
-                    if(colorIndex == 2) { c = Brushes.Gray; }
-                    if(colorIndex == 3) { c = Brushes.White; }
-                    e.Graphics.FillRectangle(c, new Rectangle((int)sx, (int)sy, TileEditPictureBox.ClientRectangle.Width / 8, TileEditPictureBox.ClientRectangle.Height / 8));
-                    e.Graphics.DrawRectangle(Pens.Black, new Rectangle((int)sx, (int)sy, TileEditPictureBox.ClientRectangle.Width / 8, TileEditPictureBox.ClientRectangle.Height / 8));
+                    if (colorIndex == 1) { c = Palette1Button.BackColor; }
+                    if (colorIndex == 2) { c = Palette2Button.BackColor; }
+                    if (colorIndex == 3) { c = Palette3Button.BackColor; }
+                    using (var cb = new SolidBrush(c))
+                    {
+                        e.Graphics.FillRectangle(cb, new Rectangle((int)sx, (int)sy, TileEditPictureBox.ClientRectangle.Width / 8, TileEditPictureBox.ClientRectangle.Height / 8));
+                        e.Graphics.DrawRectangle(Pens.Black, new Rectangle((int)sx, (int)sy, TileEditPictureBox.ClientRectangle.Width / 8, TileEditPictureBox.ClientRectangle.Height / 8));
+                    }
                 }
             }
 
@@ -181,11 +192,11 @@ namespace Microbe.Engine
             var coordinates = TileEditPictureBox.PointToClient(Cursor.Position);
 
 
-            var lx = (int)Math.Floor(((double) coordinates.X / (double)(this.TileEditPictureBox.ClientRectangle.Width)) * 8.0);
+            var lx = (int)Math.Floor(((double)coordinates.X / (double)(this.TileEditPictureBox.ClientRectangle.Width)) * 8.0);
             var ly = (int)Math.Floor(((double)coordinates.Y / (double)(this.TileEditPictureBox.ClientRectangle.Height)) * 8.0);
 
             e.Graphics.DrawRectangle(Pens.Green, new Rectangle(
-                (int)(lx* TileEditPictureBox.ClientRectangle.Width/8),
+                (int)(lx * TileEditPictureBox.ClientRectangle.Width / 8),
                 (int)(ly * TileEditPictureBox.ClientRectangle.Height / 8),
                 (int)(TileEditPictureBox.ClientRectangle.Width / 8),
                 (int)(TileEditPictureBox.ClientRectangle.Height / 8)));
@@ -198,35 +209,85 @@ namespace Microbe.Engine
 
         }
 
-       
+
 
         private void PaletteSelect_SelectedIndexChanged(object sender, EventArgs e)
         {
             _graphics.SetTilePalette(_selectedTileIndex,
                 int.Parse(this.PaletteSelect.Text.ToString()));
+
+            
+
+            var pal = _graphics.GetPalette(_graphics.TileToPaletteMap[_selectedTileIndex]);
+
+            Palette1Button.BackColor = Color.FromArgb(255, pal.c1.r, pal.c1.g, pal.c1.b);
+            Palette2Button.BackColor = Color.FromArgb(255, pal.c2.r, pal.c2.g, pal.c2.b);
+            Palette3Button.BackColor = Color.FromArgb(255, pal.c3.r, pal.c3.g, pal.c3.b);
+
         }
 
-        private void ColorPickerClicked(object sender, EventArgs e)
+        private void ColorPickerClicked(object sender, MouseEventArgs e)
         {
-            if (((Button)sender).Name == nameof(Palette1Button))
+            if (e.Button == MouseButtons.Left)
             {
-                _paletteIndex = 1;
+                if (((Button)sender).Name == nameof(Palette1Button))
+                {
+                    _paletteIndex = 1;
 
+                }
+                else
+                if (((Button)sender).Name == nameof(Palette2Button))
+                {
+                    _paletteIndex = 2;
+
+                }
+                else
+                if (((Button)sender).Name == nameof(Palette3Button))
+                {
+                    _paletteIndex = 3;
+
+                }
+                else { _paletteIndex = 0; }
             }
-            else
-            if (((Button)sender).Name == nameof(Palette2Button))
+            else if (e.Button == MouseButtons.Right)
             {
-                _paletteIndex = 2;
+                var cd = new ColorDialog();
+                if (cd.ShowDialog() == DialogResult.OK)
+                {
+                    var clr = cd.Color;
 
+                    var pal = _graphics.GetPalette(_graphics.TileToPaletteMap[_selectedTileIndex]);
+                    var newPal = new TilePalette()
+                    {
+                        c1 = pal.c1,
+                        c2 = pal.c2,
+                        c3 = pal.c3
+                    };
+                    if (((Button)sender).Name == nameof(Palette1Button))
+                    {
+                        newPal.c1 = new RGB() { r = clr.R, g = clr.G, b = clr.B };
+                        Palette1Button.BackColor = clr;
+
+
+                    }
+                    if (((Button)sender).Name == nameof(Palette2Button))
+                    {
+                        newPal.c2 = new RGB() { r = clr.R, g = clr.G, b = clr.B };
+                        Palette2Button.BackColor = clr;
+
+
+                    }
+                    if (((Button)sender).Name == nameof(Palette3Button))
+                    {
+                        newPal.c3 = new RGB() { r = clr.R, g = clr.G, b = clr.B };
+                        Palette3Button.BackColor = clr;
+
+
+                    }
+                    _graphics.SetPalette(_graphics.TileToPaletteMap[_selectedTileIndex], newPal);
+
+                }
             }
-            else
-            if (((Button)sender).Name == nameof(Palette3Button))
-            {
-                _paletteIndex = 3;
-
-            }
-            else { _paletteIndex = 0; }
-
         }
     }
 }
