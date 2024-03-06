@@ -8,9 +8,13 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build":"msbuild",
-    "start":"cd example && npm install && npm run build && npm run start"
+    "build": "msbuild",
+    "start": "cd example && npm install && npm run build && npm run start",
+    "docs":"npx typedoc ./example/lib/microbe.d.ts --out ./docs"
   },
   "author": "Joel Longanecker",
-  "license": "GPL-3.0-only"
+  "license": "GPL-3.0-only",
+  "devDependencies": {
+    "typedoc": "^0.25.11"
+  }
 }
