@@ -74,6 +74,8 @@ namespace Microbe.Engine
         public DebugConsoleForm DebugConsole { get; set; }
         public DebugVramForm DebugVram { get; set; }
 
+        public MetaTileEditorForm MetaTileEditor { get; set; }
+
         public MicrobeFormMain(Jint.Engine engine, MicrobeGraphics microbeGraphics)
         {
             XInput.Wrapper.X.StartPolling(XInput.Wrapper.X.Gamepad_1);
@@ -90,6 +92,7 @@ namespace Microbe.Engine
             _main = null;
             KeyboardState = new CombinedState();
 
+            MetaTileEditor = new MetaTileEditorForm(_graphics);
 
         }
 
@@ -211,6 +214,7 @@ namespace Microbe.Engine
             var cmdArgs = Environment.CommandLine.Split(' ');
             var fName = "default.js";
 
+            MetaTileEditor.Show();
             // first argument is always the name of the executable.
             foreach (var arg in cmdArgs.Skip(1))
             {
