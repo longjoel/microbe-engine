@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +22,11 @@ namespace Microbe.Engine
             engine.SetValue("setTextColor", new Action<RGB>(rgb => graphics.SetTextColor(rgb)));
             engine.SetValue("setString", new Action<int, int, string>((a, b, c) => graphics.SetString(a, b, c)));
             engine.SetValue("setTilePalette", new Action<int, int>((a, b) => graphics.SetTilePalette(a, b)));
+            engine.SetValue("loadGfx", new Action<string>((fileName) => {
+                if (File.Exists(fileName)) {
+                    graphics.Deserialize(File.ReadAllText(fileName));
+                }
+            }));
         }
 
         public static void RegisterEventsToMainWindow(this Jint.Engine engine, MicrobeFormMain mainForm)

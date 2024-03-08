@@ -39,6 +39,8 @@
             this.Palette1Button = new System.Windows.Forms.Button();
             this.PaletteSelect = new System.Windows.Forms.ComboBox();
             this.ClearColor = new System.Windows.Forms.Button();
+            this.ExportButton = new System.Windows.Forms.Button();
+            this.ImportButton = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -62,7 +64,7 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 89.1516F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10.8484F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1268, 788);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1434, 923);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // splitContainer1
@@ -79,7 +81,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.TileEditPictureBox);
-            this.splitContainer1.Size = new System.Drawing.Size(1262, 696);
+            this.splitContainer1.Size = new System.Drawing.Size(1428, 816);
             this.splitContainer1.SplitterDistance = 234;
             this.splitContainer1.TabIndex = 0;
             this.splitContainer1.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitContainer1_SplitterMoved);
@@ -89,7 +91,7 @@
             this.TileSelectorPictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.TileSelectorPictureBox.Location = new System.Drawing.Point(0, 0);
             this.TileSelectorPictureBox.Name = "TileSelectorPictureBox";
-            this.TileSelectorPictureBox.Size = new System.Drawing.Size(234, 696);
+            this.TileSelectorPictureBox.Size = new System.Drawing.Size(234, 816);
             this.TileSelectorPictureBox.TabIndex = 0;
             this.TileSelectorPictureBox.TabStop = false;
             this.TileSelectorPictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.TileSelectorPictureBox_Paint);
@@ -112,10 +114,11 @@
             // flowLayoutPanel1
             // 
             this.flowLayoutPanel1.Controls.Add(this.tableLayoutPanel2);
-            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 705);
+            this.flowLayoutPanel1.Controls.Add(this.ExportButton);
+            this.flowLayoutPanel1.Controls.Add(this.ImportButton);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 825);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(1262, 80);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(1428, 95);
             this.flowLayoutPanel1.TabIndex = 1;
             // 
             // tableLayoutPanel2
@@ -136,7 +139,7 @@
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(759, 68);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(759, 83);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
             // Palette3Button
@@ -144,7 +147,7 @@
             this.Palette3Button.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Palette3Button.Location = new System.Drawing.Point(607, 3);
             this.Palette3Button.Name = "Palette3Button";
-            this.Palette3Button.Size = new System.Drawing.Size(149, 62);
+            this.Palette3Button.Size = new System.Drawing.Size(149, 77);
             this.Palette3Button.TabIndex = 4;
             this.Palette3Button.UseVisualStyleBackColor = true;
             this.Palette3Button.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ColorPickerClicked);
@@ -154,7 +157,7 @@
             this.Palette2Button.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Palette2Button.Location = new System.Drawing.Point(456, 3);
             this.Palette2Button.Name = "Palette2Button";
-            this.Palette2Button.Size = new System.Drawing.Size(145, 62);
+            this.Palette2Button.Size = new System.Drawing.Size(145, 77);
             this.Palette2Button.TabIndex = 3;
             this.Palette2Button.UseVisualStyleBackColor = true;
             this.Palette2Button.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ColorPickerClicked);
@@ -164,7 +167,7 @@
             this.Palette1Button.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Palette1Button.Location = new System.Drawing.Point(305, 3);
             this.Palette1Button.Name = "Palette1Button";
-            this.Palette1Button.Size = new System.Drawing.Size(145, 62);
+            this.Palette1Button.Size = new System.Drawing.Size(145, 77);
             this.Palette1Button.TabIndex = 0;
             this.Palette1Button.UseVisualStyleBackColor = true;
             this.Palette1Button.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ColorPickerClicked);
@@ -189,7 +192,7 @@
             "12",
             "13",
             "14"});
-            this.PaletteSelect.Location = new System.Drawing.Point(3, 20);
+            this.PaletteSelect.Location = new System.Drawing.Point(3, 27);
             this.PaletteSelect.Name = "PaletteSelect";
             this.PaletteSelect.Size = new System.Drawing.Size(145, 28);
             this.PaletteSelect.TabIndex = 1;
@@ -200,22 +203,43 @@
             this.ClearColor.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ClearColor.Location = new System.Drawing.Point(154, 3);
             this.ClearColor.Name = "ClearColor";
-            this.ClearColor.Size = new System.Drawing.Size(145, 62);
+            this.ClearColor.Size = new System.Drawing.Size(145, 77);
             this.ClearColor.TabIndex = 2;
             this.ClearColor.Text = "Clear";
             this.ClearColor.UseVisualStyleBackColor = true;
-            this.ClearColor .MouseClick += new System.Windows.Forms.MouseEventHandler(this.ColorPickerClicked);
-           
+            this.ClearColor.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ColorPickerClicked);
+            // 
+            // ExportButton
+            // 
+            this.ExportButton.Dock = System.Windows.Forms.DockStyle.Left;
+            this.ExportButton.Location = new System.Drawing.Point(768, 3);
+            this.ExportButton.Name = "ExportButton";
+            this.ExportButton.Size = new System.Drawing.Size(75, 83);
+            this.ExportButton.TabIndex = 1;
+            this.ExportButton.Text = "Export";
+            this.ExportButton.UseVisualStyleBackColor = true;
+            this.ExportButton.Click += new System.EventHandler(this.ExportButton_Click);
+            // 
+            // ImportButton
+            // 
+            this.ImportButton.Dock = System.Windows.Forms.DockStyle.Left;
+            this.ImportButton.Location = new System.Drawing.Point(849, 3);
+            this.ImportButton.Name = "ImportButton";
+            this.ImportButton.Size = new System.Drawing.Size(75, 83);
+            this.ImportButton.TabIndex = 2;
+            this.ImportButton.Text = "Import";
+            this.ImportButton.UseVisualStyleBackColor = true;
+            this.ImportButton.Click += new System.EventHandler(this.ImportButton_Click);
             // 
             // MetaTileEditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1268, 788);
+            this.ClientSize = new System.Drawing.Size(1434, 923);
             this.Controls.Add(this.tableLayoutPanel1);
             this.DoubleBuffered = true;
             this.Name = "MetaTileEditorForm";
-            this.Text = "MetaTileEditorForm";
+            this.ShowIcon = false;
             this.tableLayoutPanel1.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
@@ -242,5 +266,7 @@
         private System.Windows.Forms.Button Palette3Button;
         private System.Windows.Forms.Button Palette2Button;
         private System.Windows.Forms.Button ClearColor;
+        private System.Windows.Forms.Button ExportButton;
+        private System.Windows.Forms.Button ImportButton;
     }
 }
