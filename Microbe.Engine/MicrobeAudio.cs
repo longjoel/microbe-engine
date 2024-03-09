@@ -30,7 +30,11 @@ namespace Microbe.Engine
         private Dictionary<string, double> _notes;
         private SoundPlayer _bgMusicPlayer;
 
-        public List<string> Notes { get { return _notes.Keys.ToList(); } }
+        public List<string> Notes { get { 
+                
+                return 
+                    
+                    _notes.Keys.ToList(); } }
 
 
 
