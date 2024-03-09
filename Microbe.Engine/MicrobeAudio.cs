@@ -15,20 +15,29 @@ namespace Microbe.Engine
         public double sqv;      // square wave volume
         public double nv;       // noise volume
     }
+
+    public class Sample { 
+        public int IntervalMS { get; set; }
+        public List<SampleSegment> SampleSegments { get; set; }
+    }
     public class MicrobeAudio
     {
+        public Sample[] Samples { get; set; }
 
-        private byte[][] _samples;
+        private byte[][] _samplesCache;
+
 
         private Dictionary<string, double> _notes;
         private SoundPlayer _bgMusicPlayer;
+
+        public List<string> Notes { get { return _notes.Keys.ToList(); } }
 
 
 
         public MicrobeAudio()
         {
             _notes = new Dictionary<string, double>();
-            _samples = new byte[256][];
+            _samplesCache = new byte[256][];
             var noteFrequency = Properties.Resources.note_frequency.Split(new string[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries).Where(x=>x.Length>0).ToList();
             for (int i = 1; i < noteFrequency.Count(); i++)
             {
@@ -57,7 +66,7 @@ namespace Microbe.Engine
 
             var wav = MakeWave(sampleData.ToArray());
 
-            _samples[index] = wav;
+            _samplesCache[index] = wav;
         }
 
         public void PlayMusic(int sampleId)
@@ -67,7 +76,7 @@ namespace Microbe.Engine
                 _bgMusicPlayer.Stop();
                 _bgMusicPlayer.Dispose();
             }
-            using (var stream = new MemoryStream(_samples[sampleId]))
+            using (var stream = new MemoryStream(_samplesCache[sampleId]))
             {
                 _bgMusicPlayer = new SoundPlayer(stream);
                 _bgMusicPlayer.PlayLooping();
@@ -84,7 +93,7 @@ namespace Microbe.Engine
         }
 
         public void PlayEffect(int sampleId) {
-            using (var stream = new MemoryStream(_samples[sampleId]))
+            using (var stream = new MemoryStream(_samplesCache[sampleId]))
             {
                 using (var player = new SoundPlayer(stream))
                 {
