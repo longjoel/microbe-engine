@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.PickSampleListBox = new System.Windows.Forms.ListBox();
             this.SamplesDataGrid = new System.Windows.Forms.DataGridView();
@@ -87,8 +87,8 @@
             // SamplesDataGrid
             // 
             this.SamplesDataGrid.AllowUserToOrderColumns = true;
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.SamplesDataGrid.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.SamplesDataGrid.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.SamplesDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.SamplesDataGrid.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             this.SamplesDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -183,6 +183,11 @@
             // 
             this.SegmentLengthTextBox.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.SegmentLengthTextBox.Location = new System.Drawing.Point(176, 3);
+            this.SegmentLengthTextBox.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
             this.SegmentLengthTextBox.Name = "SegmentLengthTextBox";
             this.SegmentLengthTextBox.Size = new System.Drawing.Size(120, 26);
             this.SegmentLengthTextBox.TabIndex = 1;

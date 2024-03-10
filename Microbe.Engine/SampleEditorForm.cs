@@ -16,6 +16,8 @@ namespace Microbe.Engine
 
         public SampleEditorForm() : this(null) { }
 
+        private int _lastIndex = 0;
+
         public SampleEditorForm(MicrobeAudio audio)
         {
             Audio = audio;
@@ -49,17 +51,54 @@ namespace Microbe.Engine
         private void PickSampleListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+            var samples = BuildSamplesFromGrid();
+            Audio.SetSample(int.Parse((this.PickSampleListBox.SelectedValue ?? "0").ToString()), this._lastIndex, samples.ToArray());
+            this._lastIndex = (int)this.SegmentLengthTextBox.Value;
+            LoadSample(int.Parse((this.PickSampleListBox.SelectedValue ?? "0").ToString()));
+
+        }
+
+
+        void LoadSample(int index)
+        {
+            var sample = Audio.Samples[index];
+            this.SegmentLengthTextBox.Value = sample.SampleSegments.Count;
+            this.SamplesDataGrid.Rows.Clear();
+            foreach (var s in sample.SampleSegments)
+            {
+                var r = new DataGridViewRow();
+                r.Cells[nameof(NoiseVol)]=new DataGridViewTextBoxCell() { Value = s.sn };
+                r.Cells[nameof(SineNote)] = new DataGridViewTextBoxCell() { Value = s.sn };
+                r.Cells[nameof(SineVolume)] = new DataGridViewTextBoxCell() { Value = s.sv * 100.0 };
+                r.Cells[nameof(SquareNote)] = new DataGridViewTextBoxCell() { Value = s.sqn };
+                r.Cells[nameof(SquareVol)] = new DataGridViewTextBoxCell() { Value = s.sqv * 100.0 };
+                r.Cells[nameof(TriangleNote)] = new DataGridViewTextBoxCell() { Value = s.tn };
+                r.Cells[nameof(TriangleVol)] = new DataGridViewTextBoxCell() { Value = s.tv * 100.0 };
+                SamplesDataGrid.Rows.Add(r);
+            }
+
         }
 
         private void PlayButton_Click(object sender, EventArgs e)
         {
+            List<SampleSegment> samples = BuildSamplesFromGrid();
+
+            Audio.SetSample(int.Parse((this.PickSampleListBox.SelectedValue ?? "0").ToString()), (int)this.SegmentLengthTextBox.Value, samples.ToArray());
+            Audio.PlayEffect(int.Parse((this.PickSampleListBox.SelectedValue ?? "0").ToString()));
+        }
+
+        private List<SampleSegment> BuildSamplesFromGrid()
+        {
             var samples = new List<SampleSegment>();
 
-            var getVal = new Func<DataGridViewRow, string, string, string>((row, name, defaultVal) => {
+            var getVal = new Func<DataGridViewRow, string, string, string>((row, name, defaultVal) =>
+            {
 
                 var cell = row.Cells[name];
-                if (cell != null) {
-                    if (cell.Value != null) {
+                if (cell != null)
+                {
+                    if (cell.Value != null)
+                    {
 
                         return cell.Value.ToString();
                     }
@@ -69,38 +108,29 @@ namespace Microbe.Engine
                 return defaultVal;
             });
 
-            try
+            foreach (DataGridViewRow row in SamplesDataGrid.Rows)
             {
-                foreach (DataGridViewRow row in SamplesDataGrid.Rows)
+                if (row != null)
                 {
-                    if (row != null)
+                    samples.Add(new SampleSegment
                     {
-                        samples.Add(new SampleSegment
-                        {
-                            nv = double.Parse(getVal(row, nameof(NoiseVol), "0")) / 100.0,
-                            sn = getVal(row, nameof(SineNote), "C1"),
+                        nv = double.Parse(getVal(row, nameof(NoiseVol), "0")) / 100.0,
+                        sn = getVal(row, nameof(SineNote), "C1"),
 
-                            sv = double.Parse(getVal(row, nameof(SineVolume), "0")) / 100.0,
+                        sv = double.Parse(getVal(row, nameof(SineVolume), "0")) / 100.0,
 
-                            sqn = getVal(row, nameof(SquareNote), "C1"),
+                        sqn = getVal(row, nameof(SquareNote), "C1"),
 
-                            sqv = double.Parse(getVal(row, nameof(SquareVol), "0")) / 100.0,
+                        sqv = double.Parse(getVal(row, nameof(SquareVol), "0")) / 100.0,
 
-                            tn = getVal(row, nameof(TriangleNote), "C1"),
+                        tn = getVal(row, nameof(TriangleNote), "C1"),
 
-                            tv = double.Parse(getVal(row, nameof(TriangleVol), "0")) / 100.0,
-                        });
-                    }
+                        tv = double.Parse(getVal(row, nameof(TriangleVol), "0")) / 100.0,
+                    });
                 }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Make sure all your volume entries are numbers");
-                return;
-            }
 
-            Audio.SetSample(int.Parse((this.PickSampleListBox.SelectedValue ?? "0").ToString()), (int)this.SegmentLengthTextBox.Value, samples.ToArray());
-            Audio.PlayEffect(int.Parse((this.PickSampleListBox.SelectedValue ?? "0").ToString()));
+            return samples;
         }
 
         private void StopButton_Click(object sender, EventArgs e)

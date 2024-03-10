@@ -19,6 +19,12 @@ namespace Microbe.Engine
     public class Sample { 
         public int IntervalMS { get; set; }
         public List<SampleSegment> SampleSegments { get; set; }
+
+        public Sample()
+        {
+            SampleSegments = new List<SampleSegment>();
+            IntervalMS = 100;
+        }
     }
     public class MicrobeAudio
     {
@@ -42,6 +48,7 @@ namespace Microbe.Engine
         {
             _notes = new Dictionary<string, double>();
             _samplesCache = new byte[256][];
+            Samples = new Sample[256];
             var noteFrequency = Properties.Resources.note_frequency.Split(new string[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries).Where(x=>x.Length>0).ToList();
             for (int i = 1; i < noteFrequency.Count(); i++)
             {
