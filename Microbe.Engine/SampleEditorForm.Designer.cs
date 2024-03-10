@@ -28,10 +28,17 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.PickSampleListBox = new System.Windows.Forms.ListBox();
             this.SamplesDataGrid = new System.Windows.Forms.DataGridView();
+            this.SineNote = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.SineVolume = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TriangleNote = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.TriangleVol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SquareNote = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.SquareVol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NoiseVol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.SegmentLengthTextBox = new System.Windows.Forms.NumericUpDown();
@@ -40,13 +47,6 @@
             this.StopButton = new System.Windows.Forms.Button();
             this.ExportButton = new System.Windows.Forms.Button();
             this.ImportButton = new System.Windows.Forms.Button();
-            this.SineNote = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.SineVolume = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TriangleNote = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.TriangleVol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SquareNote = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.SquareVol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NoiseVol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SamplesDataGrid)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
@@ -82,12 +82,13 @@
             this.PickSampleListBox.Name = "PickSampleListBox";
             this.PickSampleListBox.Size = new System.Drawing.Size(217, 734);
             this.PickSampleListBox.TabIndex = 0;
+            this.PickSampleListBox.SelectedIndexChanged += new System.EventHandler(this.PickSampleListBox_SelectedIndexChanged);
             // 
             // SamplesDataGrid
             // 
             this.SamplesDataGrid.AllowUserToOrderColumns = true;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.SamplesDataGrid.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.SamplesDataGrid.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle5;
             this.SamplesDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.SamplesDataGrid.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             this.SamplesDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -109,6 +110,54 @@
             this.SamplesDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.SamplesDataGrid.Size = new System.Drawing.Size(1291, 734);
             this.SamplesDataGrid.TabIndex = 1;
+            // 
+            // SineNote
+            // 
+            this.SineNote.HeaderText = "Sine Note";
+            this.SineNote.MinimumWidth = 8;
+            this.SineNote.Name = "SineNote";
+            this.SineNote.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.SineNote.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // SineVolume
+            // 
+            this.SineVolume.HeaderText = "Sine Volume";
+            this.SineVolume.MinimumWidth = 8;
+            this.SineVolume.Name = "SineVolume";
+            // 
+            // TriangleNote
+            // 
+            this.TriangleNote.HeaderText = "Triangle Note";
+            this.TriangleNote.MinimumWidth = 8;
+            this.TriangleNote.Name = "TriangleNote";
+            this.TriangleNote.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.TriangleNote.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // TriangleVol
+            // 
+            this.TriangleVol.HeaderText = "Triangle Volume";
+            this.TriangleVol.MinimumWidth = 8;
+            this.TriangleVol.Name = "TriangleVol";
+            // 
+            // SquareNote
+            // 
+            this.SquareNote.HeaderText = "Square Note";
+            this.SquareNote.MinimumWidth = 8;
+            this.SquareNote.Name = "SquareNote";
+            this.SquareNote.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.SquareNote.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // SquareVol
+            // 
+            this.SquareVol.HeaderText = "Square Volume";
+            this.SquareVol.MinimumWidth = 8;
+            this.SquareVol.Name = "SquareVol";
+            // 
+            // NoiseVol
+            // 
+            this.NoiseVol.HeaderText = "Noise Volume";
+            this.NoiseVol.MinimumWidth = 8;
+            this.NoiseVol.Name = "NoiseVol";
             // 
             // flowLayoutPanel1
             // 
@@ -167,6 +216,7 @@
             this.PlayButton.TabIndex = 0;
             this.PlayButton.Text = "Play";
             this.PlayButton.UseVisualStyleBackColor = true;
+            this.PlayButton.Click += new System.EventHandler(this.PlayButton_Click);
             // 
             // StopButton
             // 
@@ -177,6 +227,7 @@
             this.StopButton.TabIndex = 1;
             this.StopButton.Text = "Stop";
             this.StopButton.UseVisualStyleBackColor = true;
+            this.StopButton.Click += new System.EventHandler(this.StopButton_Click);
             // 
             // ExportButton
             // 
@@ -187,6 +238,7 @@
             this.ExportButton.TabIndex = 2;
             this.ExportButton.Text = "Export";
             this.ExportButton.UseVisualStyleBackColor = true;
+            this.ExportButton.Click += new System.EventHandler(this.ExportButton_Click);
             // 
             // ImportButton
             // 
@@ -197,54 +249,7 @@
             this.ImportButton.TabIndex = 3;
             this.ImportButton.Text = "Import";
             this.ImportButton.UseVisualStyleBackColor = true;
-            // 
-            // SineNote
-            // 
-            this.SineNote.HeaderText = "Sine Note";
-            this.SineNote.MinimumWidth = 8;
-            this.SineNote.Name = "SineNote";
-            this.SineNote.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.SineNote.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
-            // SineVolume
-            // 
-            this.SineVolume.HeaderText = "Sine Volume";
-            this.SineVolume.MinimumWidth = 8;
-            this.SineVolume.Name = "SineVolume";
-            // 
-            // TriangleNote
-            // 
-            this.TriangleNote.HeaderText = "Triangle Note";
-            this.TriangleNote.MinimumWidth = 8;
-            this.TriangleNote.Name = "TriangleNote";
-            this.TriangleNote.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.TriangleNote.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
-            // TriangleVol
-            // 
-            this.TriangleVol.HeaderText = "Triangle Volume";
-            this.TriangleVol.MinimumWidth = 8;
-            this.TriangleVol.Name = "TriangleVol";
-            // 
-            // SquareNote
-            // 
-            this.SquareNote.HeaderText = "Square Note";
-            this.SquareNote.MinimumWidth = 8;
-            this.SquareNote.Name = "SquareNote";
-            this.SquareNote.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.SquareNote.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
-            // SquareVol
-            // 
-            this.SquareVol.HeaderText = "Square Volume";
-            this.SquareVol.MinimumWidth = 8;
-            this.SquareVol.Name = "SquareVol";
-            // 
-            // NoiseVol
-            // 
-            this.NoiseVol.HeaderText = "Noise Volume";
-            this.NoiseVol.MinimumWidth = 8;
-            this.NoiseVol.Name = "NoiseVol";
+            this.ImportButton.Click += new System.EventHandler(this.ImportButton_Click);
             // 
             // SampleEditorForm
             // 
