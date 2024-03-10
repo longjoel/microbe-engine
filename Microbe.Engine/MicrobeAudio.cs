@@ -49,6 +49,11 @@ namespace Microbe.Engine
             _notes = new Dictionary<string, double>();
             _samplesCache = new byte[256][];
             Samples = new Sample[256];
+            for(int i = 0; i < 256; i++)
+            {
+                Samples[i] = new Sample();
+                _samplesCache[i] = new byte[0];
+            }   
             var noteFrequency = Properties.Resources.note_frequency.Split(new string[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries).Where(x=>x.Length>0).ToList();
             for (int i = 1; i < noteFrequency.Count(); i++)
             {
@@ -60,6 +65,9 @@ namespace Microbe.Engine
 
         public void SetSample(int index, int intervalMS, SampleSegment[] musicSegments)
         {
+
+            Samples[index].IntervalMS = intervalMS;
+            Samples[index].SampleSegments = musicSegments.ToList();
 
             var sampleData = new List<byte>();
 
