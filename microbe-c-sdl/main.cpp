@@ -49,8 +49,10 @@ bool hasContent = false;
         if(!hasContent){
         
             // duk_eval_string_noresult(ctx, "setTile(0, [2,2,3,2,2,3,2,2, 2,2,2,3,2,2,2,2, 2,2,2,3,2,2,2,2, 2,2,0,0,2,2,2,2, 2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2]);");
+            duk_eval_string_noresult(ctx,"var s = getSprite(0); s.visible = true; s.tileIndex = 0; setSprite(0,getSprite(0));");
             duk_eval_string_noresult(ctx, "setString(0,0,\"  *Microbe Engine*\");");
             duk_eval_string_noresult(ctx, "setString(0,1,\"No Game Loaded.\");");
+            duk_eval_string_noresult(ctx,"setSprite(0,{x:0,y:0,tileIndex:0, visible:false, xFlipped:false,yFlipped:false});");
         }        
     
     bool isDone = false;
