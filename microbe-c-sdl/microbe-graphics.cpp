@@ -379,36 +379,23 @@ void updateVramCache()
     }
 }
 
-  void centerRectangle(SDL_Rect *outer, SDL_Rect *inner, SDL_Rect *result)
-        {
-            int x = outer->w / 2 - inner->w / 2;
-            int y = outer->h / 2 - inner->h / 2;
+SDL_Rect bestFit(SDL_Rect *source, SDL_Rect *target, SDL_Rect *result)
+{
+    double scale = floorf(fmin(target->w / (double)source->w, target->h / (double)source->h));
 
-            result ->x = x;
-            result ->y = y;
-            result ->w = inner->w;
-            result ->h = inner->h;
+    int adjustedWidth = (int)(source->w * scale);
+    int adjustedHeight = (int)(source->h * scale);
 
-        }
+    int x = target->x + (target->w - adjustedWidth) / 2;
+    int y = target->y + (target->h - adjustedHeight) / 2;
 
+    result->x = x;
+    result->y = y;
+    result->w = adjustedWidth;
+    result->h = adjustedHeight;
 
-        SDL_Rect bestFit(SDL_Rect *source, SDL_Rect *target, SDL_Rect *result) {
-            double scale = floorf(fmin(target->w / (double)source->w, target->h / (double)source->h));
-
-            int adjustedWidth = (int)(source->w * scale);
-            int adjustedHeight = (int)(source->h * scale);
-
-            int x = target->x + (target->w - adjustedWidth) / 2;
-            int y = target->y + (target->h - adjustedHeight) / 2;
-
-            result->x = x;
-            result->y = y;
-            result->w = adjustedWidth;
-            result->h = adjustedHeight;
-
-            return *result;
-        }
-
+    return *result;
+}
 
 void DrawToScreen(SDL_Surface *screenSurface)
 {
@@ -483,15 +470,14 @@ void DrawToScreen(SDL_Surface *screenSurface)
         SDL_BlitScaled(microbe_textCache, NULL, microbe_framebufferCache, NULL);
 
         SDL_Rect inner = {0, 0, 160, 144};
-        SDL_Rect outer = {0,0,screenSurface->w,screenSurface->h}; 
-        SDL_Rect destRect ;
+        SDL_Rect outer = {0, 0, screenSurface->w, screenSurface->h};
+        SDL_Rect destRect;
 
         // Get the SDL window size
-      
 
         // Calculate the aspect ratio of the window
-        bestFit( &inner, &outer, &destRect);
-        
+        bestFit(&inner, &outer, &destRect);
+
         SDL_BlitScaled(microbe_framebufferCache, &inner, screenSurface, &destRect);
         microbe_isDirty = false;
     }
