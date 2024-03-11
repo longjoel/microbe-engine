@@ -1,6 +1,6 @@
 var arr = new Array(64);
 for(var i = 0; i < 64; i++) {
-    arr[i]= (i %2)+1;
+    arr[i]= (i %3)+1;
 }
 setTile(0, arr);
 

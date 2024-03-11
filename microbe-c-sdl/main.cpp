@@ -6,6 +6,7 @@
 #include <SDL2/SDL.h>
 #include "duktape.h"
 #include "microbe.h"
+#include "main.h"
 
 duk_context *ctx; /**< The Duktape context used for JavaScript evaluation. */
 
@@ -42,35 +43,19 @@ int main(int argc, char *argv[])
     if (argc > 1)
     {
         FILE *file = fopen(argv[1], "r");
-        if (file)
-        {
-            // Read the contents of the file
-            fseek(file, 0, SEEK_END);
-            long fileSize = ftell(file);
-            fseek(file, 0, SEEK_SET);
-            char *fileContents = new char[fileSize + 1];
-            fread(fileContents, 1, fileSize, file);
-            fileContents[fileSize] = '\0';
-
-            // Evaluate the contents of the file in the Duktape context
-            duk_eval_string_noresult(ctx, fileContents);
-
-            // Clean up
-            delete[] fileContents;
-            fclose(file);
-            hasContent = true;
-        }
+        evalFile(file, hasContent);
     }
 
     if (!hasContent)
     {
 
-        // duk_eval_string_noresult(ctx, "setTile(0, [2,2,3,2,2,3,2,2, 2,2,2,3,2,2,2,2, 2,2,2,3,2,2,2,2, 2,2,0,0,2,2,2,2, 2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2]);");
-        duk_eval_string_noresult(ctx, "var s = getSprite(0); s.visible = true; s.tileIndex = 0; setSprite(0,getSprite(0));");
         duk_eval_string_noresult(ctx, "setString(0,0,\"  *Microbe Engine*\");");
         duk_eval_string_noresult(ctx, "setString(0,1,\"No Game Loaded.\");");
-        duk_eval_string_noresult(ctx, "setSprite(0,{x:0,y:0,tileIndex:0, visible:false, xFlipped:false,yFlipped:false});");
-    }
+        duk_eval_string_noresult(ctx, "setString(0,3,\"Drag and drop a\");");
+        duk_eval_string_noresult(ctx, "setString(0,4,\"game file onto \");");
+        duk_eval_string_noresult(ctx, "setString(0,5,\"the window to \");");
+        duk_eval_string_noresult(ctx, "setString(0,6,\"load it.\");");
+         }
 
     bool isDone = false;
     while (!isDone)
@@ -82,6 +67,13 @@ int main(int argc, char *argv[])
             {
                 isDone = true;
                 break;
+            }
+
+            if(event.type == SDL_DROPFILE)
+            {
+                FILE *file = fopen(event.drop.file, "r");
+                evalFile(file, hasContent);
+                SDL_free(event.drop.file);
             }
         }
 
@@ -100,4 +92,26 @@ int main(int argc, char *argv[])
     cleanDuktape();
 
     return 0;
+}
+
+void evalFile(FILE *file, bool &hasContent)
+{
+    if (file)
+    {
+        // Read the contents of the file
+        fseek(file, 0, SEEK_END);
+        long fileSize = ftell(file);
+        fseek(file, 0, SEEK_SET);
+        char *fileContents = new char[fileSize + 1];
+        fread(fileContents, 1, fileSize, file);
+        fileContents[fileSize] = '\0';
+
+        // Evaluate the contents of the file in the Duktape context
+        duk_eval_string_noresult(ctx, fileContents);
+
+        // Clean up
+        delete[] fileContents;
+        fclose(file);
+        hasContent = true;
+    }
 }
