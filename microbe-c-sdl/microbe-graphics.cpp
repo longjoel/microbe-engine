@@ -43,15 +43,16 @@ SDL_Window *initGraphics()
     microbe_textCache = SDL_CreateRGBSurfaceWithFormat(0, 20 * 8, 18 * 8, 32, SDL_PIXELFORMAT_RGBA8888);
     microbe_framebufferCache = SDL_CreateRGBSurfaceWithFormat(0, 160, 144, 32, SDL_PIXELFORMAT_RGBA8888);
 
-for(int i =0;i<256;i++){ 
-    microbe_sprites[i].x = 0;
-    microbe_sprites[i].y = 0;
-    microbe_sprites[i].background = false;
-    microbe_sprites[i].tileIndex = 0;
-    microbe_sprites[i].visible = false;
-    microbe_sprites[i].xFlipped = false;
-    microbe_sprites[i].yFlipped = false;
-   }
+    for (int i = 0; i < 256; i++)
+    {
+        microbe_sprites[i].x = 0;
+        microbe_sprites[i].y = 0;
+        microbe_sprites[i].background = false;
+        microbe_sprites[i].tileIndex = 0;
+        microbe_sprites[i].visible = false;
+        microbe_sprites[i].xFlipped = false;
+        microbe_sprites[i].yFlipped = false;
+    }
 
     microbe_font = TTF_OpenFont("font.ttf", 8);
 
@@ -154,13 +155,13 @@ duk_ret_t setSprite(duk_context *ctx)
 {
 
     int index = duk_require_int(ctx, 0);
-    sprite_t* sprite = &microbe_sprites[index];
+    sprite_t *sprite = &microbe_sprites[index];
 
     duk_get_prop_string(ctx, 1, "x");
-   sprite->x = duk_get_int(ctx, -1);
+    sprite->x = duk_get_int(ctx, -1);
     duk_pop(ctx);
 
-    duk_get_prop_string(ctx, 1, "y");   
+    duk_get_prop_string(ctx, 1, "y");
     sprite->y = duk_get_int(ctx, -1);
     duk_pop(ctx);
 
@@ -179,7 +180,6 @@ duk_ret_t setSprite(duk_context *ctx)
     duk_get_prop_string(ctx, 1, "yFlipped");
     sprite->yFlipped = duk_get_boolean(ctx, -1);
     duk_pop(ctx);
-    
 
     return 0;
 }
@@ -379,6 +379,37 @@ void updateVramCache()
     }
 }
 
+  void centerRectangle(SDL_Rect *outer, SDL_Rect *inner, SDL_Rect *result)
+        {
+            int x = outer->w / 2 - inner->w / 2;
+            int y = outer->h / 2 - inner->h / 2;
+
+            result ->x = x;
+            result ->y = y;
+            result ->w = inner->w;
+            result ->h = inner->h;
+
+        }
+
+
+        SDL_Rect bestFit(SDL_Rect *source, SDL_Rect *target, SDL_Rect *result) {
+            double scale = floorf(fmin(target->w / (double)source->w, target->h / (double)source->h));
+
+            int adjustedWidth = (int)(source->w * scale);
+            int adjustedHeight = (int)(source->h * scale);
+
+            int x = target->x + (target->w - adjustedWidth) / 2;
+            int y = target->y + (target->h - adjustedHeight) / 2;
+
+            result->x = x;
+            result->y = y;
+            result->w = adjustedWidth;
+            result->h = adjustedHeight;
+
+            return *result;
+        }
+
+
 void DrawToScreen(SDL_Surface *screenSurface)
 {
 
@@ -451,7 +482,17 @@ void DrawToScreen(SDL_Surface *screenSurface)
 
         SDL_BlitScaled(microbe_textCache, NULL, microbe_framebufferCache, NULL);
 
-        SDL_BlitScaled(microbe_framebufferCache, NULL, screenSurface, NULL);
+        SDL_Rect inner = {0, 0, 160, 144};
+        SDL_Rect outer = {0,0,screenSurface->w,screenSurface->h}; 
+        SDL_Rect destRect ;
+
+        // Get the SDL window size
+      
+
+        // Calculate the aspect ratio of the window
+        bestFit( &inner, &outer, &destRect);
+        
+        SDL_BlitScaled(microbe_framebufferCache, &inner, screenSurface, &destRect);
         microbe_isDirty = false;
     }
 }
