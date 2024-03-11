@@ -3,6 +3,12 @@
 input_state_t inputState;
 SDL_GameController *gameController;
 
+/**
+ * Retrieves input from the user.
+ *
+ * @param ctx The Duktape context.
+ * @return The return value.
+ */
 duk_ret_t getInput(duk_context *ctx)
 {
 

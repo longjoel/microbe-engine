@@ -1,16 +1,30 @@
 #ifndef __MICROBE__H__
 #define __MICROBE__H__
 
-#define     MAX_TILES   256
+/*
+    This header file defines the interface for the Microbe Engine, a simple game engine built using SDL and Duktape.
+    It provides functions for graphics rendering and input handling.
+
+    Structures:
+    - sprite_t: Represents a sprite with its position, tile index, visibility, and flipping properties.
+    - input_state_t: Represents the state of various input buttons.
+
+    Functions:
+    - initDuktapeGraphics: Initializes the Duktape graphics module.
+    - initDuktapeInput: Initializes the Duktape input module.
+    - initGraphics: Initializes the SDL graphics system and returns the main window.
+    - DrawToScreen: Renders the screen surface to the main window.
+
+    Constants:
+    - MAX_TILES: Maximum number of tiles supported.
+
+    Dependencies:
+    - SDL2/SDL.h: SDL library header file.
+    - duktape.h: Duktape library header file.
+*/
 
 #include <SDL2/SDL.h>
 #include "duktape.h"
-
-
-/*
-    Graphics Functions
-
-*/
 
 typedef struct {
     int x;
@@ -23,18 +37,17 @@ typedef struct {
 } sprite_t;
 
 typedef struct {
-bool up;
-bool down;
-bool left;
-bool right;
-bool a;
-bool b;
-bool start;
-bool select;
+    bool up;
+    bool down;
+    bool left;
+    bool right;
+    bool a;
+    bool b;
+    bool start;
+    bool select;
 } input_state_t;
 
 typedef unsigned char byte_t;
-
 
 void initDuktapeGraphics(duk_context *ctx);
 

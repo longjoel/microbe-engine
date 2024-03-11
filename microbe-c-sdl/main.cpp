@@ -1,14 +1,29 @@
+/**
+ * @file main.cpp
+ * @brief Entry point of the Microbe Engine application.
+ */
+
 #include <SDL2/SDL.h>
 #include "duktape.h"
 #include "microbe.h"
 
-duk_context *ctx;
+duk_context *ctx; /**< The Duktape context used for JavaScript evaluation. */
 
+/**
+ * @brief Cleans up the Duktape context.
+ */
 void cleanDuktape()
 {
     duk_destroy_heap(ctx);
 }
 
+/**
+ * @brief The main function of the Microbe Engine application.
+ * 
+ * @param argc The number of command-line arguments.
+ * @param argv The command-line arguments.
+ * @return The exit status of the application.
+ */
 int main(int argc, char *argv[])
 {
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_AUDIO);
@@ -22,7 +37,7 @@ int main(int argc, char *argv[])
     initDuktapeGraphics(ctx);
     initDuktapeInput(ctx);
 
-bool hasContent = false;
+    bool hasContent = false;
 
     if (argc > 1)
     {
@@ -44,17 +59,19 @@ bool hasContent = false;
             delete[] fileContents;
             fclose(file);
             hasContent = true;
-        }}
+        }
+    }
 
-        if(!hasContent){
-        
-            // duk_eval_string_noresult(ctx, "setTile(0, [2,2,3,2,2,3,2,2, 2,2,2,3,2,2,2,2, 2,2,2,3,2,2,2,2, 2,2,0,0,2,2,2,2, 2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2]);");
-            duk_eval_string_noresult(ctx,"var s = getSprite(0); s.visible = true; s.tileIndex = 0; setSprite(0,getSprite(0));");
-            duk_eval_string_noresult(ctx, "setString(0,0,\"  *Microbe Engine*\");");
-            duk_eval_string_noresult(ctx, "setString(0,1,\"No Game Loaded.\");");
-            duk_eval_string_noresult(ctx,"setSprite(0,{x:0,y:0,tileIndex:0, visible:false, xFlipped:false,yFlipped:false});");
-        }        
-    
+    if (!hasContent)
+    {
+
+        // duk_eval_string_noresult(ctx, "setTile(0, [2,2,3,2,2,3,2,2, 2,2,2,3,2,2,2,2, 2,2,2,3,2,2,2,2, 2,2,0,0,2,2,2,2, 2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2]);");
+        duk_eval_string_noresult(ctx, "var s = getSprite(0); s.visible = true; s.tileIndex = 0; setSprite(0,getSprite(0));");
+        duk_eval_string_noresult(ctx, "setString(0,0,\"  *Microbe Engine*\");");
+        duk_eval_string_noresult(ctx, "setString(0,1,\"No Game Loaded.\");");
+        duk_eval_string_noresult(ctx, "setSprite(0,{x:0,y:0,tileIndex:0, visible:false, xFlipped:false,yFlipped:false});");
+    }
+
     bool isDone = false;
     while (!isDone)
     {

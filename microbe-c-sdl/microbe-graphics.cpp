@@ -3,6 +3,8 @@
 #include <SDL2/SDL_ttf.h>
 #include "duktape.h"
 
+#define MAX_TILES 256
+
 SDL_Surface *microbe_tiles_cache[MAX_TILES];
 
 TTF_Font *microbe_font;
@@ -108,7 +110,7 @@ duk_ret_t setTile(duk_context *ctx)
     }
 
     SDL_LockSurface(microbe_tiles_cache[index]);
-    auto *pixels = (uint32_t *)microbe_tiles_cache[index]->pixels;
+    uint32_t *pixels = (uint32_t *)microbe_tiles_cache[index]->pixels;
     for (int i = 0; i < 64; i++)
     {
         duk_get_prop_index(ctx, 1, i);
