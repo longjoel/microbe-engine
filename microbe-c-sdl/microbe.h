@@ -52,6 +52,9 @@ typedef unsigned char byte_t;
 void initDuktapeGraphics(duk_context *ctx);
 
 void initDuktapeInput(duk_context *ctx);
+
+void initDuktapeAudio(duk_context *ctx);
+
 void evalFile(FILE *file, bool &hasContent);
 
 SDL_Window *initGraphics();
