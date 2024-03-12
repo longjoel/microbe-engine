@@ -6,7 +6,6 @@
 #include <SDL2/SDL.h>
 #include "duktape.h"
 #include "microbe.h"
-#include "main.h"
 
 duk_context *ctx; /**< The Duktape context used for JavaScript evaluation. */
 
