@@ -1,6 +1,7 @@
 #include "microbe.h"
 #include "SDL2/SDL_mixer.h"
 #include "duktape.h"
+#include <vector>
 
 Mix_Chunk *samples[256];
 
@@ -44,7 +45,7 @@ duk_ret_t playEffect(duk_context *ctx)
 duk_ret_t playMusic(duk_context *ctx)
 {
     int index = duk_require_int(ctx, 0);
-   Mix_PlayChannel(-1, samples[index], -1);
+    Mix_PlayChannel(-1, samples[index], -1);
     return 0;
 }
 
@@ -54,14 +55,13 @@ duk_ret_t stopMusic(duk_context *ctx)
     return 0;
 }
 
-
-
 Mix_Chunk *createSample(sample_segment_t *segments, int numSegments, int segmentDurrationMs)
 {
+    int segmentSize = segmentDurrationMs * 44.1;
+    std::vector<uint8_t> sample;
     for (int i = 0; i < numSegments; i++)
     {
-        int segmentSize = segmentDurrationMs * 44.1;
-        Uint8 *segment = (Uint8 *)malloc(segmentSize);
+
         for (int j = 0; j < segmentSize; j++)
         {
             int sampleValue = 0;
@@ -81,11 +81,10 @@ Mix_Chunk *createSample(sample_segment_t *segments, int numSegments, int segment
             {
                 sampleValue += (int)(sin(2 * M_PI * j * segments[i].sqn / 44100) * segments[i].sqv);
             }
-            segment[j] = (Uint8)(sampleValue / 4);
+            sample.push_back((Uint8)(sampleValue / 4));
         }
-        return Mix_QuickLoad_RAW(segment, segmentSize);
-        free(segment);
     }
+    return Mix_QuickLoad_RAW(sample.data(), segmentSize);
 }
 void duk_require_array(duk_context *ctx, duk_idx_t index)
 {
@@ -148,10 +147,11 @@ duk_ret_t setSample(duk_context *ctx)
 duk_ret_t setSampleRaw(duk_context *ctx)
 {
     int index = duk_require_int(ctx, 0);
-   // duk_require_array(ctx, 1);
+    // duk_require_array(ctx, 1);
     int numSegments = duk_get_length(ctx, 1);
     byte_t *data = (byte_t *)malloc(numSegments * sizeof(byte_t));
-    for(int i = 0; i < numSegments; i++){
+    for (int i = 0; i < numSegments; i++)
+    {
         duk_get_prop_index(ctx, 1, i);
         data[i] = duk_require_int(ctx, -1);
         duk_pop(ctx);
@@ -160,5 +160,4 @@ duk_ret_t setSampleRaw(duk_context *ctx)
     samples[index] = chunk;
 
     return 0;
-
 }

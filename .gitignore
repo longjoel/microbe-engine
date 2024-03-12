@@ -374,3 +374,4 @@ microbe-c-sdl/microbe.bin
 *.o
 microbe-c-sdl/myapp.exe
 microbe-engine.exe
+microbe-c-sdl/microbe-engine
