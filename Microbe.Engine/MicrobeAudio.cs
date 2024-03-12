@@ -62,7 +62,10 @@ namespace Microbe.Engine
                 _notes[parts[0].Trim()] = double.Parse(parts[1]);
             }
         }
-
+        public void SetSampleRaw(int index, byte[] sampleData)
+        {
+            _samplesCache[index] = MakeWave(sampleData);
+        }
         public void SetSample(int index, int intervalMS, SampleSegment[] musicSegments)
         {
 

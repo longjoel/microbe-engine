@@ -36,6 +36,7 @@ int main(int argc, char *argv[])
 
     initDuktapeGraphics(ctx);
     initDuktapeInput(ctx);
+    initDuktapeAudio(ctx);
 
     bool hasContent = false;
 

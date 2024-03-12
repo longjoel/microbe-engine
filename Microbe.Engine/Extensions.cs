@@ -22,8 +22,10 @@ namespace Microbe.Engine
             engine.SetValue("setTextColor", new Action<RGB>(rgb => graphics.SetTextColor(rgb)));
             engine.SetValue("setString", new Action<int, int, string>((a, b, c) => graphics.SetString(a, b, c)));
             engine.SetValue("setTilePalette", new Action<int, int>((a, b) => graphics.SetTilePalette(a, b)));
-            engine.SetValue("loadGfx", new Action<string>((fileName) => {
-                if (File.Exists(fileName)) {
+            engine.SetValue("loadGfx", new Action<string>((fileName) =>
+            {
+                if (File.Exists(fileName))
+                {
                     graphics.Deserialize(File.ReadAllText(fileName));
                 }
             }));
@@ -39,7 +41,8 @@ namespace Microbe.Engine
             engine.SetValue("getGamepadState", new Func<CombinedState>(() => { return mainForm.GamepadState; }));
             //engine.SetValue("sync", mainForm.Sync);
 
-            engine.SetValue("log", new Action<string>((s) => {
+            engine.SetValue("log", new Action<string>((s) =>
+            {
                 if (mainForm.DebugConsole != null && mainForm.DebugConsole.Visible)
                 {
                     mainForm.DebugConsole.Log(s);
@@ -54,6 +57,7 @@ namespace Microbe.Engine
             engine.SetValue("playMusic", new Action<int>(a => audio.PlayMusic(a)));
             engine.SetValue("playEffect", new Action<int>(a => audio.PlayEffect(a)));
             engine.SetValue("stopMusic", new Action(() => audio.StopMusic()));
+            engine.SetValue("setSampleRaw", new Action<int, byte[]>((a, b) => audio.SetSampleRaw(a, b)));
 
         }
 

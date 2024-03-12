@@ -177,3 +177,8 @@ declare function playEffect(index: number): void;
  * Stops the currently playing music.
  */
 declare function stopMusic(): void;
+
+/**
+ * set raw data for the sample.
+ */
+declare function setSampleRaw(index:number, data:Uint8Array):void;
