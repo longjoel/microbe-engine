@@ -2,6 +2,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include "duktape.h"
+#include "font.h"
 
 #define MAX_TILES 256
 
@@ -54,7 +55,8 @@ SDL_Window *initGraphics()
         microbe_sprites[i].yFlipped = false;
     }
 
-    microbe_font = TTF_OpenFont("font.ttf", 8);
+ SDL_RWops *fontRW = SDL_RWFromMem(font_ttf, font_ttf_len);
+    microbe_font = TTF_OpenFontRW(fontRW, 1, 8);
 
     if (microbe_font == NULL)
     {
