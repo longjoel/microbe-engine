@@ -47,6 +47,17 @@ typedef struct {
     bool select;
 } input_state_t;
 
+typedef struct
+{
+    int sn;  // sine wave note
+    int sv;  // sine wave volume
+    int tn;  // triangle wave note
+    int tv;  // triangle wave volume
+    int nv;  // noise volume
+    int sqn; // square wave note
+    int sqv; // square wave volume
+} sample_segment_t;
+
 typedef unsigned char byte_t;
 
 void initDuktapeGraphics(duk_context *ctx);
