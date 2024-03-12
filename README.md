@@ -41,3 +41,5 @@ The virtual gamepad supports Up, Down, Left, Right, A, B, Start, and Select.
 This can either be done with a real xinput compatable gamepad or with a keyboard where the arrow keys represent up, down, left, and right, z and x are mapped to A and B, Escape is select, and Enter is Right.
 
 At some point, it will be possible to read and save data as JSON objects.
+
+There will be two versions of the microburnt time. The first version is powered by net and has built in debugging and editing tools. The second version is C runtime Targeted at portable devices and video game consoles. 

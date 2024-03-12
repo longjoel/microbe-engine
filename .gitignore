@@ -366,3 +366,11 @@ bin/
 node_modules/
 .vs/
 .github/
+microbe-c-sdl/microbe.bin
+.vscode/launch.json
+.vscode/tasks.json
+
+
+*.o
+microbe-c-sdl/myapp.exe
+microbe-engine.exe
