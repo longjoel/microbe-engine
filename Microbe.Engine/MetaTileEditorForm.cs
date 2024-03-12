@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -61,6 +62,7 @@ namespace Microbe.Engine
                 PaletteSelect.Items.Add(i);
             }
             SetPalette();
+            this.PaletteSelect.Text = "0";
 
         }
 
@@ -289,5 +291,31 @@ namespace Microbe.Engine
                 }
             }
         }
+
+        private void ExportButton_Click(object sender, EventArgs e)
+        {
+            var sfd = new SaveFileDialog();
+            sfd.Filter = "Microbe Graphics Format (*.micgfx)|*.micgfx";
+            if (sfd.ShowDialog() == DialogResult.OK) {
+
+                File.WriteAllText(sfd.FileName, _graphics.Serialize());
+
+            }
+
+            
+        }
+
+        private void ImportButton_Click(object sender, EventArgs e)
+        {
+            var ofd = new OpenFileDialog();
+                ofd.Filter = "Microbe Graphics Format (*.micgfx)|*.micgfx";
+            if (ofd.ShowDialog() == DialogResult.OK) {
+                _graphics.Deserialize(File.ReadAllText(ofd.FileName));
+                _selectedTileIndex = 0;
+                this.PaletteSelect.Text = _graphics.TileToPaletteMap[_selectedTileIndex].ToString();
+                SetPalette();
+            }
+        
+    }
     }
 }

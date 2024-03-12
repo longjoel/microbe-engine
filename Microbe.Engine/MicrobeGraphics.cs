@@ -1,6 +1,8 @@
-﻿using System;
+﻿using ICSharpCode.TextEditor.Document;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.Linq;
 using System.Reflection;
@@ -53,6 +55,7 @@ namespace Microbe.Engine
         private Bitmap _textBufferCache;
         private Color _textColor;
 
+
         public TilePalette[] TileColors { get; set; }
 
         public byte[] TileToPaletteMap { get; set; }
@@ -72,15 +75,18 @@ namespace Microbe.Engine
 
         private bool _isDirty;
 
-        public Bitmap DEBUG_GetTileData() {
-            var bmp = new Bitmap(8*8, 8*32);
-            using (var ctx = Graphics.FromImage(bmp)) {
-                ctx.FillRectangle(Brushes.Black, new Rectangle(0, 0, 8*8, 32*8));
+        public Bitmap DEBUG_GetTileData()
+        {
+            var bmp = new Bitmap(8 * 8, 8 * 32);
+            using (var ctx = Graphics.FromImage(bmp))
+            {
+                ctx.FillRectangle(Brushes.Black, new Rectangle(0, 0, 8 * 8, 32 * 8));
                 var i = 0;
-                for (int y = 0; y <32;y++) {
+                for (int y = 0; y < 32; y++)
+                {
                     for (int x = 0; x < 8; x++)
                     {
-                        ctx.DrawImage(TileDataCache[i++], new Rectangle( x*8,y*8, 8, 8));
+                        ctx.DrawImage(TileDataCache[i++], new Rectangle(x * 8, y * 8, 8, 8));
                     }
                 }
 
@@ -90,16 +96,18 @@ namespace Microbe.Engine
 
         public Bitmap DEBUG_GetVram()
         {
-            var bmp = new Bitmap(256,256);
+            var bmp = new Bitmap(256, 256);
             using (var ctx = Graphics.FromImage(bmp))
             {
                 ctx.FillRectangle(Brushes.Black, new Rectangle(0, 0, 256, 256));
                 ctx.DrawImage(_vramCache, new Rectangle(0, 0, 256, 256));
 
-                for (int i = -1; i <= 1; i++) {
-                    for (int j = -1; j <= 1; j++) {
+                for (int i = -1; i <= 1; i++)
+                {
+                    for (int j = -1; j <= 1; j++)
+                    {
 
-                        ctx.DrawRectangle(Pens.Red, new Rectangle(_scrollX + (j*256), _scrollY+  (i*256), 160, 144));
+                        ctx.DrawRectangle(Pens.Red, new Rectangle(_scrollX + (j * 256), _scrollY + (i * 256), 160, 144));
 
                     }
                 }
@@ -141,11 +149,12 @@ namespace Microbe.Engine
                 for (int x = 0; x < 8; x++)
                 {
                     Color c = Color.Transparent;
-                    switch (_tileData[i][y * 8 + x]){
-                        case 0:c = Color.Transparent; break;
-                        case 1:c = TileColors[TileToPaletteMap[i]].c1.ToColor(); break;
-                        case 2:c = TileColors[TileToPaletteMap[i]].c2.ToColor(); break;
-                        case 3:c = TileColors[TileToPaletteMap[i]].c3.ToColor(); break;
+                    switch (_tileData[i][y * 8 + x])
+                    {
+                        case 0: c = Color.Transparent; break;
+                        case 1: c = TileColors[TileToPaletteMap[i]].c1.ToColor(); break;
+                        case 2: c = TileColors[TileToPaletteMap[i]].c2.ToColor(); break;
+                        case 3: c = TileColors[TileToPaletteMap[i]].c3.ToColor(); break;
                     }
                     TileDataCache[i].SetPixel(x, y, c);
                 }
@@ -263,9 +272,9 @@ namespace Microbe.Engine
                 {
                     using (var pfc = new PrivateFontCollection())
                     {
-                        
+
                         AddFont(pfc, Properties.Resources.font);
-                        
+
                         var fam = pfc.Families[0];
 
                         using (var textFont = new Font(fam, 8, GraphicsUnit.Pixel))
@@ -288,7 +297,7 @@ namespace Microbe.Engine
             }
         }
 
-     
+
 
         public MicrobeGraphics()
         {
@@ -333,7 +342,8 @@ namespace Microbe.Engine
 
         }
 
-        public void SetTilePalette(int tileIndex, int paletteIndex) {
+        public void SetTilePalette(int tileIndex, int paletteIndex)
+        {
             TileToPaletteMap[tileIndex] = (byte)paletteIndex;
             CopyTileToCache(tileIndex);
             _isDirty = true;
@@ -382,7 +392,8 @@ namespace Microbe.Engine
             _isDirty = true;
         }
 
-        public byte[] GetTileData(int tileIndex) {
+        public byte[] GetTileData(int tileIndex)
+        {
             return _tileData[tileIndex];
         }
         public void SetVramData(int x, int y, byte tileIndex)
@@ -416,7 +427,8 @@ namespace Microbe.Engine
         {
             e.Graphics.Clear(Color.Black);
 
-            if (_isDirty) {
+            if (_isDirty)
+            {
                 _isDirty = false;
 
                 FixSpriteAlignment();
@@ -434,11 +446,112 @@ namespace Microbe.Engine
 
 
             e.Graphics.DrawImage(_framebufferCache,
-                CenterRectangle(e.ClipRectangle,new Rectangle(0, 0, _framebufferCache.Width*scale, _framebufferCache.Height*scale)),
+                CenterRectangle(e.ClipRectangle, new Rectangle(0, 0, _framebufferCache.Width * scale, _framebufferCache.Height * scale)),
                 new Rectangle(0, 0, 160, 144), GraphicsUnit.Pixel);
 
         }
 
+
+        public string Serialize()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("[TILES]");
+            for (int i = 0; i < 256; i++)
+            {
+                // write the tiles
+                for (int j = 0; j < 64; j++)
+                {
+                    sb.Append(_tileData[i][j]);
+                }
+            }
+            sb.AppendLine();
+
+            sb.AppendLine("[PALETTE]");
+            for (int i = 0; i < 256; i++)
+            {
+                sb.AppendLine($"{this.TileColors[i].c1.r},{this.TileColors[i].c1.g},{this.TileColors[i].c1.b},{this.TileColors[i].c2.g},{this.TileColors[i].c2.g},{this.TileColors[i].c2.g},{this.TileColors[i].c3.g},{this.TileColors[i].c3.g},{this.TileColors[i].c3.g}");
+               
+            }
+            sb.AppendLine();
+            sb.AppendLine("[TILE_PALETTE]");
+            sb.AppendLine(string.Join(",", this.TileToPaletteMap));
+
+            return sb.ToString();
+        }
+
+        public void Deserialize(string source) {
+
+            var lines = source.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+            string segment = "";
+            var tileIndex = 0;
+            var pixelIndex = 0;
+
+            var palIndex = 0;
+            var tpIndex = 0;
+
+            for (int i = 0; i < lines.Length; i++) {
+                var lineText = lines[i];
+
+                if (lineText == "[TILES]")
+                {
+                    segment = "[TILES]";
+                }
+                else
+                if (lineText == "[PALETTE]")
+                {
+                    segment = "[PALETTE]";
+                }
+                else
+                if (lineText == "[TILE_PALETTE]")
+                {
+                    segment = "[TILE_PALETE]";
+                }
+                else {
+
+                    if (segment == "[TILES]") {
+                        var chars = lineText.ToCharArray();
+                        foreach (var c in chars) {
+                            var num = int.Parse(c.ToString());
+                            _tileData[tileIndex][pixelIndex] = (byte)num;
+                            pixelIndex++;
+                            if (pixelIndex >= 64) {
+                                pixelIndex = 0;
+                                tileIndex++;
+                            }
+                        }
+                    }
+
+                    if (segment == "[PALETTE]") {
+                        var p = lineText.Split(',');
+                        TileColors[palIndex] = new TilePalette() { 
+                        c1 = new RGB { r = byte.Parse(p[0]), g= byte.Parse(p[1]),b= byte.Parse(p[2]) },
+                        c2 = new RGB { r = byte.Parse(p[3]), g= byte.Parse(p[4]),b= byte.Parse(p[5]) },
+                        c3 = new RGB { r = byte.Parse(p[6]), g= byte.Parse(p[7]),b= byte.Parse(p[8]) },
+                        };
+                        palIndex++;
+                    }
+
+                    if (segment == "[TILE_PALETE]") {
+                        var entries = lineText.Split(',');
+                        for (int j = 0; j < entries.Length; j++) {
+                            TileToPaletteMap[j] = byte.Parse(entries[j]);
+                        }
+                    }
+                
+                
+                }
+
+            }
+
+            for (int i = 0; i < 256; i++) {
+                CopyTileToCache(i);
+            }
+
+        
+        }
+
     }
+
+
 
 }

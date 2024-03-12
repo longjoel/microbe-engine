@@ -70,18 +70,22 @@ namespace Microbe.Engine
         private System.Windows.Forms.Timer _tickTimer;
         private Jint.Engine _engine;
         private MicrobeGraphics _graphics;
+        private MicrobeAudio _audio;
         private Action<double> _main;
         public DebugConsoleForm DebugConsole { get; set; }
         public DebugVramForm DebugVram { get; set; }
 
         public MetaTileEditorForm MetaTileEditor { get; set; }
 
-        public MicrobeFormMain(Jint.Engine engine, MicrobeGraphics microbeGraphics)
+        public SampleEditorForm SampleEditorForm { get; set; }
+
+        public MicrobeFormMain(Jint.Engine engine, MicrobeGraphics microbeGraphics, MicrobeAudio audio)
         {
             XInput.Wrapper.X.StartPolling(XInput.Wrapper.X.Gamepad_1);
 
             _engine = engine;
             _graphics = microbeGraphics;
+            _audio = audio;
 
             this.DoubleBuffered = true;
 
@@ -93,6 +97,7 @@ namespace Microbe.Engine
             KeyboardState = new CombinedState();
 
             MetaTileEditor = new MetaTileEditorForm(_graphics);
+            SampleEditorForm = new SampleEditorForm(_audio);
 
         }
 
@@ -215,6 +220,7 @@ namespace Microbe.Engine
             var fName = "default.js";
 
             MetaTileEditor.Show();
+            SampleEditorForm.Show();
             // first argument is always the name of the executable.
             foreach (var arg in cmdArgs.Skip(1))
             {
@@ -236,7 +242,7 @@ namespace Microbe.Engine
                     {
                         DebugConsole = new DebugConsoleForm(_engine);
                         DebugVram = new DebugVramForm(_graphics);
-
+                        
                         DebugConsole.Show();
                         DebugVram.Show();
                     }
@@ -298,11 +304,11 @@ namespace Microbe.Engine
 
             var engine = new Jint.Engine();
 
-            var graphics = new MicrobeGraphics();
+            var microbeGraphics = new MicrobeGraphics();
             var microbeAudio = new MicrobeAudio();
-            var frmMain = new MicrobeFormMain(engine, graphics);
+            var frmMain = new MicrobeFormMain(engine, microbeGraphics, microbeAudio);
 
-            engine.RegisterMicrobeGraphicsScriptObjects(graphics);
+            engine.RegisterMicrobeGraphicsScriptObjects(microbeGraphics);
             engine.RegisterEventsToMainWindow(frmMain);
             engine.RegisterMicrobeAudio(microbeAudio);
 

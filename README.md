@@ -6,7 +6,6 @@
 
 This engine uses WinForms for graphics and event handling, JInt as the Javascript engine, and XInputium for connecting with gamepads.
 
-![Screen0](docs/screen0.png)
 
 ## Constraints
 
