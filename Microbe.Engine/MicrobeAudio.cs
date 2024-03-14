@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Media;
+using System.Text;
 namespace Microbe.Engine
 {
     public class SampleSegment
@@ -16,7 +17,8 @@ namespace Microbe.Engine
         public double nv;       // noise volume
     }
 
-    public class Sample { 
+    public class Sample
+    {
         public int IntervalMS { get; set; }
         public List<SampleSegment> SampleSegments { get; set; }
 
@@ -36,11 +38,16 @@ namespace Microbe.Engine
         private Dictionary<string, double> _notes;
         private SoundPlayer _bgMusicPlayer;
 
-        public List<string> Notes { get { 
-                
-                return 
-                    
-                    _notes.Keys.ToList(); } }
+        public List<string> Notes
+        {
+            get
+            {
+
+                return
+
+                    _notes.Keys.ToList();
+            }
+        }
 
 
 
@@ -49,12 +56,12 @@ namespace Microbe.Engine
             _notes = new Dictionary<string, double>();
             _samplesCache = new byte[256][];
             Samples = new Sample[256];
-            for(int i = 0; i < 256; i++)
+            for (int i = 0; i < 256; i++)
             {
                 Samples[i] = new Sample();
                 _samplesCache[i] = new byte[0];
-            }   
-            var noteFrequency = Properties.Resources.note_frequency.Split(new string[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries).Where(x=>x.Length>0).ToList();
+            }
+            var noteFrequency = Properties.Resources.note_frequency.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).Where(x => x.Length > 0).ToList();
             for (int i = 1; i < noteFrequency.Count(); i++)
             {
                 var row = noteFrequency[i];
@@ -106,7 +113,8 @@ namespace Microbe.Engine
             }
         }
 
-        public void StopMusic() {
+        public void StopMusic()
+        {
             if (_bgMusicPlayer != null)
             {
                 _bgMusicPlayer.Stop();
@@ -114,7 +122,8 @@ namespace Microbe.Engine
             }
         }
 
-        public void PlayEffect(int sampleId) {
+        public void PlayEffect(int sampleId)
+        {
             using (var stream = new MemoryStream(_samplesCache[sampleId]))
             {
                 using (var player = new SoundPlayer(stream))
@@ -299,6 +308,74 @@ namespace Microbe.Engine
 
         }
 
+        internal void Serialize(string fileName)
+        {
+            var sb = new StringBuilder();
+            for (int i = 0; i < 256; i++)
+            {
+                sb.AppendLine($"[SAMPLE:{i}]");
+                sb.AppendLine($"IntervalMS:{Samples[i].IntervalMS}");
+                foreach (var s in Samples[i].SampleSegments)
+                {
+                    sb.AppendLine(string.Format("Segment:sn:{0},sv:{1},tn:{2},tv:{3},sqn:{4},sqv:{5},nv:{6}", s.sn, s.sv, s.tn, s.tv, s.sqn, s.sqv, s.nv));
+                }
 
+            }
+            File.WriteAllText(fileName, sb.ToString());
+        }
+
+        internal void Deserialize(string fileName)
+        {
+            if (File.Exists(fileName)){
+                var content = File.ReadAllText(fileName);
+
+                var lines = content.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                var sampleIndex = 0;
+                for (int i = 0; i < 256; i++)
+                {
+                    if (lines[i].StartsWith("[SAMPLE:"))
+                    {
+                        sampleIndex = int.Parse(lines[i].Replace("[SAMPLE:", "").Replace("]", ""));
+                    }
+                    if (lines[i].StartsWith("IntervalMS:"))
+                    {
+                        Samples[sampleIndex].IntervalMS = int.Parse(lines[i].Replace("IntervalMS:", ""));
+                    }
+                    else if (lines[i].StartsWith("Segment:"))
+                    {
+                        var parts = lines[i].Replace("Segment:","").Split(',');
+                        var s = new SampleSegment();
+                        foreach (var p in parts)
+                        {
+                            var kv = p.Split(':');
+                            switch (kv[0])
+                            {
+                                case "sn":
+                                    s.sn = kv[1];
+                                    break;
+                                case "sv":
+                                    s.sv = double.Parse(kv[1]);
+                                    break;
+                                case "tn":
+                                    s.tn = kv[1];
+                                    break;
+                                case "tv":
+                                    s.tv = double.Parse(kv[1]);
+                                    break;
+                                case "sqn":
+                                    s.sqn = kv[1];
+                                    break;
+                                case "sqv":
+                                    s.sqv = double.Parse(kv[1]);
+                                    break;
+                                case "nv":
+                                    s.nv = double.Parse(kv[1]);
+                                    break;
+                            }
+                        }
+                        Samples[sampleIndex].SampleSegments.Add(s);
+                    }
+                }
+            } }
     }
 }

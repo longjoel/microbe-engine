@@ -149,12 +149,24 @@ namespace Microbe.Engine
 
         private void ExportButton_Click(object sender, EventArgs e)
         {
-
+            var sfd = new SaveFileDialog();
+            sfd.Filter = "Microbe Audio Sample|*.mas";  
+            sfd.Title = "Save audio samples";
+            if(sfd.ShowDialog()==DialogResult.OK)
+            {
+                Audio.Serialize(sfd.FileName);
+            }
         }
 
         private void ImportButton_Click(object sender, EventArgs e)
         {
-
+            var ofd = new OpenFileDialog();
+            ofd.Filter = "Microbe Audio Sample|*.mas";
+            ofd.Title = "Open audio samples";
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                Audio.Deserialize(ofd.FileName);
+            }
         }
     }
 }
