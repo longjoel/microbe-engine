@@ -42,7 +42,11 @@ namespace Microbe.Engine
                 {
                     this.PickSampleListBox.Items.Add(i.ToString());
                 }
+
+                LoadSample(0);
+
             }
+
 
 
             base.OnLoad(e);
@@ -53,8 +57,8 @@ namespace Microbe.Engine
 
             var samples = BuildSamplesFromGrid();
             Audio.SetSample( this._lastIndex,int.Parse(SegmentLengthTextBox.Value.ToString()), samples.ToArray());
-            this._lastIndex = (int)this.SegmentLengthTextBox.Value;
-            LoadSample(int.Parse((this.PickSampleListBox.SelectedValue ?? "0").ToString()));
+            this._lastIndex = int.Parse(this.PickSampleListBox.Text);
+            LoadSample(int.Parse((this.PickSampleListBox.Text)));
 
         }
 
@@ -64,17 +68,22 @@ namespace Microbe.Engine
             var sample = Audio.Samples[index];
             this.SegmentLengthTextBox.Value = sample.IntervalMS;
             this.SamplesDataGrid.Rows.Clear();
+
             foreach (var s in sample.SampleSegments)
             {
                 var r = new DataGridViewRow();
                 r.CreateCells(SamplesDataGrid);
-                r.Cells.Add(new DataGridViewTextBoxCell() { Value = s.sn });
-                r.Cells.Add(new DataGridViewTextBoxCell() { Value = s.sv * 100.0 });
-                r.Cells.Add(new DataGridViewTextBoxCell() { Value = s.sqn });
-                r.Cells.Add(new DataGridViewTextBoxCell() { Value = s.sqv * 100.0 });
-                r.Cells.Add(new DataGridViewTextBoxCell() { Value = s.tn });
-                r.Cells.Add(new DataGridViewTextBoxCell() { Value = s.tv * 100.0 });
-                r.Cells.Add(new DataGridViewTextBoxCell() { Value = s.nv * 100.0 });
+
+                r.Cells[0].Value = s.sn;
+                r.Cells[1].Value = s.sv * 100.0;
+                r.Cells[2].Value = s.sqn;
+                    
+                r.Cells[3].Value = s.sqv * 100.0;
+                r.Cells[4].Value = s.tn;
+                r.Cells[5].Value = s.tv * 100.0;
+                r.Cells[6].Value = s.nv * 100.0;
+                SamplesDataGrid.Rows.Add(r);
+                
             }
 
         }
@@ -110,7 +119,7 @@ namespace Microbe.Engine
 
             foreach (DataGridViewRow row in SamplesDataGrid.Rows)
             {
-                if (row != null)
+                if (row != null && !row.IsNewRow)
                 {
                     samples.Add(new SampleSegment
                     {

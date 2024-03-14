@@ -101,7 +101,7 @@
             this.SquareVol,
             this.NoiseVol});
             this.SamplesDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SamplesDataGrid.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
+            this.SamplesDataGrid.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnKeystroke;
             this.SamplesDataGrid.Location = new System.Drawing.Point(226, 51);
             this.SamplesDataGrid.Name = "SamplesDataGrid";
             this.SamplesDataGrid.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;

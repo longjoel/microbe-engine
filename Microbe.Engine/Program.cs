@@ -96,8 +96,6 @@ namespace Microbe.Engine
             _main = null;
             KeyboardState = new CombinedState();
 
-            MetaTileEditor = new MetaTileEditorForm(_graphics);
-            SampleEditorForm = new SampleEditorForm(_audio);
 
         }
 
@@ -171,38 +169,8 @@ namespace Microbe.Engine
                 case Keys.Escape:
                     KeyboardState.select = false;
                     break;
-                case Keys.F11:
-                    if (DebugVram == null)
-                    {
-                        DebugVram = new DebugVramForm(_graphics);
-
-                    }
-
-                    if (DebugVram.Visible)
-                    {
-                        DebugVram.Hide();
-                    }
-                    else
-                    {
-                        DebugVram.Show();
-                    }
-
-                    break;
                 case Keys.F12:
-                    if (DebugConsole == null)
-                    {
-                        DebugConsole = new DebugConsoleForm(_engine);
-
-                    }
-
-                    if (DebugConsole.Visible)
-                    {
-                        DebugConsole.Hide();
-                    }
-                    else {
-                        DebugConsole.Show();
-                    }
-
+                   EnableDebugMenu();
                     break;
 
                 default:
@@ -219,8 +187,6 @@ namespace Microbe.Engine
             var cmdArgs = Environment.CommandLine.Split(' ');
             var fName = "default.js";
 
-            MetaTileEditor.Show();
-            SampleEditorForm.Show();
             // first argument is always the name of the executable.
             foreach (var arg in cmdArgs.Skip(1))
             {
@@ -240,11 +206,7 @@ namespace Microbe.Engine
                 {
                     if (arg == "--debug")
                     {
-                        DebugConsole = new DebugConsoleForm(_engine);
-                        DebugVram = new DebugVramForm(_graphics);
-                        
-                        DebugConsole.Show();
-                        DebugVram.Show();
+                        EnableDebugMenu();
                     }
                 }
 
@@ -256,6 +218,94 @@ namespace Microbe.Engine
 
             _engine.Evaluate(fName == "default.js" ? Properties.Resources._default : File.ReadAllText(fName));
 
+        }
+
+        private void EnableDebugMenu()
+        {
+            if (Menu == null)
+            {
+                Menu = new MainMenu();
+                var debugMenu = new MenuItem("Debug");
+                Menu.MenuItems.Add(debugMenu);
+                var vramMenuItem = new MenuItem("VRAM");
+                debugMenu.MenuItems.Add(vramMenuItem);
+                vramMenuItem.Click += (s, a) =>
+                {
+                    if (DebugVram == null || DebugVram.IsDisposed)
+                    {
+                        DebugVram = new DebugVramForm(_graphics);
+
+                    }
+
+                    if (DebugVram.Visible)
+                    {
+                        DebugVram.Hide();
+                    }
+                    else
+                    {
+                        DebugVram.Show();
+                    }
+                };
+                var consoleMenuItem = new MenuItem("Console");
+                consoleMenuItem.Click += (s, a) =>
+                {
+                    if (this.DebugConsole == null || DebugConsole.IsDisposed)
+                    {
+                        DebugConsole = new DebugConsoleForm(_engine);
+
+                    }
+
+                    if (DebugConsole.Visible)
+                    {
+                        DebugConsole.Hide();
+                    }
+                    else
+                    {
+                        DebugConsole.Show();
+                    }
+                };
+                debugMenu.MenuItems.Add(consoleMenuItem);
+
+                var metaTileEditorMenuItem = new MenuItem("Tile Editor");
+                metaTileEditorMenuItem.Click += (s, a) =>
+                {
+                    if (this.MetaTileEditor == null || MetaTileEditor.IsDisposed)
+                    {
+                        MetaTileEditor = new MetaTileEditorForm(_graphics);
+
+                    }
+
+                    if (MetaTileEditor.Visible)
+                    {
+                        MetaTileEditor.Hide();
+                    }
+                    else
+                    {
+                        MetaTileEditor.Show();
+                    }
+                };
+                debugMenu.MenuItems.Add(metaTileEditorMenuItem);
+
+                var sampleEditorMenuItem = new MenuItem("Sample Editor");
+                sampleEditorMenuItem.Click += (s, a) =>
+                {
+                    if (this.SampleEditorForm == null || SampleEditorForm.IsDisposed)
+                    {
+                        SampleEditorForm = new SampleEditorForm(_audio);
+
+                    }
+
+                    if (SampleEditorForm.Visible)
+                    {
+                        SampleEditorForm.Hide();
+                    }
+                    else
+                    {
+                        SampleEditorForm.Show();
+                    }
+                };
+                debugMenu.MenuItems.Add(sampleEditorMenuItem);
+            }
         }
 
         private void _onTick(object sender, EventArgs e)
