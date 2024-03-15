@@ -18,6 +18,8 @@
 
 * [Code of Conduct](CodeOfConduct.md) -- Don't be a jerk.
 
+* [Support me on Itch](https://pnpbios.itch.io/microbe-engine) -- If you feel like encouraging me to keep working on this, feel free to make a small reasonable donation.
+
 ## About
 
 Microbe is a small, compact game engine for making 8-bit styled games in Javascript/Typescript.
