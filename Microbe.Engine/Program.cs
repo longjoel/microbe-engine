@@ -8,9 +8,6 @@ using System.Windows.Forms;
 
 namespace Microbe.Engine
 {
-
-
-
     public class CombinedState
     {
         public bool up;
@@ -22,8 +19,6 @@ namespace Microbe.Engine
         public bool start;
         public bool select;
     }
-
-
 
     public class MicrobeFormMain : Form
     {
@@ -96,7 +91,28 @@ namespace Microbe.Engine
             _main = null;
             KeyboardState = new CombinedState();
 
+            AllowDrop = true;
+            
+        }
 
+        protected override void OnDragOver(DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effect = DragDropEffects.Link;
+            else
+                e.Effect = DragDropEffects.None;
+            base.OnDragOver(e);
+        }
+
+        protected override void OnDragDrop(DragEventArgs drgevent)
+        {
+            if (drgevent.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                var data = drgevent.Data.GetData(DataFormats.FileDrop);
+                var file = ((string[])data).First();
+                _engine.Execute(File.ReadAllText(file));
+            }
+            base.OnDragDrop(drgevent);
         }
 
         protected override void OnClosed(EventArgs e)
@@ -216,7 +232,7 @@ namespace Microbe.Engine
                 }
             }
 
-            _engine.Evaluate(fName == "default.js" ? Properties.Resources._default : File.ReadAllText(fName));
+            _engine.Evaluate((fName == "" ||fName == "default.js") ? Properties.Resources._default : File.ReadAllText(fName));
 
         }
 
@@ -310,9 +326,6 @@ namespace Microbe.Engine
 
         private void _onTick(object sender, EventArgs e)
         {
-
-
-
             this?._main?.Invoke(1 / 60);
 
             Invalidate();
