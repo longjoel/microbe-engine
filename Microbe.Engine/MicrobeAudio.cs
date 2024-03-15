@@ -324,7 +324,7 @@ namespace Microbe.Engine
             File.WriteAllText(fileName, sb.ToString());
         }
 
-        internal void Deserialize(string fileName)
+        public void Deserialize(string fileName)
         {
             if (File.Exists(fileName)){
                 var content = File.ReadAllText(fileName);

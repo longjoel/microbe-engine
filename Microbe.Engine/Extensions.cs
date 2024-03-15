@@ -29,6 +29,7 @@ namespace Microbe.Engine
                     graphics.Deserialize(File.ReadAllText(fileName));
                 }
             }));
+           
         }
 
         public static void RegisterEventsToMainWindow(this Jint.Engine engine, MicrobeFormMain mainForm)
@@ -58,7 +59,13 @@ namespace Microbe.Engine
             engine.SetValue("playEffect", new Action<int>(a => audio.PlayEffect(a)));
             engine.SetValue("stopMusic", new Action(() => audio.StopMusic()));
             engine.SetValue("setSampleRaw", new Action<int, byte[]>((a, b) => audio.SetSampleRaw(a, b)));
-
+            engine.SetValue("loadSamples", new Action<string>((fileName) =>
+            {
+                if (File.Exists(fileName))
+                {
+                    audio.Deserialize(fileName);
+                }
+            }));
         }
 
     }
