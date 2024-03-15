@@ -166,6 +166,8 @@ namespace Microbe.Engine
             if (ofd.ShowDialog() == DialogResult.OK)
             {
                 Audio.Deserialize(ofd.FileName);
+                LoadSample(0);
+                PickSampleListBox.SelectedIndex = 0;
             }
         }
     }
