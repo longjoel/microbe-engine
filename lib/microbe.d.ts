@@ -181,4 +181,14 @@ declare function stopMusic(): void;
 /**
  * set raw data for the sample.
  */
-declare function setSampleRaw(index:number, data:Uint8Array):void;
+declare function setSampleRaw(index: number, data: Uint8Array): void;
+
+/**
+ * load graphics from a file.
+ */
+declare function loadGfx(fileName: string): void;
+
+/** 
+ * load samples from a file.
+ * */
+declare function loadSamples(fileName: string): void;

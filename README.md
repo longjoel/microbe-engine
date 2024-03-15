@@ -1,49 +1,67 @@
 # microbe-engine
 
-## Download 1.0 beta now!
+## Links
 
-https://github.com/longjoel/microbe-engine/releases/download/v1.0.0-beta/release.zip
+* [Download](https://github.com/longjoel/microbe-engine/releases/download/v1.0.0-beta/release.zip) -- Download the most recent version of the engine.
+
+* [Reddit](https://www.reddit.com/r/microbe_engine/) -- Post here for support.
+
+* [Github page](https://longjoel.github.io/microbe-engine/) -- API Documentation.
+
+* [Contributing](Contributing.md) -- If you want to lend a hand, read this.
+
+* [Code of Conduct](CodeOfConduct.md) -- Don't be a jerk.
 
 ## About
 
-`microbe-engine` is a minimalistic approach to building gameboy and gameboy color style games using Javascript / typescript. This is a code first engine, meaning graphics, actions, sounds, sound effects can be expressed as code.
+Microbe is a small, compact game engine for making 8-bit styled games in Javascript/Typescript.
 
-This engine uses WinForms for graphics and event handling, JInt as the Javascript engine, and XInputium for connecting with gamepads.
+## License
 
+Microbe is licensed under GPLv3, please see [LICENSE](LICENSE).
 
-## Constraints
+## Details
 
-`microbe-engine` supports 256 tiles, with a vram area that supports 32 x 32 tiles. The framebuffer is 160x144 pixels, or 20x18 tiles.
+Microbe is a tile and sprite based engine.
 
-Each tile has it's own palette of 3 colors, plus 0 being the transparent color.
+* Microbe supports 256 8x8 tiles, where each tile can be assigned to a palette entry.
 
-This is easy enough to modify in `MicrobeGrahics.cs` If your particular situation requires more fidelity.
+* A palette entry supports 4 colors. The first color is always transparent, the other 3 can be user defined as combinations of red, green, and blue values.
 
-On the audio side of things, `microbe-engine` supports 256 audio samples. A sample can be generated using an interval (how long each line of the sample should be played), and a list of sample segments. Each sample segment looks like this.
+* 160x144 internal resolution.
 
-```
-{
-    // sine wave instrument
-    sn:"C4",    // note
-    sv:.5       // volume
-    
-    // triangle wave instrument
-    tn:"C4",    // note
-    tv:.25,     // volume
-    
-    // square wave instrument
-    sqn:"C4",   // note
-    sqv:.55,    // volume
+* 32 x 32 tiles of video ram.
 
-    // noise instrument
-    nv:0        // volume  
-}
-```
+* 256 sprites. These sprites can be foreground, or background. At a point they will be able to be flipped along the x axis and y axis.
 
-The virtual gamepad supports Up, Down, Left, Right, A, B, Start, and Select.
+* Up to 256 samples that can either be played as music or sound effects.
 
-This can either be done with a real xinput compatable gamepad or with a keyboard where the arrow keys represent up, down, left, and right, z and x are mapped to A and B, Escape is select, and Enter is Right.
+* Supports up, down, left, right, start, select, a and b buttons.
 
-At some point, it will be possible to read and save data as JSON objects.
+## Debug features in the .net version
 
-There will be two versions of the microburnt time. The first version is powered by net and has built in debugging and editing tools. The second version is C runtime Targeted at portable devices and video game consoles. 
+* Integrated tile editor allowing editing of tiles while the game is running.
+
+* Importing and exporting tile data in a format that can be loaded by the engine at runtime.
+
+* Integrated video memory viewer. Shows the entire vram and tile map in near real time.
+
+* Sample tracker, supports importing and exporting music files.
+
+## Sample Project
+
+* The distribution package contains a sample typescript project you can use to get started. It has a simple hello world program.
+
+# Future Project Goals
+
+## C++ Port
+
+* Currently in progress and seeking contributors.
+
+* A port from c#/Winforms to C++/SDL2 and DukTape
+
+* The goal for this C++ port is to have a small, portable runtime to allow for easy development on homebrew consoles such as the PS2, PS3, Nintendo Wii, Nintendo Switch, Wii U, Sony PSP, the browser, and more.
+
+## Web port
+
+I have a rough idea to port Microbe to the browser to leverage the debugging capabilities and platform independence. The idea would be to port the development environment to a react based component system with more robust development tools.
