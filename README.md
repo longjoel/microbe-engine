@@ -12,6 +12,8 @@
 
 * [Github page](https://longjoel.github.io/microbe-engine/) -- API Documentation.
 
+* [Github Repo](https://github.com/longjoel/microbe-engine) -- Did you get lost?
+
 * [Contributing](Contributing.md) -- If you want to lend a hand, read this.
 
 * [Code of Conduct](CodeOfConduct.md) -- Don't be a jerk.
