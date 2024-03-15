@@ -1,5 +1,9 @@
 # microbe-engine
 
+## Download 1.0 beta now!
+
+https://github.com/longjoel/microbe-engine/releases/download/v1.0.0-beta/release.zip
+
 ## About
 
 `microbe-engine` is a minimalistic approach to building gameboy and gameboy color style games using Javascript / typescript. This is a code first engine, meaning graphics, actions, sounds, sound effects can be expressed as code.
