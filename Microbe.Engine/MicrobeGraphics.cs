@@ -487,7 +487,6 @@ namespace Microbe.Engine
             var pixelIndex = 0;
 
             var palIndex = 0;
-            var tpIndex = 0;
 
             for (int i = 0; i < lines.Length; i++) {
                 var lineText = lines[i];
