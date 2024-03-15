@@ -4,6 +4,10 @@
 
 * [Download](https://github.com/longjoel/microbe-engine/releases/download/v1.0.0-beta/release.zip) -- Download the most recent version of the engine.
 
+* [Most up to date typescript lib.](lib/microbe.d.ts) 
+
+* [Dev Log #1](https://www.youtube.com/watch?v=e9p9DTco6kg) --  Exploring the engine and debugger.
+
 * [Reddit](https://www.reddit.com/r/microbe_engine/) -- Post here for support.
 
 * [Github page](https://longjoel.github.io/microbe-engine/) -- API Documentation.
@@ -65,3 +69,7 @@ Microbe is a tile and sprite based engine.
 ## Web port
 
 I have a rough idea to port Microbe to the browser to leverage the debugging capabilities and platform independence. The idea would be to port the development environment to a react based component system with more robust development tools.
+
+## NPM Package
+
+It would be really cool to have this as an npm package so you could just `npm i microbe-engine` and be off on your way, but we aren't quite there yet.
