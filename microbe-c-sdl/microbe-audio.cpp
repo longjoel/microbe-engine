@@ -102,7 +102,9 @@ duk_ret_t setSample(duk_context *ctx)
 
     duk_require_array(ctx, 2);
 
-    for (int i = 0; i < numSegments; i++)
+    int segmentCount = duk_get_length(ctx, 2);
+
+    for (int i = 0; i < segmentCount; i++)
     {
         duk_get_prop_index(ctx, 2, i);
 
@@ -136,10 +138,13 @@ duk_ret_t setSample(duk_context *ctx)
 
         duk_pop(ctx);
 
+        if (samples[index] != NULL)
+        {
+            Mix_FreeChunk(samples[index]);
+        }
         Mix_Chunk *chunk = createSample(&segments[i], 1, 1000);
         samples[index] = chunk;
     }
-
     free(segments);
     return 0;
 }
@@ -157,6 +162,10 @@ duk_ret_t setSampleRaw(duk_context *ctx)
         duk_pop(ctx);
     }
     Mix_Chunk *chunk = Mix_QuickLoad_RAW(data, numSegments);
+    if (samples[index] != NULL)
+    {
+        Mix_FreeChunk(samples[index]);
+    }
     samples[index] = chunk;
 
     return 0;

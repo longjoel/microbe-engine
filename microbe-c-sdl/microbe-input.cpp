@@ -54,7 +54,7 @@ void initDuktapeInput(duk_context *ctx)
     gameController = SDL_GameControllerOpen(0);
 
     duk_push_c_function(ctx, getInput, 0);
-    duk_put_global_string(ctx, "getInput");
+    duk_put_global_string(ctx, "getGamepadState");
 }
 
 void cleanupDuktapeInput()
