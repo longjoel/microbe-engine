@@ -1,6 +1,8 @@
 # Use a base image with the desired operating system and dependencies
 FROM ubuntu:20.04
 ENV DEBIAN_FRONTEND=noninteractive
+ENV PLATFORM=linux
+
 
 # Set the working directory inside the container
 WORKDIR /app
