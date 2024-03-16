@@ -5,6 +5,11 @@ VisualStudioVersion = 17.9.34526.213
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microbe.Engine", "Microbe.Engine\Microbe.Engine.csproj", "{EF90217C-EA4F-4F38-8FBF-0462ECC40235}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B4DA357F-0EC1-4F89-AA81-A741DB44F150}"
+	ProjectSection(SolutionItems) = preProject
+		lib\microbe.d.ts = lib\microbe.d.ts
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
