@@ -10,7 +10,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "msbuild",
     "start": "cd example && npm install && npm run build && npm run start",
-    "docs":"npx typedoc ./lib/microbe.d.ts --out ./docs"
+    "docs":"npx typedoc ./lib/microbe.d.ts --out ./docs",
+    "docker:build": "docker build -f Dockerfile -t microbe-engine .",
+    "docker:build-linux": "docker run -t microbe-engine -v $PWD/microbe-c-sdl:/app --rm"
   },
   "author": "Joel Longanecker",
   "license": "GPL-3.0-only",
