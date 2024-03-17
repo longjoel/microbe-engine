@@ -18,7 +18,6 @@ OBJS := $(OBJS:%.cpp=$(OBJDIR)/%.o)
 
 # Target executable
 TARGET := microbe-engine
-
 $(shell mkdir -p $(OBJDIR))
 
 # Default target
@@ -26,7 +25,6 @@ all: $(TARGET)
 
 # Rule to build the executable
 $(TARGET): $(OBJS)
-	
 	$(CC) $(CFLAGS)  $^ $(LDFLAGS) -o $@
 	
 # Rule to compile C source files

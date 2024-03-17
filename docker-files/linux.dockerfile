@@ -1,7 +1,7 @@
 # Use a base image with the desired operating system and dependencies
 FROM ubuntu:20.04
 ENV DEBIAN_FRONTEND=noninteractive
-ENV PLATFORM=linux
+ENV PLATFORM=Linux
 
 
 # Set the working directory inside the container
@@ -15,4 +15,4 @@ RUN apt-get update && \
 
 
 # Set the entrypoint command to run the built project
-CMD ["make"]
+CMD ["bash"]

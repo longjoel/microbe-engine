@@ -22,9 +22,12 @@ const args = process.argv.slice(2);
 const containerArg = args.find(arg => arg.startsWith('--container='));
 const container = containerArg ? containerArg.split('=')[1] : '';
 
+const makefileArg = args.find(arg => arg.startsWith('--makefile='));
+const makefile = makefileArg ? makefileArg.split('=')[1] : '';
+
 if (!container) {
     console.error('No container specified');
     process.exit(1);
 }
 
-cp.execSync(`${cmd} run -t -v ${path.join(__dirname,'..')}/microbe-c-sdl:/app --rm ${container}`);
+cp.execSync(`${cmd} run -t -v ${path.join(__dirname,'..','microbe-c-sdl').split('\\').join('/')}:/app --rm ${container} make -f ${makefile}`, { stdio: 'inherit' });
