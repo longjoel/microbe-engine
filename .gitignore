@@ -375,3 +375,9 @@ microbe-c-sdl/microbe.bin
 microbe-c-sdl/myapp.exe
 microbe-engine.exe
 microbe-c-sdl/microbe-engine
+microbe-c-sdl/microbe-engine.elf
+microbe-c-sdl/microbe-engine.pkg
+microbe-c-sdl/microbe-engine.self
+microbe-c-sdl/pkg/PARAM.SFO
+microbe-c-sdl/pkg/USRDIR/EBOOT.BIN
+microbe-c-sdl/sfo.xml
