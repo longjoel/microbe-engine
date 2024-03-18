@@ -16,7 +16,10 @@
     "docker:build-linux": "node ./scripts/launch-docker.js --makefile=linux64.mak --container=microbe-engine-linux",
     
     "docker:bootstrap-ps3": "podman build -f ./docker-files/ps3.dockerfile -t microbe-engine-ps3",
-    "docker:build-ps3": "node ./scripts/launch-docker.js --container=microbe-engine-ps3 --makefile=ps3.mak"
+    "docker:build-ps3": "node ./scripts/launch-docker.js --container=microbe-engine-ps3 --makefile=ps3.mak",
+
+    "docker:bootstrap-psp": "podman build -f ./docker-files/psp.dockerfile -t microbe-engine-psp",
+    "docker:build-psp": "node ./scripts/launch-docker.js --container=microbe-engine-psp --makefile=psp.mak"
   },
   "author": "Joel Longanecker",
   "license": "GPL-3.0-only",

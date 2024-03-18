@@ -199,6 +199,7 @@
  * DUK_VERSION is defined before including so that configuration
  * snippets can react to it.
  */
+#include <stdint.h>
 #include "duk_config.h"
 
 /*

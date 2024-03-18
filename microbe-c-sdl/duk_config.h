@@ -1958,8 +1958,15 @@ typedef duk_int32_t duk_intmax_t;
 #define DUK_INTMAX_MAX        0x7fffffffL
 #endif
 
+// typedef duk_int32_t duk_intptr_t;
+// typedef duk_uint32_t duk_uintptr_t;
+// #define DUK_UINTPTR_MIN       DUK_UINT32_MIN
+// #define DUK_UINTPTR_MAX       DUK_UINT32_MAX
+// #define DUK_INTPTR_MIN        DUK_INT32_MIN
+// #define DUK_INTPTR_MAX        DUK_INT32_MAX
+
 /* This detection is not very reliable. */
-#if defined(DUK_F_32BIT_PTRS)
+#if true
 typedef duk_int32_t duk_intptr_t;
 typedef duk_uint32_t duk_uintptr_t;
 #define DUK_UINTPTR_MIN       DUK_UINT32_MIN
