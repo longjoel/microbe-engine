@@ -15,7 +15,7 @@ ENC              = PrxEncrypter
 BUILD_PRX = 1 
 
 EXTRA_TARGETS   = EBOOT.PBP
-PSP_EBOOT_TITLE = Microbe-engine
+PSP_EBOOT_TITLE = microbe-engine
 
 PSPSDK=$(shell psp-config --pspsdk-path)
 
@@ -33,14 +33,17 @@ endif
 EXPAND_MEMORY = 0
 
 # Compiler flags
-CXXFLAGS :=  $(CXXFLAGS) -Wall -Wextra -g $(shell /usr/local/pspdev/psp/bin/sdl2-config --cflags) -D__MIPS__ -G0 -Wall -O2 -fno-exceptions -fno-rtti
+CXXFLAGS :=  $(CXXFLAGS) -Wall -Wextra -g -D__MIPS__ -G0 -Wall -O2 -fno-exceptions -fno-rtti \
+	$(shell psp-pkg-config --cflags SDL2_mixer) \
+	$(shell psp-pkg-config --cflags SDL2_ttf) \
+	$(shell psp-pkg-config --cflags sdl2)
 
 # Linker flags
-LDFLAGS := $(LDFLAGS) -L/usr/local/pspdev/psp/sdk/lib -L/usr/local/pspdev/psp/lib \
-	/usr/local/pspdev/psp/lib/libSDL2_mixer.a \
-	/usr/local/pspdev/psp/lib/libSDL2_mixer.a \
-	-ogg -lpng -lvorbis -lvorbisfile -lvorbisenc -lfreetype -lm -ggdb \
-	$(shell /usr/local/pspdev/psp/bin/sdl2-config --libs)
+LDFLAGS := $(LDFLAGS) \
+	$(shell psp-pkg-config --libs SDL2_mixer) \
+	$(shell psp-pkg-config --libs SDL2_ttf) \
+	$(shell psp-pkg-config --libs sdl2) \
+	-ogg -lpng -lvorbis -lvorbisfile -lvorbisenc -lfreetype -lm -ggdb 
 
 ifeq ($(shell test $(PSP_FW_VERSION) -gt 390; echo $$?),0)
 EXPAND_MEMORY = 1
@@ -202,10 +205,10 @@ SCEkxploit: $(TARGET).elf $(PSP_EBOOT_SFO)
 
 ifeq ($(NO_FIXUP_IMPORTS), 1)
 $(TARGET).elf: $(OBJS) $(EXPORT_OBJ)
-	$(LINK.c) $^ $(LIBS) -o $@
+	$(CXXFLAGS) $(LINK.c) $^ $(LDFLAGS) -o $@
 else
 $(TARGET).elf: $(OBJS) $(EXPORT_OBJ)
-	$(LINK.c) $^ $(LIBS) -o $@
+	$(LINK.c) $^ $(LDFLAGS) -o $@
 	$(FIXUP) $@
 endif
 
