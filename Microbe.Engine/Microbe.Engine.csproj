@@ -105,6 +105,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\MEButton.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\MEButton.Designer.cs">
+      <DependentUpon>MEButton.cs</DependentUpon>
+    </Compile>
     <Compile Include="DebugConsoleForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -134,6 +140,9 @@
     <Compile Include="SampleEditorForm.Designer.cs">
       <DependentUpon>SampleEditorForm.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Components\MEButton.resx">
+      <DependentUpon>MEButton.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DebugConsoleForm.resx">
       <DependentUpon>DebugConsoleForm.cs</DependentUpon>
     </EmbeddedResource>

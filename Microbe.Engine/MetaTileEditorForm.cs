@@ -317,5 +317,32 @@ namespace Microbe.Engine
             }
         
     }
+
+        private void newTilesetToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var newGraphics = new MicrobeGraphics();
+            _graphics.Deserialize( newGraphics.Serialize());
+            
+        }
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }

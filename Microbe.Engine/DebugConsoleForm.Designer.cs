@@ -44,23 +44,23 @@
             // 
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.splitContainer1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.button1, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.splitContainer1, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.button1, 0, 2);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowCount = 3;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 64F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 98F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 64F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1433, 736);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(4, 5);
+            this.splitContainer1.Location = new System.Drawing.Point(4, 69);
             this.splitContainer1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
@@ -72,8 +72,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.ConsoleInputText);
-            this.splitContainer1.Size = new System.Drawing.Size(1425, 628);
-            this.splitContainer1.SplitterDistance = 313;
+            this.splitContainer1.Size = new System.Drawing.Size(1425, 598);
+            this.splitContainer1.SplitterDistance = 298;
             this.splitContainer1.SplitterWidth = 6;
             this.splitContainer1.TabIndex = 1;
             // 
@@ -87,7 +87,7 @@
             this.DebugOutputText.Multiline = true;
             this.DebugOutputText.Name = "DebugOutputText";
             this.DebugOutputText.ReadOnly = true;
-            this.DebugOutputText.Size = new System.Drawing.Size(1425, 313);
+            this.DebugOutputText.Size = new System.Drawing.Size(1425, 298);
             this.DebugOutputText.TabIndex = 0;
             // 
             // ConsoleInputText
@@ -97,7 +97,7 @@
             this.ConsoleInputText.Location = new System.Drawing.Point(0, 0);
             this.ConsoleInputText.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.ConsoleInputText.Name = "ConsoleInputText";
-            this.ConsoleInputText.Size = new System.Drawing.Size(1425, 309);
+            this.ConsoleInputText.Size = new System.Drawing.Size(1425, 294);
             this.ConsoleInputText.TabIndex = 0;
             this.ConsoleInputText.Text = "setString(0,0,\"Hello World\");";
             // 
@@ -105,9 +105,9 @@
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(1301, 641);
+            this.button1.Location = new System.Drawing.Point(1301, 675);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(129, 92);
+            this.button1.Size = new System.Drawing.Size(129, 58);
             this.button1.TabIndex = 2;
             this.button1.Text = "Submit";
             this.button1.UseVisualStyleBackColor = true;
