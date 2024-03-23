@@ -33,14 +33,11 @@
             this.TileSelectorPictureBox = new System.Windows.Forms.PictureBox();
             this.TileEditPictureBox = new System.Windows.Forms.PictureBox();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.Palette3Button = new System.Windows.Forms.Button();
-            this.Palette2Button = new System.Windows.Forms.Button();
-            this.Palette1Button = new System.Windows.Forms.Button();
             this.PaletteSelect = new System.Windows.Forms.ComboBox();
+            this.Palette1Button = new System.Windows.Forms.Button();
+            this.Palette2Button = new System.Windows.Forms.Button();
+            this.Palette3Button = new System.Windows.Forms.Button();
             this.ClearColor = new System.Windows.Forms.Button();
-            this.ExportButton = new System.Windows.Forms.Button();
-            this.ImportButton = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newTilesetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -56,7 +53,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.TileSelectorPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.TileEditPictureBox)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
-            this.tableLayoutPanel2.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -71,17 +67,17 @@
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 3;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 64F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 64F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1434, 923);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1238, 754);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitContainer1.Location = new System.Drawing.Point(3, 67);
+            this.splitContainer1.Location = new System.Drawing.Point(3, 39);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -91,17 +87,16 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.TileEditPictureBox);
-            this.splitContainer1.Size = new System.Drawing.Size(1428, 789);
+            this.splitContainer1.Size = new System.Drawing.Size(1232, 572);
             this.splitContainer1.SplitterDistance = 234;
             this.splitContainer1.TabIndex = 0;
-            this.splitContainer1.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitContainer1_SplitterMoved);
             // 
             // TileSelectorPictureBox
             // 
             this.TileSelectorPictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.TileSelectorPictureBox.Location = new System.Drawing.Point(0, 0);
             this.TileSelectorPictureBox.Name = "TileSelectorPictureBox";
-            this.TileSelectorPictureBox.Size = new System.Drawing.Size(234, 789);
+            this.TileSelectorPictureBox.Size = new System.Drawing.Size(234, 572);
             this.TileSelectorPictureBox.TabIndex = 0;
             this.TileSelectorPictureBox.TabStop = false;
             this.TileSelectorPictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.TileSelectorPictureBox_Paint);
@@ -123,68 +118,22 @@
             // 
             // flowLayoutPanel1
             // 
-            this.flowLayoutPanel1.Controls.Add(this.tableLayoutPanel2);
-            this.flowLayoutPanel1.Controls.Add(this.ExportButton);
-            this.flowLayoutPanel1.Controls.Add(this.ImportButton);
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 862);
+            this.flowLayoutPanel1.AutoSize = true;
+            this.flowLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanel1.Controls.Add(this.PaletteSelect);
+            this.flowLayoutPanel1.Controls.Add(this.Palette1Button);
+            this.flowLayoutPanel1.Controls.Add(this.Palette2Button);
+            this.flowLayoutPanel1.Controls.Add(this.Palette3Button);
+            this.flowLayoutPanel1.Controls.Add(this.ClearColor);
+            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 617);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(1428, 49);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(1232, 134);
             this.flowLayoutPanel1.TabIndex = 1;
-            // 
-            // tableLayoutPanel2
-            // 
-            this.tableLayoutPanel2.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.tableLayoutPanel2.ColumnCount = 5;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel2.Controls.Add(this.Palette3Button, 4, 0);
-            this.tableLayoutPanel2.Controls.Add(this.Palette2Button, 3, 0);
-            this.tableLayoutPanel2.Controls.Add(this.Palette1Button, 2, 0);
-            this.tableLayoutPanel2.Controls.Add(this.PaletteSelect, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.ClearColor, 1, 0);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 3);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 1;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(759, 83);
-            this.tableLayoutPanel2.TabIndex = 0;
-            // 
-            // Palette3Button
-            // 
-            this.Palette3Button.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Palette3Button.Location = new System.Drawing.Point(607, 3);
-            this.Palette3Button.Name = "Palette3Button";
-            this.Palette3Button.Size = new System.Drawing.Size(149, 77);
-            this.Palette3Button.TabIndex = 4;
-            this.Palette3Button.UseVisualStyleBackColor = true;
-            this.Palette3Button.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ColorPickerClicked);
-            // 
-            // Palette2Button
-            // 
-            this.Palette2Button.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Palette2Button.Location = new System.Drawing.Point(456, 3);
-            this.Palette2Button.Name = "Palette2Button";
-            this.Palette2Button.Size = new System.Drawing.Size(145, 77);
-            this.Palette2Button.TabIndex = 3;
-            this.Palette2Button.UseVisualStyleBackColor = true;
-            this.Palette2Button.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ColorPickerClicked);
-            // 
-            // Palette1Button
-            // 
-            this.Palette1Button.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Palette1Button.Location = new System.Drawing.Point(305, 3);
-            this.Palette1Button.Name = "Palette1Button";
-            this.Palette1Button.Size = new System.Drawing.Size(145, 77);
-            this.Palette1Button.TabIndex = 0;
-            this.Palette1Button.UseVisualStyleBackColor = true;
-            this.Palette1Button.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ColorPickerClicked);
             // 
             // PaletteSelect
             // 
-            this.PaletteSelect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.PaletteSelect.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.PaletteSelect.FormattingEnabled = true;
             this.PaletteSelect.Items.AddRange(new object[] {
             "0",
@@ -202,44 +151,50 @@
             "12",
             "13",
             "14"});
-            this.PaletteSelect.Location = new System.Drawing.Point(3, 27);
+            this.PaletteSelect.Location = new System.Drawing.Point(3, 53);
             this.PaletteSelect.Name = "PaletteSelect";
             this.PaletteSelect.Size = new System.Drawing.Size(145, 28);
-            this.PaletteSelect.TabIndex = 1;
-            this.PaletteSelect.SelectedIndexChanged += new System.EventHandler(this.PaletteSelect_SelectedIndexChanged);
+            this.PaletteSelect.TabIndex = 6;
+            // 
+            // Palette1Button
+            // 
+            this.Palette1Button.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.Palette1Button.Location = new System.Drawing.Point(154, 3);
+            this.Palette1Button.Name = "Palette1Button";
+            this.Palette1Button.Size = new System.Drawing.Size(128, 128);
+            this.Palette1Button.TabIndex = 5;
+            this.Palette1Button.UseVisualStyleBackColor = true;
+            this.Palette1Button.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ColorPickerClicked);
+            // 
+            // Palette2Button
+            // 
+            this.Palette2Button.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.Palette2Button.Location = new System.Drawing.Point(288, 3);
+            this.Palette2Button.Name = "Palette2Button";
+            this.Palette2Button.Size = new System.Drawing.Size(128, 128);
+            this.Palette2Button.TabIndex = 8;
+            this.Palette2Button.UseVisualStyleBackColor = true;
+            this.Palette2Button.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ColorPickerClicked);
+            // 
+            // Palette3Button
+            // 
+            this.Palette3Button.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.Palette3Button.Location = new System.Drawing.Point(422, 3);
+            this.Palette3Button.Name = "Palette3Button";
+            this.Palette3Button.Size = new System.Drawing.Size(128, 128);
+            this.Palette3Button.TabIndex = 9;
+            this.Palette3Button.UseVisualStyleBackColor = true;
+            this.Palette3Button.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ColorPickerClicked);
             // 
             // ClearColor
             // 
-            this.ClearColor.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ClearColor.Location = new System.Drawing.Point(154, 3);
+            this.ClearColor.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.ClearColor.Location = new System.Drawing.Point(556, 3);
             this.ClearColor.Name = "ClearColor";
-            this.ClearColor.Size = new System.Drawing.Size(145, 77);
-            this.ClearColor.TabIndex = 2;
+            this.ClearColor.Size = new System.Drawing.Size(128, 128);
+            this.ClearColor.TabIndex = 7;
             this.ClearColor.Text = "Clear";
             this.ClearColor.UseVisualStyleBackColor = true;
-            this.ClearColor.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ColorPickerClicked);
-            // 
-            // ExportButton
-            // 
-            this.ExportButton.Dock = System.Windows.Forms.DockStyle.Left;
-            this.ExportButton.Location = new System.Drawing.Point(768, 3);
-            this.ExportButton.Name = "ExportButton";
-            this.ExportButton.Size = new System.Drawing.Size(75, 83);
-            this.ExportButton.TabIndex = 1;
-            this.ExportButton.Text = "Export";
-            this.ExportButton.UseVisualStyleBackColor = true;
-            this.ExportButton.Click += new System.EventHandler(this.ExportButton_Click);
-            // 
-            // ImportButton
-            // 
-            this.ImportButton.Dock = System.Windows.Forms.DockStyle.Left;
-            this.ImportButton.Location = new System.Drawing.Point(849, 3);
-            this.ImportButton.Name = "ImportButton";
-            this.ImportButton.Size = new System.Drawing.Size(75, 83);
-            this.ImportButton.TabIndex = 2;
-            this.ImportButton.Text = "Import";
-            this.ImportButton.UseVisualStyleBackColor = true;
-            this.ImportButton.Click += new System.EventHandler(this.ImportButton_Click);
             // 
             // menuStrip1
             // 
@@ -249,7 +204,7 @@
             this.fileToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1434, 33);
+            this.menuStrip1.Size = new System.Drawing.Size(1238, 36);
             this.menuStrip1.TabIndex = 2;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -262,41 +217,41 @@
             this.saveAsToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(54, 29);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(54, 32);
             this.fileToolStripMenuItem.Text = "&File";
             // 
             // newTilesetToolStripMenuItem
             // 
             this.newTilesetToolStripMenuItem.Name = "newTilesetToolStripMenuItem";
-            this.newTilesetToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.newTilesetToolStripMenuItem.Size = new System.Drawing.Size(203, 34);
             this.newTilesetToolStripMenuItem.Text = "&New Tileset";
             this.newTilesetToolStripMenuItem.Click += new System.EventHandler(this.newTilesetToolStripMenuItem_Click);
             // 
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(203, 34);
             this.openToolStripMenuItem.Text = "&Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(203, 34);
             this.saveToolStripMenuItem.Text = "&Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(203, 34);
             this.saveAsToolStripMenuItem.Text = "Save &As";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(203, 34);
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -304,7 +259,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1434, 923);
+            this.ClientSize = new System.Drawing.Size(1238, 754);
             this.Controls.Add(this.tableLayoutPanel1);
             this.DoubleBuffered = true;
             this.MainMenuStrip = this.menuStrip1;
@@ -319,7 +274,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.TileSelectorPictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.TileEditPictureBox)).EndInit();
             this.flowLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel2.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -333,14 +287,6 @@
         private System.Windows.Forms.PictureBox TileSelectorPictureBox;
         private System.Windows.Forms.PictureBox TileEditPictureBox;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private System.Windows.Forms.Button Palette1Button;
-        private System.Windows.Forms.ComboBox PaletteSelect;
-        private System.Windows.Forms.Button Palette3Button;
-        private System.Windows.Forms.Button Palette2Button;
-        private System.Windows.Forms.Button ClearColor;
-        private System.Windows.Forms.Button ExportButton;
-        private System.Windows.Forms.Button ImportButton;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newTilesetToolStripMenuItem;
@@ -348,5 +294,10 @@
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private System.Windows.Forms.ComboBox PaletteSelect;
+        private System.Windows.Forms.Button Palette3Button;
+        private System.Windows.Forms.Button Palette2Button;
+        private System.Windows.Forms.Button Palette1Button;
+        private System.Windows.Forms.Button ClearColor;
     }
 }
