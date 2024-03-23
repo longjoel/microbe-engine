@@ -381,3 +381,6 @@ microbe-c-sdl/microbe-engine.self
 microbe-c-sdl/pkg/PARAM.SFO
 microbe-c-sdl/pkg/USRDIR/EBOOT.BIN
 microbe-c-sdl/sfo.xml
+/microbe-c-sdl/EBOOT.PBP
+/microbe-c-sdl/PARAM.SFO
+/microbe-c-sdl/psp.mak
