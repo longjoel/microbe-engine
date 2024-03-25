@@ -1,8 +1,10 @@
-﻿using System;
+﻿using ICSharpCode.TextEditor.Document;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +24,14 @@ namespace Microbe.Engine
                 this.Text = "Debug Console - " + _scriptFileName;
             } }
 
+        public string ConsoleInputText { get { 
+            return this.textEditorControl1.Text;
+            } set { 
+            var txt = value;
+               this.textEditorControl1.Text = txt;
+            } 
+             }
+
         /// <summary>
         /// 
         /// </summary>
@@ -37,9 +47,24 @@ namespace Microbe.Engine
             this.KeyPreview = true;
             _engine = engine;
             ScriptFileName = "";
+
+
             InitializeComponent();
 
 
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            Invalidate();
+            this.Width = this.Width + 1;
+            
+            textEditorControl1.Document.HighlightingStrategy = ICSharpCode.TextEditor.Document.HighlightingStrategyFactory.CreateHighlightingStrategy("JavaScript");
+            textEditorControl1.Document.FoldingManager.FoldingStrategy = new IndentFoldingStrategy();
+            textEditorControl1.Document.FoldingManager.UpdateFoldings(null, null);
+
+
+            base.OnLoad(e);
         }
 
 
@@ -53,7 +78,7 @@ namespace Microbe.Engine
         {
             try
             {
-                var output = _engine.Evaluate(this.ConsoleInputText.Text);
+                var output = _engine.Evaluate(this.ConsoleInputText);
                 DebugOutputText.AppendText(Environment.NewLine + output);
 
             }
@@ -81,7 +106,7 @@ namespace Microbe.Engine
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.ConsoleInputText.Text = "";
+            this.ConsoleInputText = "";
             this.DebugOutputText.Text = "";
             this.ScriptFileName = "";
         }
@@ -94,7 +119,7 @@ namespace Microbe.Engine
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 this.ScriptFileName = openFileDialog.FileName;
-                this.ConsoleInputText.Text = System.IO.File.ReadAllText(this.ScriptFileName);
+                this.ConsoleInputText = System.IO.File.ReadAllText(this.ScriptFileName);
                 this.DebugOutputText.Text = "";
 
             }
@@ -108,7 +133,7 @@ namespace Microbe.Engine
             }
             else
             {
-                System.IO.File.WriteAllText(this.ScriptFileName, this.ConsoleInputText.Text);
+                System.IO.File.WriteAllText(this.ScriptFileName, this.ConsoleInputText);
             }
         }
 
@@ -120,13 +145,18 @@ namespace Microbe.Engine
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
                 this.ScriptFileName = saveFileDialog.FileName;
-                System.IO.File.WriteAllText(this.ScriptFileName, this.ConsoleInputText.Text);
+                System.IO.File.WriteAllText(this.ScriptFileName, this.ConsoleInputText);
             }
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void aPIDocsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+           
         }
     }
 }

@@ -61,7 +61,8 @@ namespace Microbe.Engine.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to setString(0, 0, &quot;microbe-engine&quot;);
+        ///   Looks up a localized string similar to setString(0, 0, &quot;** microbe-engine **&quot;);
+        ///setString(0, 17, &quot;NO FILE&quot;);
         ///.
         /// </summary>
         internal static string _default {

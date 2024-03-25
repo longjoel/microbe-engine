@@ -241,8 +241,23 @@ namespace Microbe.Engine
             if (Menu == null)
             {
                 Menu = new MainMenu();
+
+
                 var debugMenu = new MenuItem("Debug");
+
+                var helpMenu = new MenuItem("Help");
+                helpMenu.MenuItems.Add(new MenuItem("Docs", (s, a) =>
+                {
+                    Process.Start(new ProcessStartInfo("https://longjoel.github.io/microbe-engine/modules.html") { UseShellExecute = true });
+                }));
+                helpMenu.MenuItems.Add(new MenuItem("About", (s, a) =>
+                {
+                    MessageBox.Show("Microbe Engine -- Joel Longanecker (c)2024 -- GPLv3");
+                }));   
+
+
                 Menu.MenuItems.Add(debugMenu);
+                Menu.MenuItems.Add(helpMenu);
                 var vramMenuItem = new MenuItem("VRAM");
                 debugMenu.MenuItems.Add(vramMenuItem);
                 vramMenuItem.Click += (s, a) =>
