@@ -76,7 +76,7 @@
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitContainer1.Location = new System.Drawing.Point(3, 36);
+            this.splitContainer1.Location = new System.Drawing.Point(3, 39);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -85,8 +85,9 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.AutoScroll = true;
             this.splitContainer1.Panel2.Controls.Add(this.TileEditPictureBox);
-            this.splitContainer1.Size = new System.Drawing.Size(1474, 742);
+            this.splitContainer1.Size = new System.Drawing.Size(1474, 739);
             this.splitContainer1.SplitterDistance = 234;
             this.splitContainer1.TabIndex = 0;
             // 
@@ -193,7 +194,7 @@
             this.fileToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1480, 33);
+            this.menuStrip1.Size = new System.Drawing.Size(1480, 36);
             this.menuStrip1.TabIndex = 2;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -206,7 +207,7 @@
             this.saveAsToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(54, 29);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(54, 30);
             this.fileToolStripMenuItem.Text = "&File";
             // 
             // newTilesetToolStripMenuItem
@@ -250,7 +251,7 @@
             this.tilePickerComponent1.Graphics = null;
             this.tilePickerComponent1.Location = new System.Drawing.Point(0, 0);
             this.tilePickerComponent1.Name = "tilePickerComponent1";
-            this.tilePickerComponent1.Size = new System.Drawing.Size(234, 742);
+            this.tilePickerComponent1.Size = new System.Drawing.Size(234, 739);
             this.tilePickerComponent1.TabIndex = 3;
             // 
             // MetaTileEditorForm

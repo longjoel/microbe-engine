@@ -15,6 +15,8 @@ namespace Microbe.Engine.Components
 
         MicrobeGraphics _graphics;
         Timer _timer;
+        int _copySource;
+
         public TilePickerComponent(MicrobeGraphics graphics)
         {
             InitializeComponent();
@@ -24,6 +26,85 @@ namespace Microbe.Engine.Components
             _timer.Interval = 100;
             _timer.Tick += (s, e) => TileRenderContainer.Invalidate();
             _timer.Start();
+
+            TileRenderContainer.ContextMenuStrip = new ContextMenuStrip();
+            TileRenderContainer.ContextMenuStrip.Items.Add("Copy", null, (s, e) =>
+            {
+              
+                _copySource = SelectedTiles.FirstOrDefault();
+            });
+            TileRenderContainer.ContextMenuStrip.Items.Add("Paste", null, (s, e) =>
+            {
+                var srcTile = _graphics.GetTileData(_copySource);
+               
+                var destTile = SelectedTiles.FirstOrDefault();
+                _graphics.SetTileData(destTile, srcTile);
+                
+
+               
+            });
+            TileRenderContainer.ContextMenuStrip.Items.Add("Clear", null, (s, e) =>
+            {
+                foreach (var tile in SelectedTiles)
+                {
+                    _graphics.SetTileData(tile, new byte[64]);
+                }
+            });
+            TileRenderContainer.ContextMenuStrip.Items.Add("Flip X", null, (s, e) =>
+            {
+                foreach (var tile in SelectedTiles)
+                {
+                    var srcTile = _graphics.GetTileData(tile);
+                    var destTile = new byte[64];
+
+                    for(int y = 0; y < 8; y++)
+                    {
+                        for(int x = 0; x < 8; x++)
+                        {
+                            destTile[(y * 8) + x] = srcTile[(y * 8) + (7 - x)];
+                        }
+                    }
+                    _graphics.SetTileData(tile, destTile);
+                }
+               
+            });
+            TileRenderContainer.ContextMenuStrip.Items.Add("Flip Y", null, (s, e) =>
+            {
+                foreach (var tile in SelectedTiles)
+                {
+                    var srcTile = _graphics.GetTileData(tile);
+                    var destTile = new byte[64];
+
+                    for (int y = 0; y < 8; y++)
+                    {
+                        for (int x = 0; x < 8; x++)
+                        {
+                            destTile[(y * 8) + x] = srcTile[((7 - y) * 8) + x];
+                        }
+                    }
+                    _graphics.SetTileData(tile, destTile);
+                }
+            });
+
+            TileRenderContainer.ContextMenuStrip.Items.Add("Rotate", null, (s, e) =>
+            {
+                foreach (var tile in SelectedTiles)
+                {
+                    var srcTile = _graphics.GetTileData(tile);
+                    var destTile = new byte[8*8];
+
+                    for (int y = 0; y < 8; y++)
+                    {
+                        for (int x = 0; x < 8; x++)
+                        {
+                            destTile[(y * 8) + x] = srcTile[((7 - x) * 8) + y];
+                        }
+                    }
+                   
+                    _graphics.SetTileData(tile, destTile);
+                }
+            });
+            
         }
 
         public TilePickerComponent() : this(null) { }
