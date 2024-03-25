@@ -59,12 +59,15 @@ namespace Microbe.Engine
 
         private void RefreshTimer_Tick(object sender, EventArgs e)
         {
-            TileSelectorPictureBox.Invalidate();
+          //  TileSelectorPictureBox.Invalidate();
             TileEditPictureBox.Invalidate();
         }
 
         protected override void OnLoad(EventArgs e)
         {
+            tilePickerComponent1.Graphics = _graphics;
+            tilePickerComponent1.OnSelectedTilesChanged += TilePickerComponent1_OnSelectedTilesChanged; 
+
             PaletteSelect.Items.Clear();
             for (int i = 0; i < 256; i++)
             {
@@ -75,9 +78,17 @@ namespace Microbe.Engine
 
         }
 
+        private void TilePickerComponent1_OnSelectedTilesChanged(List<int> list)
+        {
+           _selectedTileIndex = list[0];
+            this.PaletteSelect.Text = _graphics.TileToPaletteMap[_selectedTileIndex].ToString();
+            SetPalette();
+        }
+
         private int GetCols()
         {
-            return (int)Math.Floor((double)TileSelectorPictureBox.ClientRectangle.Width / 32.0);
+            return 4;
+           
         }
 
         private void TileSelectorPictureBox_Paint(object sender, PaintEventArgs e)
@@ -215,7 +226,7 @@ namespace Microbe.Engine
 
         }
 
-     
+
 
         private void PaletteSelect_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -234,28 +245,26 @@ namespace Microbe.Engine
 
         public void ColorPickerClicked(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+
+            if (((Button)sender).Name == nameof(Palette1Button))
             {
-                if (((Button)sender).Name == nameof(Palette1Button))
-                {
-                    _paletteIndex = 1;
+                _paletteIndex = 1;
 
-                }
-                else
-                if (((Button)sender).Name == nameof(Palette2Button))
-                {
-                    _paletteIndex = 2;
-
-                }
-                else
-                if (((Button)sender).Name == nameof(Palette3Button))
-                {
-                    _paletteIndex = 3;
-
-                }
-                else { _paletteIndex = 0; }
             }
-            else if (e.Button == MouseButtons.Right)
+            else
+            if (((Button)sender).Name == nameof(Palette2Button))
+            {
+                _paletteIndex = 2;
+
+            }
+            else
+            if (((Button)sender).Name == nameof(Palette3Button))
+            {
+                _paletteIndex = 3;
+
+            }
+            else { _paletteIndex = 0; }
+            if (e.Button == MouseButtons.Right)
             {
                 var cd = new ColorDialog();
                 if (cd.ShowDialog() == DialogResult.OK)
@@ -349,6 +358,6 @@ namespace Microbe.Engine
             this.Close();
         }
 
-      
+
     }
 }
