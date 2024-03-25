@@ -85,7 +85,7 @@
             this.fileToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1316, 33);
+            this.menuStrip1.Size = new System.Drawing.Size(1316, 36);
             this.menuStrip1.TabIndex = 3;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -153,11 +153,11 @@
             this.textEditorControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textEditorControl1.IsIconBarVisible = true;
             this.textEditorControl1.IsReadOnly = false;
-            this.textEditorControl1.Location = new System.Drawing.Point(3, 36);
+            this.textEditorControl1.Location = new System.Drawing.Point(3, 39);
             this.textEditorControl1.Name = "textEditorControl1";
             this.textEditorControl1.ShowInvalidLines = true;
             this.textEditorControl1.ShowLineNumbers = false;
-            this.textEditorControl1.Size = new System.Drawing.Size(1310, 476);
+            this.textEditorControl1.Size = new System.Drawing.Size(1310, 473);
             this.textEditorControl1.TabIndex = 6;
             // 
             // DebugConsoleForm

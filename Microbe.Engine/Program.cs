@@ -252,7 +252,7 @@ namespace Microbe.Engine
                 }));
                 helpMenu.MenuItems.Add(new MenuItem("About", (s, a) =>
                 {
-                    MessageBox.Show("Microbe Engine -- Joel Longanecker (c)2024 -- GPLv3");
+                    MessageBox.Show("Microbe Engine\r\nJoel Longanecker (c)2024\r\nGPLv3");
                 }));   
 
 
