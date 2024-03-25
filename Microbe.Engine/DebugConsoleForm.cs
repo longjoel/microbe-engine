@@ -13,6 +13,15 @@ namespace Microbe.Engine
     public partial class DebugConsoleForm : Form
     {
         private Jint.Engine _engine;
+
+        private string _scriptFileName;
+        public string ScriptFileName { get { 
+            return _scriptFileName;
+            } private set {
+            _scriptFileName = value;
+                this.Text = "Debug Console - " + _scriptFileName;
+            } }
+
         /// <summary>
         /// 
         /// </summary>
@@ -27,13 +36,13 @@ namespace Microbe.Engine
 
             this.KeyPreview = true;
             _engine = engine;
-           
+            ScriptFileName = "";
             InitializeComponent();
 
 
         }
 
-       
+
 
         public void Log(string s)
         {
@@ -70,5 +79,54 @@ namespace Microbe.Engine
             }
         }
 
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.ConsoleInputText.Text = "";
+            this.DebugOutputText.Text = "";
+            this.ScriptFileName = "";
+        }
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Javascript Files|*.js";
+            openFileDialog.Title = "Open a Javascript File";
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                this.ScriptFileName = openFileDialog.FileName;
+                this.ConsoleInputText.Text = System.IO.File.ReadAllText(this.ScriptFileName);
+                this.DebugOutputText.Text = "";
+
+            }
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+          if(this.ScriptFileName == "")
+            {
+               saveAsToolStripMenuItem_Click(sender, e);
+            }
+            else
+            {
+                System.IO.File.WriteAllText(this.ScriptFileName, this.ConsoleInputText.Text);
+            }
+        }
+
+        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Javascript Files|*.js";
+            saveFileDialog.Title = "Save a Javascript File";
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                this.ScriptFileName = saveFileDialog.FileName;
+                System.IO.File.WriteAllText(this.ScriptFileName, this.ConsoleInputText.Text);
+            }
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }

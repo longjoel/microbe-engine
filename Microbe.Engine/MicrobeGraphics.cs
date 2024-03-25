@@ -546,7 +546,9 @@ namespace Microbe.Engine
                 CopyTileToCache(i);
             }
 
-        
+            CopyVramToCache();
+
+            CopyFrameBufferToCache();        
         }
 
     }

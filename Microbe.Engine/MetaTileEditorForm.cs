@@ -13,7 +13,16 @@ namespace Microbe.Engine
 {
     public partial class MetaTileEditorForm : Form
     {
-
+        private string _tilesetPath;
+        public string TilesetPath
+        {
+            get { return _tilesetPath; }
+            set
+            {
+                _tilesetPath = value;
+                this.Text = "MetaTile Editor - " + _tilesetPath;
+            }
+        }
         MicrobeGraphics _graphics;
 
         int _selectedTileIndex;
@@ -206,19 +215,14 @@ namespace Microbe.Engine
 
         }
 
-        private void splitContainer1_SplitterMoved(object sender, SplitterEventArgs e)
-        {
-
-        }
-
-
+     
 
         private void PaletteSelect_SelectedIndexChanged(object sender, EventArgs e)
         {
             _graphics.SetTilePalette(_selectedTileIndex,
                 int.Parse(this.PaletteSelect.Text.ToString()));
 
-            
+
 
             var pal = _graphics.GetPalette(_graphics.TileToPaletteMap[_selectedTileIndex]);
 
@@ -228,7 +232,7 @@ namespace Microbe.Engine
 
         }
 
-        private void ColorPickerClicked(object sender, MouseEventArgs e)
+        public void ColorPickerClicked(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
@@ -292,30 +296,59 @@ namespace Microbe.Engine
             }
         }
 
-        private void ExportButton_Click(object sender, EventArgs e)
+
+
+        private void newTilesetToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var sfd = new SaveFileDialog();
-            sfd.Filter = "Microbe Graphics Format (*.micgfx)|*.micgfx";
-            if (sfd.ShowDialog() == DialogResult.OK) {
-
-                File.WriteAllText(sfd.FileName, _graphics.Serialize());
-
-            }
-
-            
+            var newGraphics = new MicrobeGraphics();
+            _graphics.Deserialize(newGraphics.Serialize());
+            TilesetPath = "";
         }
 
-        private void ImportButton_Click(object sender, EventArgs e)
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var ofd = new OpenFileDialog();
-                ofd.Filter = "Microbe Graphics Format (*.micgfx)|*.micgfx";
-            if (ofd.ShowDialog() == DialogResult.OK) {
+            ofd.Filter = "Microbe Graphics Format (*.micgfx)|*.micgfx";
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
                 _graphics.Deserialize(File.ReadAllText(ofd.FileName));
                 _selectedTileIndex = 0;
                 this.PaletteSelect.Text = _graphics.TileToPaletteMap[_selectedTileIndex].ToString();
                 SetPalette();
+                TilesetPath = ofd.FileName;
             }
-        
-    }
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(TilesetPath))
+            {
+                saveAsToolStripMenuItem_Click(sender, e);
+            }
+            else
+            {
+                File.WriteAllText(TilesetPath, _graphics.Serialize());
+            }
+        }
+
+        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var sfd = new SaveFileDialog();
+            sfd.Filter = "Microbe Graphics Format (*.micgfx)|*.micgfx";
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+
+                File.WriteAllText(sfd.FileName, _graphics.Serialize());
+                TilesetPath = sfd.FileName;
+
+            }
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+      
     }
 }
