@@ -331,11 +331,12 @@ namespace Microbe.Engine
 
                 var lines = content.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
                 var sampleIndex = 0;
-                for (int i = 0; i < 256; i++)
+                for (int i = 0; i < lines.Length; i++)
                 {
                     if (lines[i].StartsWith("[SAMPLE:"))
                     {
                         sampleIndex = int.Parse(lines[i].Replace("[SAMPLE:", "").Replace("]", ""));
+                        Samples[sampleIndex].SampleSegments.Clear();
                     }
                     if (lines[i].StartsWith("IntervalMS:"))
                     {

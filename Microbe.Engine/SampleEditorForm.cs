@@ -165,6 +165,7 @@ namespace Microbe.Engine
             ofd.Title = "Open audio samples";
             if (ofd.ShowDialog() == DialogResult.OK)
             {
+                this.SamplesDataGrid.Rows.Clear();  
                 Audio.Deserialize(ofd.FileName);
                 LoadSample(0);
                 PickSampleListBox.SelectedIndex = 0;
