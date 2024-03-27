@@ -116,6 +116,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\PixelPainterComponent.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\PixelPainterComponent.Designer.cs">
+      <DependentUpon>PixelPainterComponent.cs</DependentUpon>
+    </Compile>
     <Compile Include="Components\TilePickerComponent.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -135,6 +141,7 @@
       <DependentUpon>DebugVramForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Extensions.cs" />
+    <Compile Include="IMicrobeAudio.cs" />
     <Compile Include="MetaTileEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -151,6 +158,9 @@
     <Compile Include="SampleEditorForm.Designer.cs">
       <DependentUpon>SampleEditorForm.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Components\PixelPainterComponent.resx">
+      <DependentUpon>PixelPainterComponent.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Components\TilePickerComponent.resx">
       <DependentUpon>TilePickerComponent.cs</DependentUpon>
     </EmbeddedResource>
