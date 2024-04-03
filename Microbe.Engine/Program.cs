@@ -197,6 +197,8 @@ namespace Microbe.Engine
 
         protected override void OnLoad(EventArgs e)
         {
+            EnableDebugMenu();
+
             Width = 640;
             Height = 480;
             _tickTimer.Start();

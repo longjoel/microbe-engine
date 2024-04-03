@@ -116,6 +116,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\PixelPainterComponent.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\PixelPainterComponent.Designer.cs">
+      <DependentUpon>PixelPainterComponent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\TilePickerComponent.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\TilePickerComponent.Designer.cs">
+      <DependentUpon>TilePickerComponent.cs</DependentUpon>
+    </Compile>
     <Compile Include="DebugConsoleForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -129,6 +141,7 @@
       <DependentUpon>DebugVramForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Extensions.cs" />
+    <Compile Include="IMicrobeAudio.cs" />
     <Compile Include="MetaTileEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -145,6 +158,12 @@
     <Compile Include="SampleEditorForm.Designer.cs">
       <DependentUpon>SampleEditorForm.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Components\PixelPainterComponent.resx">
+      <DependentUpon>PixelPainterComponent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\TilePickerComponent.resx">
+      <DependentUpon>TilePickerComponent.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DebugConsoleForm.resx">
       <DependentUpon>DebugConsoleForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -199,7 +218,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Components\" />
     <Folder Include="Properties\DataSources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

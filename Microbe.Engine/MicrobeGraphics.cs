@@ -27,6 +27,12 @@ namespace Microbe.Engine
 
     }
 
+    public class MetaTile {
+        public int width;
+        public int height;
+        public int[] tiles;
+    }
+
     public class RGB
     {
         public byte r;
@@ -380,7 +386,17 @@ namespace Microbe.Engine
             }
         }
 
-
+        public void DrawMetaTile(int x, int y, MetaTile metaTile)
+        {
+            for (int my = 0; my < metaTile.height; my++)
+            {
+                for (int mx = 0; mx < metaTile.width; mx++)
+                {
+                    var tileIndex = metaTile.tiles[my * metaTile.width + mx];
+                    SetVramData(x + mx, y + my, (byte)tileIndex);
+                }
+            }
+        }
 
         public TilePalette GetPalette(int index) { return TileColors[index]; }
 

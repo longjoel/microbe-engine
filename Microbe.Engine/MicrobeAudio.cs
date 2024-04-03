@@ -28,7 +28,7 @@ namespace Microbe.Engine
             IntervalMS = 100;
         }
     }
-    public class MicrobeAudio
+    public class MicrobeAudio : IMicrobeAudio
     {
         public Sample[] Samples { get; set; }
 
@@ -91,6 +91,8 @@ namespace Microbe.Engine
                                 MixSamples(
                                     GenerateTriangleWave((int)_notes[musicSegments[i].tn], intervalMS, musicSegments[i].tv),
                                     GenerateWhiteNoise(intervalMS, musicSegments[i].nv)))));
+
+
             }
 
             var wav = MakeWave(sampleData.ToArray());
@@ -326,16 +328,18 @@ namespace Microbe.Engine
 
         public void Deserialize(string fileName)
         {
-            if (File.Exists(fileName)){
+            if (File.Exists(fileName))
+            {
                 var content = File.ReadAllText(fileName);
 
                 var lines = content.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
                 var sampleIndex = 0;
-                for (int i = 0; i < 256; i++)
+                for (int i = 0; i < lines.Length; i++)
                 {
                     if (lines[i].StartsWith("[SAMPLE:"))
                     {
                         sampleIndex = int.Parse(lines[i].Replace("[SAMPLE:", "").Replace("]", ""));
+                        Samples[sampleIndex].SampleSegments.Clear();
                     }
                     if (lines[i].StartsWith("IntervalMS:"))
                     {
@@ -343,7 +347,7 @@ namespace Microbe.Engine
                     }
                     else if (lines[i].StartsWith("Segment:"))
                     {
-                        var parts = lines[i].Replace("Segment:","").Split(',');
+                        var parts = lines[i].Replace("Segment:", "").Split(',');
                         var s = new SampleSegment();
                         foreach (var p in parts)
                         {
@@ -376,6 +380,7 @@ namespace Microbe.Engine
                         Samples[sampleIndex].SampleSegments.Add(s);
                     }
                 }
-            } }
+            }
+        }
     }
 }

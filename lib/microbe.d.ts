@@ -11,6 +11,12 @@ declare interface Sprite {
     background: boolean;
 }
 
+declare interface MetaTile {
+    width: number;
+    height: number;
+    tiles: number[];
+}
+
 /**
  * Represents an RGB color.
  */
@@ -147,11 +153,33 @@ declare function setTilePalette(tileIndex: number, paletteIndex: number): void;
  */
 declare function setMain(cbMain: cbMain): void;
 
+
+/**
+ * Loads graphics from a file.
+ * @param fileName
+ */
+declare function loadGfx(fileName: string): void; 
+
+/**
+ * 
+ * @param x
+ * @param y
+ * @param metaTile
+ */
+declare function drawMetaTile(x: number, y: number, metaTile: MetaTile): void;
+
+
 /**
  * Gets the state of the gamepad.
  * @returns The gamepad state.
  */
 declare function getGamepadState(): GamepadState;
+
+/**
+ * 
+ * @param message
+ */
+declare function log(message: string): void;
 
 /**
  * Sets the sample data at the specified index.
@@ -182,11 +210,6 @@ declare function stopMusic(): void;
  * set raw data for the sample.
  */
 declare function setSampleRaw(index: number, data: Uint8Array): void;
-
-/**
- * load graphics from a file.
- */
-declare function loadGfx(fileName: string): void;
 
 /** 
  * load samples from a file.

@@ -30,7 +30,6 @@
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.TileSelectorPictureBox = new System.Windows.Forms.PictureBox();
             this.TileEditPictureBox = new System.Windows.Forms.PictureBox();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.PaletteSelect = new System.Windows.Forms.ComboBox();
@@ -45,12 +44,12 @@
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tilePickerComponent1 = new Microbe.Engine.Components.TilePickerComponent();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.TileSelectorPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.TileEditPictureBox)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -70,7 +69,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1238, 754);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1480, 921);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // splitContainer1
@@ -82,25 +81,15 @@
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.TileSelectorPictureBox);
+            this.splitContainer1.Panel1.Controls.Add(this.tilePickerComponent1);
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.AutoScroll = true;
             this.splitContainer1.Panel2.Controls.Add(this.TileEditPictureBox);
-            this.splitContainer1.Size = new System.Drawing.Size(1232, 572);
+            this.splitContainer1.Size = new System.Drawing.Size(1474, 739);
             this.splitContainer1.SplitterDistance = 234;
             this.splitContainer1.TabIndex = 0;
-            // 
-            // TileSelectorPictureBox
-            // 
-            this.TileSelectorPictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.TileSelectorPictureBox.Location = new System.Drawing.Point(0, 0);
-            this.TileSelectorPictureBox.Name = "TileSelectorPictureBox";
-            this.TileSelectorPictureBox.Size = new System.Drawing.Size(234, 572);
-            this.TileSelectorPictureBox.TabIndex = 0;
-            this.TileSelectorPictureBox.TabStop = false;
-            this.TileSelectorPictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.TileSelectorPictureBox_Paint);
-            this.TileSelectorPictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.TileSelectorPictureBox_MouseClick);
             // 
             // TileEditPictureBox
             // 
@@ -126,9 +115,9 @@
             this.flowLayoutPanel1.Controls.Add(this.Palette3Button);
             this.flowLayoutPanel1.Controls.Add(this.ClearColor);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 617);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 784);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(1232, 134);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(1474, 134);
             this.flowLayoutPanel1.TabIndex = 1;
             // 
             // PaletteSelect
@@ -164,7 +153,7 @@
             this.Palette1Button.Size = new System.Drawing.Size(128, 128);
             this.Palette1Button.TabIndex = 5;
             this.Palette1Button.UseVisualStyleBackColor = true;
-            this.Palette1Button.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ColorPickerClicked);
+            this.Palette1Button.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ColorPickerClicked);
             // 
             // Palette2Button
             // 
@@ -174,7 +163,7 @@
             this.Palette2Button.Size = new System.Drawing.Size(128, 128);
             this.Palette2Button.TabIndex = 8;
             this.Palette2Button.UseVisualStyleBackColor = true;
-            this.Palette2Button.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ColorPickerClicked);
+            this.Palette2Button.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ColorPickerClicked);
             // 
             // Palette3Button
             // 
@@ -184,7 +173,7 @@
             this.Palette3Button.Size = new System.Drawing.Size(128, 128);
             this.Palette3Button.TabIndex = 9;
             this.Palette3Button.UseVisualStyleBackColor = true;
-            this.Palette3Button.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ColorPickerClicked);
+            this.Palette3Button.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ColorPickerClicked);
             // 
             // ClearColor
             // 
@@ -195,6 +184,7 @@
             this.ClearColor.TabIndex = 7;
             this.ClearColor.Text = "Clear";
             this.ClearColor.UseVisualStyleBackColor = true;
+            this.ClearColor.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ColorPickerClicked);
             // 
             // menuStrip1
             // 
@@ -204,7 +194,7 @@
             this.fileToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1238, 36);
+            this.menuStrip1.Size = new System.Drawing.Size(1480, 36);
             this.menuStrip1.TabIndex = 2;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -217,7 +207,7 @@
             this.saveAsToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(54, 32);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(54, 30);
             this.fileToolStripMenuItem.Text = "&File";
             // 
             // newTilesetToolStripMenuItem
@@ -255,11 +245,20 @@
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
+            // tilePickerComponent1
+            // 
+            this.tilePickerComponent1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tilePickerComponent1.Graphics = null;
+            this.tilePickerComponent1.Location = new System.Drawing.Point(0, 0);
+            this.tilePickerComponent1.Name = "tilePickerComponent1";
+            this.tilePickerComponent1.Size = new System.Drawing.Size(234, 739);
+            this.tilePickerComponent1.TabIndex = 3;
+            // 
             // MetaTileEditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1238, 754);
+            this.ClientSize = new System.Drawing.Size(1480, 921);
             this.Controls.Add(this.tableLayoutPanel1);
             this.DoubleBuffered = true;
             this.MainMenuStrip = this.menuStrip1;
@@ -271,7 +270,6 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.TileSelectorPictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.TileEditPictureBox)).EndInit();
             this.flowLayoutPanel1.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
@@ -284,7 +282,6 @@
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.PictureBox TileSelectorPictureBox;
         private System.Windows.Forms.PictureBox TileEditPictureBox;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.MenuStrip menuStrip1;
@@ -299,5 +296,6 @@
         private System.Windows.Forms.Button Palette2Button;
         private System.Windows.Forms.Button Palette1Button;
         private System.Windows.Forms.Button ClearColor;
+        private Components.TilePickerComponent tilePickerComponent1;
     }
 }

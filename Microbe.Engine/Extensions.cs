@@ -30,6 +30,7 @@ namespace Microbe.Engine
                 }
             }));
            
+            engine.SetValue("drawMetaTile", new Action<int, int, MetaTile>((x,y,MetaTile) => graphics.DrawMetaTile(x,y,MetaTile)));
         }
 
         public static void RegisterEventsToMainWindow(this Jint.Engine engine, MicrobeFormMain mainForm)
