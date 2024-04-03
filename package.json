@@ -8,7 +8,6 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "msbuild",
     "start": "cd example && npm install && npm run build && npm run start",
     "build:windows":"cd microbe-c-sdl && make -f Makefile.win64",
     "docs":"npx typedoc ./lib/microbe.d.ts --out ./docs",
