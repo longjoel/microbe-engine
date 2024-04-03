@@ -152,7 +152,9 @@ namespace Microbe.Engine.Components
                         SelectedTiles.Add(((row) * 4) + col);
                     }
                 }
-                this.SelectedRangeLabel.Text = $"Selected Range: {string.Join(",", SelectedTiles)}";
+                var inner = $"[{string.Join(",", SelectedTiles)}]";
+                var outer = $"{{ \"w\":{(ex-tx)+1}, \"h\":{(ey-ty)+1} \"tiles\":{inner} }}";
+                this.SelectedRangeLabel.Text = outer;
 
                 if(OnSelectedTilesChanged != null)
                     OnSelectedTilesChanged(SelectedTiles);
