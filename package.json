@@ -9,7 +9,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "cd example && npm install && npm run build && npm run start",
-    "build:windows":"cd microbe-c-sdl && make -f Makefile.win64",
+    "build:windows":"cd microbe-c-sdl && make -f ./makefiles/win64.mak clean && make -f ./makefiles/win64.mak",
+    "build:linux":"cd microbe-c-sdl && make -f ./makefiles/linux64.mak clean && make -f ./makefiles/linux64.mak",
     "docs":"npx typedoc ./lib/microbe.d.ts --out ./docs",
     "docker:bootstrap-linux": "podman build -f ./docker-files/linux.dockerfile -t microbe-engine-linux",
     "docker:build-linux": "node ./scripts/launch-docker.js --makefile=linux64.mak --container=microbe-engine-linux",

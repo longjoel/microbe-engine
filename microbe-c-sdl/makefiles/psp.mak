@@ -160,22 +160,7 @@ endif
 endif
 
 
-
-
-
-# Source files
-SRCS := $(wildcard *.c) $(wildcard *.cpp)
-
-OBJDIR := obj
-
-# Object files
-OBJS := $(SRCS:%.c=$(OBJDIR)/%.o)
-OBJS := $(OBJS:%.cpp=$(OBJDIR)/%.o)
-
-# Target executable
-TARGET := microbe-engine
-$(shell mkdir -p $(OBJDIR))
-
+include ./makefiles/0.mak	
 
 # Default target
 all: $(EXTRA_TARGETS) $(FINAL_TARGET)
