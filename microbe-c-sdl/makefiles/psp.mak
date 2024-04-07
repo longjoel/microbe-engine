@@ -86,7 +86,7 @@ CXXFLAGS += -D_PSP_FW_VERSION=$(PSP_FW_VERSION)
 
 ifeq ($(BUILD_PRX),1)
 LDFLAGS  := $(addprefix -L,$(LIBDIR)) -specs=$(PSPSDK)/lib/prxspecs -Wl,-q,-T$(PSPSDK)/lib/linkfile.prx $(LDFLAGS)
-EXTRA_CLEAN += $(TARGET).elf
+EXTRA_CLEAN +=$(BIN_DIR)/$(TARGET).elf
 # Setup default exports if needed
 ifdef PRX_EXPORTS
 EXPORT_OBJ=$(patsubst %.exp,%.o,$(PRX_EXPORTS))
@@ -110,7 +110,7 @@ endif
 
 # Define the overridable parameters for EBOOT.PBP
 ifndef PSP_EBOOT_TITLE
-PSP_EBOOT_TITLE = $(TARGET)
+PSP_EBOOT_TITLE =$(BIN_DIR)/$(TARGET)
 endif
 
 ifndef PSP_EBOOT_SFO
@@ -149,13 +149,13 @@ ifeq ($(BUILD_PRX),1)
 ifneq ($(TARGET_LIB),)
 $(error TARGET_LIB should not be defined when building a prx)
 else
-FINAL_TARGET = $(TARGET).prx
+FINAL_TARGET = $(BIN_DIR)/$(TARGET).prx
 endif
 else
 ifneq ($(TARGET_LIB),)
 FINAL_TARGET = $(TARGET_LIB)
 else
-FINAL_TARGET = $(TARGET).elf
+FINAL_TARGET = $(BIN_DIR)/$(TARGET).elf
 endif
 endif
 
@@ -166,21 +166,21 @@ include ./makefiles/0.mak
 all: $(EXTRA_TARGETS) $(FINAL_TARGET)
 
 
-kxploit: $(TARGET).elf $(PSP_EBOOT_SFO)
-	mkdir -p "$(TARGET)"
-	$(STRIP) $(TARGET).elf -o $(TARGET)/$(PSP_EBOOT)
-	mkdir -p "$(TARGET)%"
-	$(PACK_PBP) "$(TARGET)%/$(PSP_EBOOT)" $(PSP_EBOOT_SFO) $(PSP_EBOOT_ICON)  \
+kxploit: $(BIN_DIR)/$(TARGET).elf $(PSP_EBOOT_SFO)
+	mkdir -p "$(BIN_DIR)/$(TARGET)"
+	$(STRIP)  $(BIN_DIR)/$(TARGET).elf -o$(BIN_DIR)/$(TARGET)/$(PSP_EBOOT)
+	mkdir -p "$(BIN_DIR)/$(TARGET)%"
+	$(PACK_PBP) "$(BIN_DIR)/$(TARGET)%/$(PSP_EBOOT)" $(PSP_EBOOT_SFO) $(PSP_EBOOT_ICON)  \
                 $(PSP_EBOOT_ICON1) $(PSP_EBOOT_UNKPNG) $(PSP_EBOOT_PIC1)  \
                 $(PSP_EBOOT_SND0) NULL $(PSP_EBOOT_PSAR)
 
 
 
-SCEkxploit: $(TARGET).elf $(PSP_EBOOT_SFO)
-	mkdir -p "__SCE__$(TARGET)"
-	$(STRIP) $(TARGET).elf -o __SCE__$(TARGET)/$(PSP_EBOOT)
-	mkdir -p "%__SCE__$(TARGET)"
-	$(PACK_PBP) "%__SCE__$(TARGET)/$(PSP_EBOOT)" $(PSP_EBOOT_SFO) $(PSP_EBOOT_ICON)  \
+SCEkxploit: $(BIN_DIR)/$(TARGET).elf $(PSP_EBOOT_SFO)
+	mkdir -p "__SCE__$(BIN_DIR)/$(TARGET)"
+	$(STRIP) $(BIN_DIR)/$(TARGET).elf -o __SCE__$(BIN_DIR)/$(TARGET)/$(PSP_EBOOT)
+	mkdir -p "%__SCE__$(BIN_DIR)/$(TARGET)"
+	$(PACK_PBP) "%__SCE__$(BIN_DIR)/$(TARGET)/$(PSP_EBOOT)" $(PSP_EBOOT_SFO) $(PSP_EBOOT_ICON)  \
 			$(PSP_EBOOT_ICON1) $(PSP_EBOOT_UNKPNG) $(PSP_EBOOT_PIC1)  \
 			$(PSP_EBOOT_SND0) NULL $(PSP_EBOOT_PSAR)
 
@@ -189,29 +189,29 @@ SCEkxploit: $(TARGET).elf $(PSP_EBOOT_SFO)
 
 
 ifeq ($(NO_FIXUP_IMPORTS), 1)
-$(TARGET).elf: $(OBJS) $(EXPORT_OBJ)
+$(BIN_DIR)/$(TARGET).elf: $(OBJ_FILES) $(EXPORT_OBJ)
 	$(CXXFLAGS) $(LINK.c) $^ $(LDFLAGS) -o $@
 else
-$(TARGET).elf: $(OBJS) $(EXPORT_OBJ)
+$(BIN_DIR)/$(TARGET).elf: $(OBJ_FILES) $(EXPORT_OBJ)
 	$(LINK.c) $^ $(LDFLAGS) -o $@
 	$(FIXUP) $@
 endif
 
-$(TARGET_LIB): $(OBJS)
-	$(AR) cru $@ $(OBJS)
+$(TARGET_LIB): $(OBJ_FILES)
+	$(AR) cru $@ $(OBJ_FILES)
 	$(RANLIB) $@
 
 
 # Rule to build the executable
-$(TARGET): $(OBJS)
+$(BIN_DIR)/$(TARGET): $(OBJ_FILES)
 	$(CXX) $(CXXFLAGS)  $^ $(LDFLAGS) -o $@
 	
 # Rule to compile C source files
-$(OBJDIR)/%.o: %.c
-	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-# Rule to compile C++ source files
-$(OBJDIR)/%.o: %.cpp
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
@@ -220,20 +220,20 @@ $(PSP_EBOOT_SFO):
 	$(MKSFO) $(SFOFLAGS) '$(PSP_EBOOT_TITLE)' $@
 
 ifeq ($(BUILD_PRX),1)
-$(PSP_EBOOT): $(TARGET).prx $(PSP_EBOOT_SFO)
+$(PSP_EBOOT):$(BIN_DIR)/$(TARGET).prx $(PSP_EBOOT_SFO)
 ifeq ($(ENCRYPT), 1)
-	- $(ENC) $(TARGET).prx $(TARGET).prx
+	- $(ENC)$(BIN_DIR)/$(TARGET).prx$(BIN_DIR)/$(TARGET).prx
 endif
 	$(PACK_PBP) $(PSP_EBOOT) $(PSP_EBOOT_SFO) $(PSP_EBOOT_ICON)  \
 			$(PSP_EBOOT_ICON1) $(PSP_EBOOT_UNKPNG) $(PSP_EBOOT_PIC1)  \
-			$(PSP_EBOOT_SND0)  $(TARGET).prx $(PSP_EBOOT_PSAR)
+			$(PSP_EBOOT_SND0) $(BIN_DIR)/$(TARGET).prx $(PSP_EBOOT_PSAR)
 else
-$(PSP_EBOOT): $(TARGET).elf $(PSP_EBOOT_SFO)
-	$(STRIP) $(TARGET).elf -o $(TARGET)_strip.elf
+$(PSP_EBOOT): $(BIN_DIR)/$(TARGET).elf $(PSP_EBOOT_SFO)
+	$(STRIP) ./$(BIN_DIR)/$(TARGET).elf -o $(BIN_DIR)/$(TARGET)_strip.elf
 	$(PACK_PBP) $(PSP_EBOOT) $(PSP_EBOOT_SFO) $(PSP_EBOOT_ICON)  \
 			$(PSP_EBOOT_ICON1) $(PSP_EBOOT_UNKPNG) $(PSP_EBOOT_PIC1)  \
-			$(PSP_EBOOT_SND0)  $(TARGET)_strip.elf $(PSP_EBOOT_PSAR)
-	-rm -f $(TARGET)_strip.elf
+			$(PSP_EBOOT_SND0)  $(BIN_DIR)/$(TARGET)_strip.elf $(PSP_EBOOT_PSAR)
+	-rm -f $(BIN_DIR)/$(TARGET)_strip.elf
 endif
 
 %.prx: %.elf
@@ -245,9 +245,9 @@ endif
 
 # Clean target
 clean:
-	rm -rf $(OBJDIR)/*.o $(TARGET)
+	rm -rf $(OBJDIR)/*.o $(BIN_DIR)/$(TARGET)
 	# Fix missing separator error on line 259
-	rm -f $(FINAL_TARGET) $(EXTRA_CLEAN) $(OBJS) $(PSP_EBOOT_SFO) $(PSP_EBOOT) $(EXTRA_TARGETS)
+	rm -f $(FINAL_TARGET) $(EXTRA_CLEAN) $(OBJ_FILES) $(PSP_EBOOT_SFO) $(PSP_EBOOT) $(EXTRA_TARGETS)
 
 ##########################################################################
 

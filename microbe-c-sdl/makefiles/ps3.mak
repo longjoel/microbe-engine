@@ -7,6 +7,7 @@ APPVERSION=1.0
 
 # Compiler
 CC := ppu-g++
+CXX := ppu-g++
 
 # Compiler flags
 CFLAGS := -Wall -Wextra
@@ -14,6 +15,7 @@ CFLAGS := -mcpu=cell \
 	-I/usr/local/ps3dev/ppu/include \
 	-I/usr/local/ps3dev/portlibs/ppu/include \
 	-I/usr/local/ps3dev/portlibs/ppu/include/SDL2
+CXXFLAGS := $(CFLAGS) -std=c++11
 
 # Linker flags
 LDFLAGS := -L/usr/local/ps3dev/portlibs/ppu/lib \
@@ -23,48 +25,39 @@ LDFLAGS := -L/usr/local/ps3dev/portlibs/ppu/lib \
 	-L/usr/local/ps3dev/portlibs/ppu/lib \
 	-L/usr/local/ps3dev/portlibs/ppu/lib  /usr/local/ps3dev/portlibs/ppu/lib/libSDL2_ttf.a /usr/local/ps3dev/portlibs/ppu/lib/libSDL2_mixer.a /usr/local/ps3dev/portlibs/ppu/lib/libSDL2.a -lm -lgcm_sys -lrsx -lsysutil -lio -laudio -lrt -llv2 -lio -laudio
 
-# Source files
-SRCS := $(wildcard *.c) $(wildcard *.cpp)
-
-OBJDIR := obj
-
-# Object files
-OBJS := $(SRCS:%.c=$(OBJDIR)/%.o)
-OBJS := $(OBJS:%.cpp=$(OBJDIR)/%.o)
-
-
-
-$(shell mkdir -p $(OBJDIR))
+include ./makefiles/0.mak
 
 # Default target
-all: $(TARGET)
+
+# Rule to compile C source files
+
+all: $(BIN_DIR)/$(TARGET)
 
 # Rule to build the executable
-$(TARGET): $(OBJS)
+$(BIN_DIR)/$(TARGET): $(OBJ_FILES)
 	
-	$(CC) $(CFLAGS)  $^ $(LDFLAGS) -o $@
+	$(CXX) $(CFLAGS)  $^ $(LDFLAGS) -o $@
 
 	# build the elf files.
-	ppu-strip $(TARGET) -o $(TARGET).elf
-	sprxlinker $(TARGET).elf
-	fself $(TARGET).elf $(TARGET).self
-	make_self $(TARGET).elf $(TARGET).self
+	ppu-strip $(BIN_DIR)/$(TARGET) -o $(BIN_DIR)/$(TARGET).elf
+	sprxlinker $(BIN_DIR)/$(TARGET).elf
+	fself $(BIN_DIR)/$(TARGET).elf $(BIN_DIR)/$(TARGET).self
+	make_self $(BIN_DIR)/$(TARGET).elf $(BIN_DIR)/$(TARGET).self
 	
 	# build a .pkg file
 	mkdir -p pkg/USRDIR
-	make_self_npdrm $(TARGET).elf pkg/USRDIR/EBOOT.BIN ${CONTENT_ID}
+	make_self_npdrm $(BIN_DIR)/$(TARGET).elf pkg/USRDIR/EBOOT.BIN ${CONTENT_ID}
 	cp /usr/local/ps3dev/bin/sfo.xml .
 	sed -i "s/01\.00/${APPVERSION}/g" sfo.xml
 	sfo.py --title ${GAME_TITLE} --appid ${GAME_ID} -f /usr/local/ps3dev/bin/sfo.xml pkg/PARAM.SFO
-	pkg.py --contentid ${CONTENT_ID} pkg/ $(TARGET).pkg
+	pkg.py --contentid ${CONTENT_ID} pkg/ $(BIN_DIR)/$(TARGET).pkg
 
-# Rule to compile C source files
-$(OBJDIR)/%.o: %.c
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Rule to compile C++ source files
-$(OBJDIR)/%.o: %.cpp
-	$(CC) $(CFLAGS) -c $< -o $@
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
 
 elf: $(TARGET)
 	
