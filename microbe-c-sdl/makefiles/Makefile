@@ -4,6 +4,9 @@ endif
 ifeq ($(PLATFORM),"PS3")
 include ps3.mak
 endif
+ifeq ($(PLATFORM),"webasm")
+include webasm.mak
+endif
 
 .PHONY: inconsequential_target
 inconsequential_target:

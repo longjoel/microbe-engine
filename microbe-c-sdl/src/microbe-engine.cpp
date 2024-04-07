@@ -2,7 +2,9 @@
  * @file main.cpp
  * @brief Entry point of the Microbe Engine application.
  */
-
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#endif
 #include <SDL2/SDL.h>
 #include "duktape.h"
 #include "microbe.h"
@@ -28,6 +30,58 @@ duk_ret_t setMain(duk_context *ctx)
     return 0;
 }
 
+bool hasContent = false;
+bool isDone = false;
+
+void mainLoop(SDL_Window *window)
+{
+
+    SDL_Event event;
+    while (SDL_PollEvent(&event))
+    {
+        if (event.type == SDL_QUIT || event.type == SDL_WINDOWEVENT_CLOSE)
+        {
+#ifdef __EMSCRIPTEN__
+            emscripten_cancel_main_loop(); /* this should "kill" the app. */
+#else
+            isDone = true;
+            break;
+#endif
+        }
+
+        if (event.type == SDL_DROPFILE)
+        {
+            FILE *file = fopen(event.drop.file, "r");
+            evalFile(file, hasContent);
+            SDL_free(event.drop.file);
+        }
+    }
+
+    SDL_Surface *screenSurface = SDL_GetWindowSurface(window);
+    SDL_SetSurfaceBlendMode(screenSurface, SDL_BLENDMODE_BLEND);
+
+    SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 128, 0, 0));
+
+    DrawToScreen(screenSurface);
+
+    SDL_UpdateWindowSurface(window);
+
+    duk_get_global_string(ctx, "__MAIN__");
+
+    if (duk_is_function(ctx, -1))
+    {
+        // Call the function with no arguments, and catch any errors
+        if (duk_pcall(ctx, 0) != DUK_EXEC_SUCCESS)
+        {
+            printf("Error: %s\n", duk_safe_to_string(ctx, -1));
+        }
+    }
+
+    duk_pop(ctx);
+
+    SDL_Delay(16);
+}
+
 /**The main of the Microbe Engine application *
  * @param argc The number of command-line arguments.
  * @param  * @brief The main function of the Microbe Engine application.  * t * @param argc T */
@@ -48,8 +102,6 @@ int main(int argc, char *argv[])
     initDuktapeInput(ctx);
     initDuktapeAudio(ctx);
 
-    bool hasContent = false;
-
     if (argc > 1)
     {
         FILE *file = fopen("sample.js", "r");
@@ -67,49 +119,9 @@ int main(int argc, char *argv[])
         duk_eval_string_noresult(ctx, "setString(0,6,\"load it.\");");
     }
 
-    bool isDone = false;
     while (!isDone)
     {
-        SDL_Event event;
-        while (SDL_PollEvent(&event))
-        {
-            if (event.type == SDL_QUIT || event.type == SDL_WINDOWEVENT_CLOSE)
-            {
-                isDone = true;
-                break;
-            }
-
-            if (event.type == SDL_DROPFILE)
-            {
-                FILE *file = fopen(event.drop.file, "r");
-                evalFile(file, hasContent);
-                SDL_free(event.drop.file);
-            }
-        }
-
-        SDL_Surface *screenSurface = SDL_GetWindowSurface(window);
-        SDL_SetSurfaceBlendMode(screenSurface, SDL_BLENDMODE_BLEND);
-
-        SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 128, 0, 0));
-
-        DrawToScreen(screenSurface);
-
-        SDL_UpdateWindowSurface(window);
-
-        duk_get_global_string(ctx, "__MAIN__");
-
-        if (duk_is_function(ctx, -1))
-        {
-            // Call the function with no arguments, and catch any errors
-            if (duk_pcall(ctx, 0) != DUK_EXEC_SUCCESS)
-            {
-                printf("Error: %s\n", duk_safe_to_string(ctx, -1));
-            }
-        }
-
-        duk_pop(ctx);
-
-        SDL_Delay(16);
+        mainLoop(window);
     }
 
     cleanDuktape();
