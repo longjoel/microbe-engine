@@ -1,40 +1,40 @@
-# Compiler
-CC := g++
+# Makefile for collecting and compiling source files
+TARGET = microbe-engine
+# Directories
+SRC_DIR := src
+OBJ_DIR := obj
+$(shell mkdir -p $(OBJ_DIR))
+BIN_DIR := bin
+$(shell mkdir -p $(BIN_DIR))
 
-# Compiler flags
+
+# Compiler and flags
+CC := gcc
+CXX := g++
 CFLAGS := -Wall -Wextra -g $(shell sdl2-config --cflags)
-
-# Linker flags
-LDFLAGS := $(shell sdl2-config --libs) -lm  -lSDL2_ttf -lSDL2_mixer -ggdb
-
+CXXFLAGS := $(CFLAGS) -std=c++11
+LDFLAGS := $(shell sdl2-config --libs) -lm -lSDL2_ttf -lSDL2_mixer -ggdb
 # Source files
-SRCS := $(wildcard *.c) $(wildcard *.cpp)
-
-OBJDIR := obj
+C_FILES := $(wildcard $(SRC_DIR)/*.c)
+CPP_FILES := $(wildcard $(SRC_DIR)/*.cpp)
 
 # Object files
-OBJS := $(SRCS:%.c=$(OBJDIR)/%.o)
-OBJS := $(OBJS:%.cpp=$(OBJDIR)/%.o)
+OBJ_FILES := $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(C_FILES))
+OBJ_FILES += $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(CPP_FILES))
 
-# Target executable
-TARGET := microbe-engine
-$(shell mkdir -p $(OBJDIR))
+# Targets
+all: $(BIN_DIR)/$(TARGET)
 
-# Default target
-all: $(TARGET)
+$(BIN_DIR)/$(TARGET): $(OBJ_FILES)
+	$(CXX) $^  $(LDFLAGS)  -o $@
 
-# Rule to build the executable
-$(TARGET): $(OBJS)
-	$(CC) $(CFLAGS)  $^ $(LDFLAGS) -o $@
-	
-# Rule to compile C source files
-$(OBJDIR)/%.o: %.c
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Rule to compile C++ source files
-$(OBJDIR)/%.o: %.cpp
-	$(CC) $(CFLAGS) -c $< -o $@
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-# Clean target
 clean:
-	rm -rf $(OBJDIR)/*.o $(TARGET)
+	rm -rf $(OBJ_DIR)/*.o $(BIN_DIR)/*
+
+.PHONY: all clean
