@@ -30,4 +30,4 @@ if (!container) {
     process.exit(1);
 }
 
-cp.execSync(`${cmd} run -t -v ${path.join(__dirname,'..','microbe-c-sdl').split('\\').join('/')}:/app --rm ${container} make -f ${makefile}`, { stdio: 'inherit' });
+cp.execSync(`${cmd} run -t -v ${path.join(__dirname,'..','microbe-c-sdl').split('\\').join('/')}:/app --rm ${container} make -f ./makefiles/${makefile}`, { stdio: 'inherit' });
