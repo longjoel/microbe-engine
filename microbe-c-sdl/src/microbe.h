@@ -27,34 +27,18 @@
 #include "duktape.h"
 #include <string>
 #include <memory>
+#include <SDL2/SDL_ttf.h>
 
-class DuktapeContext
+#define MAX_TILES 256
+
+typedef unsigned char byte_t;
+
+typedef struct
 {
-public:
-    DuktapeContext();
-    ~DuktapeContext();
-
-    void bindFunctions();
-    duk_context *ctx;
-
-private:
-
-};
-
-class Microbe
-{
-public:
-    Microbe(std::shared_ptr<DuktapeContext> duktapeContext);
-    ~Microbe();
-    void run();
-    std::string AbortReason;
-
-private:
-    std::shared_ptr<DuktapeContext> duktapeContext;
-    SDL_Window *window;
-    bool isRunning;
-    void innerLoop();
-};
+    byte_t r;
+    byte_t g;
+    byte_t b;
+} rgb_t;
 
 typedef struct
 {
@@ -90,7 +74,78 @@ typedef struct
     int sqv; // square wave volume
 } sample_segment_t;
 
-typedef unsigned char byte_t;
+class DuktapeContext
+{
+public:
+    DuktapeContext();
+    ~DuktapeContext();
+
+    duk_context *getContext() { return ctx; }
+
+private:
+    void bindFunctions();
+    duk_context *ctx;
+};
+
+class MicrobeRenderer
+{
+public:
+    MicrobeRenderer(SDL_Window *window);
+    ~MicrobeRenderer();
+
+    void setTile(int index, byte_t *data);
+    void setVram(int x, int y, byte_t tileIndex);
+    void setScroll(int x, int y);
+    void setSprite(int index, sprite_t *sprite);
+    sprite_t *getSprite(int index);
+    void setPalette(int index, rgb_t *colors);
+    rgb_t *getPalette(int index);
+    void setChar(int x, int y, char c);
+    void setString(int x, int y, const char *str);
+
+    void UpdateVramCache();
+    void UpdateTextCache();
+
+private:
+    SDL_Surface *microbe_tiles_cache[MAX_TILES];
+
+    TTF_Font *microbe_font;
+    SDL_Color microbe_fontColor = {255, 255, 255, 255};
+    char microbe_textBuffer[20 * 18];
+    SDL_Surface *microbe_textCache;
+    SDL_Surface *microbe_framebufferCache;
+
+    SDL_Window *microbe_window;
+
+    byte_t microbe_tiles[MAX_TILES][64];
+    byte_t microbe_vram[32][32];
+    SDL_Surface *microbe_vramCache;
+
+    byte_t microbe_tilePalette[256];
+
+    SDL_Color microbe_palette[MAX_TILES][4]; // 256 entries * 4 colors * 4 bytes for each color.
+
+    sprite_t microbe_sprites[256];
+
+    bool microbe_isDirty = true;
+    int microbe_scrollX = 0;
+    int microbe_scrollY = 0;
+};
+
+class Microbe
+{
+public:
+    Microbe(std::shared_ptr<DuktapeContext> duktapeContext);
+    ~Microbe();
+    void run();
+    std::string AbortReason;
+
+private:
+    std::shared_ptr<DuktapeContext> duktapeContext;
+    SDL_Window *window;
+    bool isRunning;
+    void innerLoop();
+};
 
 void initDuktapeGraphics(duk_context *ctx);
 

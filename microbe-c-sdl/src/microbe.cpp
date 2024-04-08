@@ -96,7 +96,7 @@ int main(int nArgs, char **args)
 {
 
     std::shared_ptr<DuktapeContext> duktapeContext(new DuktapeContext());
-    if(duktapeContext->ctx == NULL)
+    if(duktapeContext->getContext() == NULL)
     {
         printf("Failed to create Duktape context.\n");
         return 1;
