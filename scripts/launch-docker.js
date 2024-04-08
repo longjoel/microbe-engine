@@ -30,9 +30,4 @@ if (!container) {
     process.exit(1);
 }
 
-try{
 cp.execSync(`${cmd} run -t -v ${path.join(__dirname,'..','microbe-c-sdl').split('\\').join('/')}:/app --rm ${container} make -f ./makefiles/${makefile}`, { stdio: 'inherit' });
-}
-catch (err){ 
-  console.log("output", JSON.stringify(err,null,2));
-}

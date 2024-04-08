@@ -5,7 +5,7 @@ TARGET := microbe.html
 # Compiler and flags
 CC := emcc
 CXX := emcc
-CFLAGS := -sALLOW_MEMORY_GROWTH=1 -sUSE_SDL_MIXER=2 -sUSE_SDL_TTF=2 -sUSE_SDL=2 -Wall -Wextra -g $(shell sdl2-config --cflags)
+CFLAGS := -sUSE_SDL_MIXER=2 -sUSE_SDL_TTF=2 -sUSE_SDL=2 -Wall -Wextra -g $(shell sdl2-config --cflags)
 CXXFLAGS := $(CFLAGS) -std=c++11
 LDFLAGS := $(CXXFLAGS) $(shell sdl2-config --libs) -lm -lSDL2_ttf -lSDL2_mixer -ggdb
 # Source files
