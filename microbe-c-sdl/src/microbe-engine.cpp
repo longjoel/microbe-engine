@@ -27,10 +27,6 @@ duk_ret_t setMain(duk_context *ctx)
 
     return 0;
 }
-
-/**The main of the Microbe Engine application *
- * @param argc The number of command-line arguments.
- * @param  * @brief The main function of the Microbe Engine application.  * t * @param argc T */
 int main(int argc, char *argv[])
 {
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_AUDIO);
@@ -52,7 +48,7 @@ int main(int argc, char *argv[])
 
     if (argc > 1)
     {
-        FILE *file = fopen("sample.js", "r");
+        FILE *file = fopen(argv[1], "r");
         evalFile(file, hasContent);
     }
 
