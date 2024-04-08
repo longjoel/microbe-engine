@@ -19,10 +19,7 @@
     "docker:build-ps3": "node ./scripts/launch-docker.js --container=microbe-engine-ps3 --makefile=ps3.mak",
 
     "docker:bootstrap-psp": "podman build -f ./docker-files/psp.dockerfile -t microbe-engine-psp",
-    "docker:build-psp": "node ./scripts/launch-docker.js --container=microbe-engine-psp --makefile=psp.mak",
-
-    "docker:bootstrap-webasm": "podman build -f ./docker-files/webasm.dockerfile -t microbe-engine-webasm",
-    "docker:build-webasm": "node ./scripts/launch-docker.js --container=microbe-engine-webasm --makefile=webasm.mak"
+    "docker:build-psp": "node ./scripts/launch-docker.js --container=microbe-engine-psp --makefile=psp.mak"
   },
   "author": "Joel Longanecker",
   "license": "GPL-3.0-only",
