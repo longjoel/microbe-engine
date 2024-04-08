@@ -82,10 +82,40 @@ void mainLoop(SDL_Window *window)
     SDL_Delay(16);
 }
 
+int main(int argc, char *argv[]){
+
+    SDL_Init(SDL_INIT_VIDEO);
+
+    SDL_Window *window;
+    SDL_Rect bounds;
+SDL_GetDisplayBounds(0,&bounds);
+
+    window = SDL_CreateWindow("Microbe Engine", 0, 0, bounds.w,bounds.h, SDL_WINDOW_SHOWN);
+
+    while(true){
+        SDL_Event event;
+        while (SDL_PollEvent(&event))
+        {
+            if (event.type == SDL_QUIT || event.type == SDL_WINDOWEVENT_CLOSE)
+            {
+                return 0;
+            }
+        }
+
+        SDL_Surface *screenSurface = SDL_GetWindowSurface(window);
+        SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 128, 0, 0));
+
+        SDL_UpdateWindowSurface(window);
+
+    }
+
+    return 0;
+}
+
 /**The main of the Microbe Engine application *
  * @param argc The number of command-line arguments.
  * @param  * @brief The main function of the Microbe Engine application.  * t * @param argc T */
-int main(int argc, char *argv[])
+int old_main(int argc, char *argv[])
 {
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_AUDIO);
 
