@@ -77,14 +77,26 @@ typedef struct
 class DuktapeContext
 {
 public:
-    DuktapeContext();
+    DuktapeContext(std::shared_ptr<MicrobeRenderer> renderer);
     ~DuktapeContext();
 
     duk_context *getContext() { return ctx; }
 
 private:
     void bindFunctions();
-    duk_context *ctx;
+    static duk_context *ctx;
+    static std::shared_ptr<MicrobeRenderer> renderer;
+
+    static duk_ret_t duk_setTile(duk_context *ctx);
+    static duk_ret_t duk_setVram(duk_context *ctx);
+    static duk_ret_t duk_setScroll(duk_context *ctx);
+    static duk_ret_t duk_setSprite(duk_context *ctx);
+    static duk_ret_t duk_getSprite(duk_context *ctx);
+    static duk_ret_t duk_setPalette(duk_context *ctx);
+    static duk_ret_t duk_getPalette(duk_context *ctx);
+    static duk_ret_t duk_setChar(duk_context *ctx);
+    static duk_ret_t duk_setString(duk_context *ctx);
+    
 };
 
 class MicrobeRenderer
@@ -98,13 +110,15 @@ public:
     void setScroll(int x, int y);
     void setSprite(int index, sprite_t *sprite);
     sprite_t *getSprite(int index);
-    void setPalette(int index, rgb_t *colors);
-    rgb_t *getPalette(int index);
+    void setPalette(int index, SDL_Color *colors);
+    SDL_Color *getPalette(int index);
     void setChar(int x, int y, char c);
     void setString(int x, int y, const char *str);
 
     void UpdateVramCache();
     void UpdateTextCache();
+
+    void Draw();
 
 private:
     SDL_Surface *microbe_tiles_cache[MAX_TILES];

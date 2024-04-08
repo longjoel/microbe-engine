@@ -127,6 +127,10 @@ void MicrobeRenderer::setPalette(int index, SDL_Color *colors)
 
 SDL_Color *MicrobeRenderer::getPalette(int index)
 {
+  SDL_Color **results;
+    results = (SDL_Color **)microbe_palette;
+    SDL_Color *palette = results[index];
+
     return microbe_palette[index];
 }
 
@@ -478,106 +482,106 @@ void MicrobeRenderer::UpdateTextCache()
 //     }
 // }
 
-// SDL_Rect bestFit(SDL_Rect *source, SDL_Rect *target, SDL_Rect *result)
-// {
-//     double scale = floorf(fmin(target->w / (double)source->w, target->h / (double)source->h));
+SDL_Rect bestFit(SDL_Rect *source, SDL_Rect *target, SDL_Rect *result)
+{
+    double scale = floorf(fmin(target->w / (double)source->w, target->h / (double)source->h));
 
-//     int adjustedWidth = (int)(source->w * scale);
-//     int adjustedHeight = (int)(source->h * scale);
+    int adjustedWidth = (int)(source->w * scale);
+    int adjustedHeight = (int)(source->h * scale);
 
-//     int x = target->x + (target->w - adjustedWidth) / 2;
-//     int y = target->y + (target->h - adjustedHeight) / 2;
+    int x = target->x + (target->w - adjustedWidth) / 2;
+    int y = target->y + (target->h - adjustedHeight) / 2;
 
-//     result->x = x;
-//     result->y = y;
-//     result->w = adjustedWidth;
-//     result->h = adjustedHeight;
+    result->x = x;
+    result->y = y;
+    result->w = adjustedWidth;
+    result->h = adjustedHeight;
 
-//     return *result;
-// }
+    return *result;
+}
 
-// void DrawToScreen(SDL_Surface *screenSurface)
-// {
+void MicrobeRenderer::Draw()
+{
+SDL_Surface *screenSurface = SDL_GetWindowSurface(this->microbe_window);
+    if (microbe_isDirty)
+    {
+        this->UpdateVramCache();
+    }
+    SDL_FillRect(screenSurface, NULL, SDL_MapRGBA(screenSurface->format, 0, 128, 0, 255));
+    SDL_FillRect(microbe_framebufferCache, NULL, SDL_MapRGBA(microbe_framebufferCache->format, 0, 0, 128, 255));
 
-//     if (microbe_isDirty)
-//     {
-//         updateVramCache();
-//     }
-//     SDL_FillRect(screenSurface, NULL, SDL_MapRGBA(screenSurface->format, 0, 128, 0, 255));
-//     SDL_FillRect(microbe_framebufferCache, NULL, SDL_MapRGBA(microbe_framebufferCache->format, 0, 0, 128, 255));
+    for (int dy = -1; dy <= 1; dy++)
+    {
 
-//     for (int dy = -1; dy <= 1; dy++)
-//     {
+        for (int dx = -1; dx <= 1; dx++)
+        {
 
-//         for (int dx = -1; dx <= 1; dx++)
-//         {
+            for (int i = 0; i < 256; i++)
+            {
+                sprite_t *sprite = &microbe_sprites[i];
+                if (sprite->visible && sprite->background)
+                {
+                    SDL_Rect dest;
+                    dest.x = sprite->x + (dx * 160);
+                    dest.y = sprite->y + (dy * 144);
+                    dest.w = 8;
+                    dest.h = 8;
 
-//             for (int i = 0; i < 256; i++)
-//             {
-//                 sprite_t *sprite = &microbe_sprites[i];
-//                 if (sprite->visible && sprite->background)
-//                 {
-//                     SDL_Rect dest;
-//                     dest.x = sprite->x + (dx * 160);
-//                     dest.y = sprite->y + (dy * 144);
-//                     dest.w = 8;
-//                     dest.h = 8;
+                    SDL_BlitSurface(microbe_tiles_cache[sprite->tileIndex], NULL, microbe_vramCache, &dest);
+                }
+            }
 
-//                     SDL_BlitSurface(microbe_tiles_cache[sprite->tileIndex], NULL, microbe_vramCache, &dest);
-//                 }
-//             }
+            SDL_Rect dest;
+            dest.x = (dx * 32 * 8) + microbe_scrollX;
+            dest.y = (dy * 32 * 8) + microbe_scrollY;
+            dest.w = 32 * 8;
+            dest.h = 32 * 8;
+            SDL_BlitSurface(microbe_vramCache, NULL, microbe_framebufferCache, &dest);
 
-//             SDL_Rect dest;
-//             dest.x = (dx * 32 * 8) + microbe_scrollX;
-//             dest.y = (dy * 32 * 8) + microbe_scrollY;
-//             dest.w = 32 * 8;
-//             dest.h = 32 * 8;
-//             SDL_BlitSurface(microbe_vramCache, NULL, microbe_framebufferCache, &dest);
+            for (int i = 0; i < 256; i++)
+            {
+                sprite_t *sprite = &microbe_sprites[i];
+                if (sprite->visible && !sprite->background)
+                {
+                    SDL_Rect dest;
+                    dest.x = sprite->x + (dx * 160);
+                    dest.y = sprite->y + (dy * 144);
+                    dest.w = 8;
+                    dest.h = 8;
 
-//             for (int i = 0; i < 256; i++)
-//             {
-//                 sprite_t *sprite = &microbe_sprites[i];
-//                 if (sprite->visible && !sprite->background)
-//                 {
-//                     SDL_Rect dest;
-//                     dest.x = sprite->x + (dx * 160);
-//                     dest.y = sprite->y + (dy * 144);
-//                     dest.w = 8;
-//                     dest.h = 8;
+                    SDL_BlitSurface(microbe_tiles_cache[sprite->tileIndex], NULL, microbe_vramCache, &dest);
+                }
+            }
+        }
 
-//                     SDL_BlitSurface(microbe_tiles_cache[sprite->tileIndex], NULL, microbe_vramCache, &dest);
-//                 }
-//             }
-//         }
+        for (int y = 0; y < 18; y++)
+        {
+            for (int x = 0; x < 20; x++)
+            {
+                char c = microbe_textBuffer[(y * 20) + x];
+                SDL_Surface *glyph = TTF_RenderGlyph_Solid(microbe_font, c, microbe_fontColor);
+                SDL_Rect dest;
+                dest.x = x * 8;
+                dest.y = y * 8;
+                dest.w = 8;
+                dest.h = 8;
+                SDL_BlitSurface(glyph, NULL, microbe_textCache, &dest);
+                SDL_FreeSurface(glyph);
+            }
+        }
 
-//         for (int y = 0; y < 18; y++)
-//         {
-//             for (int x = 0; x < 20; x++)
-//             {
-//                 char c = microbe_textBuffer[(y * 20) + x];
-//                 SDL_Surface *glyph = TTF_RenderGlyph_Solid(microbe_font, c, microbe_fontColor);
-//                 SDL_Rect dest;
-//                 dest.x = x * 8;
-//                 dest.y = y * 8;
-//                 dest.w = 8;
-//                 dest.h = 8;
-//                 SDL_BlitSurface(glyph, NULL, microbe_textCache, &dest);
-//                 SDL_FreeSurface(glyph);
-//             }
-//         }
+        SDL_BlitScaled(microbe_textCache, NULL, microbe_framebufferCache, NULL);
 
-//         SDL_BlitScaled(microbe_textCache, NULL, microbe_framebufferCache, NULL);
+        SDL_Rect inner = {0, 0, 160, 144};
+        SDL_Rect outer = {0, 0, screenSurface->w, screenSurface->h};
+        SDL_Rect destRect;
 
-//         SDL_Rect inner = {0, 0, 160, 144};
-//         SDL_Rect outer = {0, 0, screenSurface->w, screenSurface->h};
-//         SDL_Rect destRect;
+        // Get the SDL window size
 
-//         // Get the SDL window size
+        // Calculate the aspect ratio of the window
+        bestFit(&inner, &outer, &destRect);
 
-//         // Calculate the aspect ratio of the window
-//         bestFit(&inner, &outer, &destRect);
-
-//         SDL_BlitScaled(microbe_framebufferCache, &inner, screenSurface, &destRect);
-//         microbe_isDirty = false;
-//     }
-// }
+        SDL_BlitScaled(microbe_framebufferCache, &inner, screenSurface, &destRect);
+        microbe_isDirty = false;
+    }
+}
