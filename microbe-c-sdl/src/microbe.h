@@ -25,8 +25,39 @@
 
 #include <SDL2/SDL.h>
 #include "duktape.h"
+#include <string>
+#include <memory>
 
-typedef struct {
+class DuktapeContext
+{
+public:
+    DuktapeContext();
+    ~DuktapeContext();
+
+    void bindFunctions();
+    duk_context *ctx;
+
+private:
+
+};
+
+class Microbe
+{
+public:
+    Microbe(std::shared_ptr<DuktapeContext> duktapeContext);
+    ~Microbe();
+    void run();
+    std::string AbortReason;
+
+private:
+    std::shared_ptr<DuktapeContext> duktapeContext;
+    SDL_Window *window;
+    bool isRunning;
+    void innerLoop();
+};
+
+typedef struct
+{
     int x;
     int y;
     int tileIndex;
@@ -36,7 +67,8 @@ typedef struct {
     bool background;
 } sprite_t;
 
-typedef struct {
+typedef struct
+{
     bool up;
     bool down;
     bool left;
