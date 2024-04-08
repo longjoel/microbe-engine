@@ -33,7 +33,7 @@ duk_ret_t setMain(duk_context *ctx)
 bool hasContent = false;
 bool isDone = false;
 
-void mainLoop(SDL_Window *window)
+/*void mainLoop(SDL_Window *window)
 {
 
     SDL_Event event;
@@ -41,12 +41,7 @@ void mainLoop(SDL_Window *window)
     {
         if (event.type == SDL_QUIT || event.type == SDL_WINDOWEVENT_CLOSE)
         {
-#ifdef __EMSCRIPTEN__
-            emscripten_cancel_main_loop(); /* this should "kill" the app. */
-#else
-            isDone = true;
-            break;
-#endif
+
         }
 
         if (event.type == SDL_DROPFILE)
@@ -81,33 +76,52 @@ void mainLoop(SDL_Window *window)
 
     SDL_Delay(16);
 }
+*/
 
-int main(int argc, char *argv[]){
+SDL_Window *window;
+void mainLoop()
+{
+
+    SDL_Event event;
+    while (SDL_PollEvent(&event))
+    {
+        if (event.type == SDL_QUIT || event.type == SDL_WINDOWEVENT_CLOSE)
+        {
+#ifdef __EMSCRIPTEN__
+            emscripten_cancel_main_loop(); /* this should "kill" the app. */
+#endif
+            exit(0);
+        }
+    }
+
+    SDL_Surface *screenSurface = SDL_GetWindowSurface(window);
+    SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 128, 0, 0));
+
+    SDL_UpdateWindowSurface(window);
+
+    SDL_Delay(16);
+}
+
+int main(int argc, char *argv[])
+{
 
     SDL_Init(SDL_INIT_VIDEO);
 
-    SDL_Window *window;
     SDL_Rect bounds;
-SDL_GetDisplayBounds(0,&bounds);
+    SDL_GetDisplayBounds(0, &bounds);
 
-    window = SDL_CreateWindow("Microbe Engine", 0, 0, bounds.w,bounds.h, SDL_WINDOW_SHOWN);
+#ifdef __EMSCRIPTEN__
+    window = SDL_CreateWindow("Microbe Engine", 0, 0, 640, 480, SDL_WINDOW_SHOWN);
+    emscripten_set_main_loop(mainLoop, 0, 1);
 
-    while(true){
-        SDL_Event event;
-        while (SDL_PollEvent(&event))
-        {
-            if (event.type == SDL_QUIT || event.type == SDL_WINDOWEVENT_CLOSE)
-            {
-                return 0;
-            }
-        }
+#else
+    window = SDL_CreateWindow("Microbe Engine", 0, 0, bounds.w, bounds.h, SDL_WINDOW_SHOWN);
 
-        SDL_Surface *screenSurface = SDL_GetWindowSurface(window);
-        SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 128, 0, 0));
-
-        SDL_UpdateWindowSurface(window);
-
+    while (1)
+    {
+        mainLoop();
     }
+#endif
 
     return 0;
 }
@@ -151,7 +165,7 @@ int old_main(int argc, char *argv[])
 
     while (!isDone)
     {
-        mainLoop(window);
+        mainLoop();
     }
 
     cleanDuktape();
